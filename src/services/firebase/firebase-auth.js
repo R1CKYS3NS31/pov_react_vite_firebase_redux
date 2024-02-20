@@ -22,12 +22,14 @@ const isUserSignedIn = () => {
   return !!getAuth().currentUser;
 };
 
+export const currentUser = getAuth().currentUser
+
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 const authStateObserver = async () => {
   onAuthStateChanged(getAuth, (user) => {
     if (user) {
-      const usename = getAuth().currentUser.displayName;
-      const profilePhotoUrl = getAuth().currentUser.photoURL;
+      const usename = currentUser.displayName;
+      const profilePhotoUrl = currentUser.photoURL;
       // perform other actions for is your exists
     }
   });
