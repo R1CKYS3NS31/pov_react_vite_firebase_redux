@@ -1,20 +1,43 @@
 import React from "react";
-import { Container, Fab, Grid } from "@mui/material";
-import { PoVs } from "../../components/home/PoVs";
-import { AddCircleRounded, Login, Person2Rounded } from "@mui/icons-material";
+import { Avatar, Container, Fab, Grid, Typography } from "@mui/material";
+import {
+  AddCircleRounded,
+  Login,
+  Logout,
+  NotificationImportantOutlined,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signOutAccountUser } from "../../services/redux/slices/user/accountUserSlice";
+import { signout } from "../../services/api/user/api-auth";
+import { Logo } from "../../components/ui/Logo";
+import { PoVs } from "../pov/PoVs";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const accountUser = useSelector((state) => state.accountUser);
+  const dispatch = useDispatch();
+
+  const handleAuth = () => {
+    accountUser
+      ? signout() && dispatch(signOutAccountUser())
+      : navigate("/signin", { replace: "true" });
+  };
+
+  const handleProfile = () => {
+    accountUser
+      ? navigate("/profile",)
+      : navigate("/signin", { replace: "true" });
+  };
 
   return (
     <Container sx={{ display: "flex", gap: 2 }}>
       <Container sx={{ flex: 1 }}>
         <header>
-          <h1>PoV</h1>
+          <Logo />
         </header>
       </Container>
-      <Container sx={{ flex: 3, overflow:'scroll' }} fixed>
+      <Container sx={{ flex: 3, overflow: "scroll", maxHeight: "100vh" }} fixed>
         <PoVs />
       </Container>
       <Grid
@@ -22,25 +45,51 @@ export const Home = () => {
         direction={"column"}
         sx={{
           flex: 1,
-          p:'5px',
+          p: "5px",
           height: "100vh",
-          maxWidth: "100px",
+          // maxWidth: "100px",
           // backgroundColor: "#eee",
-                  justifyContent: "space-between",
+          justifyContent: "space-between",
         }}
       >
         <Grid item marginTop={"20px"}>
-          <Fab sx={{ m:'8px',backgroundColor: "transparent",}}>
-            <Person2Rounded />
+          <Fab
+            variant="extended"
+            sx={{ m: "8px", backgroundColor: "transparent" }}
+            onClick={handleProfile}
+          >
+            <Avatar
+              alt="Ricky Sensei"
+              src={accountUser && accountUser.user.photoUrl}
+              sx={{ m: "8px" }}
+            />
+            <Typography variant="h5">
+              {accountUser ? accountUser.user.firstName : "Guest"}
+            </Typography>
           </Fab>
-          <Fab sx={{ m:'8px',backgroundColor: "transparent",}}>
-            <Login/>
+          <Fab
+            variant="extended"
+            sx={{ m: "8px", backgroundColor: "transparent" }}
+            onClick={handleAuth}
+          >
+            {accountUser ? (
+              <Login sx={{ m: "8px", color: "" }} />
+            ) : (
+              <Logout sx={{ m: "8px", color: "" }} />
+            )}
+
+            <Typography variant="h5">
+              {accountUser ? "Sign Out" : "Sign In"}
+            </Typography>
+          </Fab>
+          <Fab size="small" sx={{ m: "8px", backgroundColor: "transparent" }}>
+            <NotificationImportantOutlined />
           </Fab>
         </Grid>
         <Grid item marginBottom={"50px"}>
           <Fab
             variant="extended"
-            onClick={() => navigate("/create", { replace: true })}
+            onClick={() => navigate("/pov/create")}
             sx={{
               backgroundColor: "transparent",
             }}

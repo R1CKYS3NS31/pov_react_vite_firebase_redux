@@ -22,11 +22,11 @@ export const client = async (
       };
       config.body = body;
     } else {
-      (config.headers = {
+      config.headers = {
         ...customConfig.headers,
         "Content-Type": "application/json",
-      }),
-        (config.body = JSON.stringify(body));
+      };
+      config.body = JSON.stringify(body);
     }
   }
 

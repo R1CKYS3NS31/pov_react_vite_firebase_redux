@@ -19,10 +19,10 @@ export const fetchPov = async (povId) => {
   }
 };
 
-export const fetchPovsByOwner = async (userId, credentials) => {
+export const fetchPovsByOwner = async (povId, credentials) => {
   try {
     const povsByOwner = await client.get(
-      `${config.apiUrl}/api/povs/by/${userId}`,
+      `${config.apiUrl}/api/povs/by/${povId}`,
       {
         headers: {
           Authorization: "Bearer " + credentials,
@@ -48,10 +48,10 @@ export const createPoV = async (pov, credentials) => {
   }
 };
 
-export const updatePoV = async (userId, povId, pov, credentials) => {
+export const updatePoV = async (povId, pov, credentials) => {
   try {
     const povUpdated = await client.put(
-      `${config.apiUrl}/api/povs/by/${userId}/${povId}`,
+      `${config.apiUrl}/api/povs/by/${povId}`,
       pov,
       {
         headers: {
@@ -65,10 +65,10 @@ export const updatePoV = async (userId, povId, pov, credentials) => {
   }
 };
 
-export const deletePoV = async (userId, povId, credentials) => {
+export const deletePoV = async (povId, credentials) => {
   try {
     const povDeleted = await client.delete(
-      `${config.apiUrl}/api/povs/by/${userId}/${povId}`,
+      `${config.apiUrl}/api/povs/by/${povId}`,
       {
         headers: {
           Authorization: "Bearer " + credentials,

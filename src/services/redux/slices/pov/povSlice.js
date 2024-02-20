@@ -18,17 +18,17 @@ export const povSlice = createSlice({
       }
       return null;
     },
-    updatePoV: (state, action) => {
+    editPoV: (state, action) => {
       const updatedPoV = action.payload;
       return state.map((existingPoV) =>
         existingPoV._id === updatedPoV._id ? updatedPoV : existingPoV
       );
     },
-    deletePov: (state, action) => {
+    removePov: (state, action) => {
       const povIdToDelete = action.payload;
       return state.filter((existingPoV) => existingPoV._id !== povIdToDelete);
     },
-    deleteAllPoVs: (state, action) => {
+    removeAllPoVs: (state, action) => {
       return [];
     },
   },
@@ -38,9 +38,9 @@ export const {
   setPovs,
   getPoVById,
   addPoV,
-  updatePoV,
-  deletePov,
-  deleteAllPoVs,
+  editPoV,
+  removePov,
+  removeAllPoVs,
 } = povSlice.actions;
 
 export default povSlice.reducer;
