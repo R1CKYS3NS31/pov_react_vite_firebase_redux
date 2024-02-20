@@ -38,10 +38,9 @@ export const loadDocData = async (docName, limitNo = 12) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "removed") {
           // deleted doc - delete local doc
-        } else {
-          const docData = change.doc;
-          return docData;
         }
+        const docData = change.doc;
+        return docData;
       });
     });
   } catch (error) {

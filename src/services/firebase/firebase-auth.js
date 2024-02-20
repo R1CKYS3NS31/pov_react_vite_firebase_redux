@@ -5,32 +5,32 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { firebaseApp } from "./firebase-config";
+
+const auth = getAuth(firebaseApp);
 
 // Sign-in PoV in Firebase using popup auth and Google as the identity provider.
 const signInWithGoogleAUth = async () => {
   const provider = new GoogleAuthProvider();
-  await signInWithPopup(getAuth(), provider);
+  await signInWithPopup(auth, provider);
 };
 
 // sign-out of PoV
 const signOutUser = async () => {
-  await signOut(getAuth());
+  await signOut(auth);
 };
 
 // Returns true if a user is signed-in.
 const isUserSignedIn = () => {
-  return !!getAuth().currentUser;
+  return !!auth.currentUser;
 };
-
-export const currentUser = () => getAuth().currentUser;
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
-const authStateObserver = async () => {
-  onAuthStateChanged(getAuth, (user) => {
+export const currentUser = () =>
+  onAuthStateChanged(auth, (user) => {
     if (user) {
-      const usename = currentUser.displayName;
-      const profilePhotoUrl = currentUser.photoURL;
-      // perform other actions for is your exists
+      return user;
+    } else {
+      return null;
     }
   });
-};

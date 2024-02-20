@@ -14,7 +14,7 @@ const saveMessagingDeviceToken = async () => {
       // set doc
       // Saving the Device Token to Cloud Firestore.
 
-      setDocData("fcmTokens", currentToken, { uid: currentUser.uid });
+      setDocData("fcmTokens", currentToken, { uid: await currentUser().uid });
       onMessage(messaging, (message) => {
         // notification payload
         console.log(
