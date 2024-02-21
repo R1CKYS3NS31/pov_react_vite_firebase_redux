@@ -11,8 +11,10 @@ export const saveUserFirebase = async (user = {}) => {
   try {
     const { firstName, lastName, email } = user;
     const userData = {
-      firstName: firstName,
-      lastName: lastName,
+      name: {
+        first: firstName,
+        last: lastName,
+      },
       email: email,
     };
     return await saveDocData(docName, "", userData);
