@@ -1,4 +1,5 @@
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
@@ -16,9 +17,19 @@ export const saveFile = async (file, filePath) => {
     const downloadUrl = await getDownloadURL(fileSnapshot);
 
     return {
+      fileSnapshot: fileSnapshot,
       downloadUrl: downloadUrl,
       storageUri: fileSnapshot.metadata.fullPath,
     };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteFile = async (filePath) => {
+  try {
+    const fileRef = ref(storage, filePath);
+    return await deleteObject(fileRef);
   } catch (error) {
     throw error;
   }
