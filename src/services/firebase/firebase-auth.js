@@ -16,7 +16,7 @@ import { firebaseApp } from "./firebase-config";
 const auth = getAuth(firebaseApp);
 
 // Sign-in PoV in Firebase using popup auth and Google as the identity provider.
-const signInWithGoogleAUth = async () => {
+export const signInWithGoogleAUth = async () => {
   const provider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, provider);
@@ -26,7 +26,7 @@ const signInWithGoogleAUth = async () => {
 };
 
 // sign-out of PoV
-const signOutUser = async () => {
+export const signOutFirebaseUser = async () => {
   try {
     await signOut(auth);
   } catch (error) {
@@ -35,7 +35,7 @@ const signOutUser = async () => {
 };
 
 // Returns true if a user is signed-in.
-const isUserSignedIn = () => {
+export const isUserSignedIn = () => {
   return !!auth.currentUser;
 };
 

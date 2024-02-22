@@ -19,7 +19,11 @@ import React, { useEffect, useState } from "react";
 
 //
 import Google from "../../../assets/icons/social-google.svg";
-import { LockPersonOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  LockPersonOutlined,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -41,7 +45,7 @@ export const AuthRegister = () => {
   // agreement
   const [checked, setChecked] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState(true);
 
@@ -50,6 +54,7 @@ export const AuthRegister = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [googleAuthError, setGoogleAuthError] = useState('')
 
   useEffect(() => {
     if (firstName && lastName && email && password) {
@@ -60,16 +65,21 @@ export const AuthRegister = () => {
   }, [firstName, lastName, email, password]);
 
   const googleHandler = async () => {
-    console.error("Register");
+    try {
+      setGoogleAuthError('')
+      await signInWithG
+    } catch (error) {
+      setGoogleAuthError(error);
+    }
   };
 
-    const handleClickShowPassword = () => {
-      setShowPassword(!showPassword);
-    };
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
-    };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const changePassword = (value) => {
     setPassword(value);
@@ -152,6 +162,13 @@ export const AuthRegister = () => {
             </Box>
             Sign up with Google
           </Button>
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
+            {googleAuthError}
+          </FormHelperText>
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ alignItems: "center", display: "flex" }}>
@@ -252,25 +269,26 @@ export const AuthRegister = () => {
                 placeholder="password"
                 label="Password"
                 // type="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 id="password"
                 onChange={(e) => {
                   // handleChange(e);
                   changePassword(e.target.value);
                 }}
                 autoComplete="new-password"
-                endAdornment={ // ricky has bugs
-                    <InputAdornment position="end">
-                        <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                            size="large"
-                        >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                    </InputAdornment>
+                endAdornment={
+                  // ricky has bugs
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
                 }
               />
 
