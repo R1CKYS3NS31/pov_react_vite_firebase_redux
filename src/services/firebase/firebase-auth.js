@@ -1,15 +1,9 @@
 import {
   GoogleAuthProvider,
-  deleteUser,
   getAuth,
   onAuthStateChanged,
-  sendEmailVerification,
-  sendPasswordResetEmail,
   signInWithPopup,
   signOut,
-  updateEmail,
-  updatePassword,
-  updateProfile,
 } from "firebase/auth";
 import { firebaseApp } from "./firebase-config";
 

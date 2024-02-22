@@ -33,6 +33,7 @@ import {
 import { signUp } from "../../../services/api/user/api-auth";
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { auth } from "../../../utils/auth_helper";
+import { currentUser, signInWithGoogleAUth } from "../../../services/firebase/firebase-auth";
 
 export const AuthRegister = () => {
   const theme = useTheme();
@@ -53,8 +54,9 @@ export const AuthRegister = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [googleAuthError, setGoogleAuthError] = useState('')
+  const [googleAuthError, setGoogleAuthError] = useState("");
 
   useEffect(() => {
     if (firstName && lastName && email && password) {
@@ -66,10 +68,18 @@ export const AuthRegister = () => {
 
   const googleHandler = async () => {
     try {
-      setGoogleAuthError('')
-      await signInWithG
+      setGoogleAuthError("");
+      setLoading(true);
+      const signedInUser = await signInWithGoogleAUth();
+      if (signedInUser) {
+        setLoading(false);
+
+        console.log(`sign in with google - ${currentUser}`);
+      }
     } catch (error) {
-      setGoogleAuthError(error);
+      // setGoogleAuthError(error);
+      setLoading(false);
+      console.log(`sign in with google - ${googleAuthError}`);
     }
   };
 
@@ -151,15 +161,19 @@ export const AuthRegister = () => {
               borderColor: theme.palette.grey[100],
             }}
           >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-              <img
-                src={Google}
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
-            </Box>
+            {loading ? (
+              "Loading..."
+            ) : (
+              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
+                <img
+                  src={Google}
+                  alt="google"
+                  width={16}
+                  height={16}
+                  style={{ marginRight: matchDownSM ? 8 : 16 }}
+                />
+              </Box>
+            )}
             Sign up with Google
           </Button>
           <FormHelperText

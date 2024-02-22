@@ -3,6 +3,10 @@ import { Routes } from "./routes/routes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { theme } from "./styles/themes/index";
 
+// import env from 'dotenv'
+// env.config()
+console.log(process.env.PROJECT_ID);
+
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
