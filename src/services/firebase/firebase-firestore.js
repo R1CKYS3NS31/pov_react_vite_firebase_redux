@@ -31,8 +31,7 @@ export const saveDocData = async (docName, pathSegment, docData) => {
 export const loadDocsData = async (docName, limitNo = 12) => {
   try {
     const recentQuery = query(
-      collection(firestore),
-      docName,
+      collection(firestore, docName),
       orderBy("timestamp", "desc"),
       limit(limitNo)
     );

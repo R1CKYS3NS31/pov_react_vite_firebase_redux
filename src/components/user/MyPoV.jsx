@@ -5,6 +5,7 @@ import { deletePoV } from "../../services/api/pov/api-pov";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { removePov } from "../../services/redux/slices/pov/povSlice";
+import { deletePoVFirebase } from "../../services/firebase/model/pov-firebase";
 
 export const MyPoV = ({ pov }) => {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ export const MyPoV = ({ pov }) => {
 
   const handleDeletePov = async (povId) => {
     try {
-      const povDeleted = await deletePoV(povId, accountUser.token);
+      // const povDeleted = await deletePoV(povId, accountUser.token);
+      const povDeleted = await deletePoVFirebase(povId);
 
       if (povDeleted) {
         dispatch(removePov(povId));
@@ -34,9 +36,13 @@ export const MyPoV = ({ pov }) => {
         mb: 2,
       }}
     >
-      <Grid item flexGrow={12} sx={{
-        maxWidth:'58vw'
-      }}>
+      <Grid
+        item
+        flexGrow={12}
+        sx={{
+          maxWidth: "58vw",
+        }}
+      >
         <Card
           variant="elevation"
           elevation={10}
@@ -62,8 +68,8 @@ export const MyPoV = ({ pov }) => {
           >
             {pov.subtitle}
           </Typography>
-          {pov.points.split("\n").map((point) => (
-            <Stack direction={"row"}>
+          {pov.points.split("\n").map((point, i) => (
+            <Stack direction={"row"} key={i}>
               <LabelImportant sx={{ mr: 1 }} fontSize="small" />
               <Typography variant="p" sx={{ overflowWrap: "anywhere" }}>
                 {point}

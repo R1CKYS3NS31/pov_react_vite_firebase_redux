@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addPoV, getPoVById } from "../../services/redux/slices/pov/povSlice";
+import { addPoV } from "../../services/redux/slices/pov/povSlice";
 import { createPoV } from "../../services/api/pov/api-pov";
 import {
   getPoVFirebase,

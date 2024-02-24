@@ -64,7 +64,7 @@ export const AuthLogin = () => {
       const signedIn = await signInWithGoogleAUth();
       if (signedIn && isUserSignedIn()) {
         setLoading(false);
-        console.log(signedIn.user); // remove log
+        console.log('user',signedIn.user); // remove log
         const token = await signedIn.user.getIdToken();
         const { uid, displayName, email, photoUrl } = signedIn.user;
         const { first, last } = displayName;
@@ -88,7 +88,7 @@ export const AuthLogin = () => {
     } catch (error) {
       // setGoogleAuthError(error);
       setLoading(false);
-      console.log(`sign in with google - ${googleAuthError}`);
+      console.error(`sign in with google - ${error}`);
     }
   };
 
@@ -271,7 +271,7 @@ export const AuthLogin = () => {
             type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
-            endAdornment={
+            endadornment={
               // ricky has bugs
               <InputAdornment position="end">
                 <IconButton

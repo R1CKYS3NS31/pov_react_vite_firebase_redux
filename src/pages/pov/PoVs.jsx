@@ -16,7 +16,7 @@ export const PoVs = () => {
       const povsFetched = await getPoVsFirebase()
       console.log(povsFetched); // log povs
       if (povsFetched) {
-        dispatch(setPovs(povsFetched));
+        dispatch(setPovs(povsFetched.data));
       }
     };
     povsFetch();
@@ -24,8 +24,7 @@ export const PoVs = () => {
 
   return (
     <Grid
-      container
-      
+      container      
       sx={{
         flex: 2,
       }}

@@ -33,7 +33,7 @@ export const getPoVsFirebase = async () => {
 
 export const getPoVFirebase = async (povId) => {
   try {
-    return await loadDocDataById(docName, povId);
+    return await loadDocDataById(docName, povId,'');
   } catch (error) {
     throw error;
   }
@@ -47,7 +47,7 @@ export const getPoVFirebase = async (povId) => {
 //   }
 // };
 
-export const updatePoVFirebase = async (povId, pov) => {
+export const updatePoVFirebase = async (uid,povId, pov) => {
   try {
     const { title, subtitle, points, owner } = pov;
     const povData = {

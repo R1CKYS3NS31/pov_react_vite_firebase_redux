@@ -1,5 +1,6 @@
 import {
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   deleteUser,
   getAuth,
   onAuthStateChanged,
@@ -24,6 +25,37 @@ export const signInWithGoogleAUth = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+// sign-up
+export const signUpWithEmailAndPassword = async (email, password) => {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      // ...
+      return userCredential.user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      throw error;
+    });
+};
+
+// sign-in
+export const signInWithEmailAndPassword = async (email, password) => {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      // ...
+      return userCredential.user;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      throw error;
+    });
 };
 
 // sign-out of PoV

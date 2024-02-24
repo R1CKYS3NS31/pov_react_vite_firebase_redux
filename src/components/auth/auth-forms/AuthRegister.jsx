@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Divider,
   FormControl,
   FormControlLabel,
@@ -30,12 +31,13 @@ import {
   strengthColor,
   strengthIndicator,
 } from "../../../utils/password-strength";
-import { signUp } from "../../../services/api/user/api-auth";
+// import { signUp } from "../../../services/api/user/api-auth";
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { auth } from "../../../utils/auth_helper";
 import {
   isUserSignedIn,
   signInWithGoogleAUth,
+  signUpWithEmailAndPassword,
 } from "../../../services/firebase/firebase-auth";
 import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
 
@@ -99,9 +101,9 @@ export const AuthRegister = () => {
         console.log(savedUser); // remove log
       }
     } catch (error) {
-      // setGoogleAuthError(error);
+      setGoogleAuthError(error.message);
       setLoading(false);
-      console.log(`sign in with google - ${googleAuthError}`);
+      console.error(`sign in with google - ${error}`);
     }
   };
 
@@ -122,21 +124,42 @@ export const AuthRegister = () => {
 
   const signUpUser = async (user) => {
     try {
-      const signedUpUser = await signUp(user);
-      // console.log(signedUpUser);
+      // const signedUpUser = await signUp(user);
+      setLoading(true);
+      const signedUpUser = await signUpWithEmailAndPassword(
+        user.email,
+        user.password
+      );
+      if (signedUpUser && isUserSignedIn()) {
+        // setLoading(false);
+        console.log(signedUpUser); // remove log
+        const token = await signedUpUser.getIdToken();
+        const { uid, displayName, email, photoUrl } = signedUpUser;
+        const { first, last } = displayName;
+        const userSave = {
+          uid: uid, // potential error
+          name: {
+            first: user.firstName || first,
+            last: user.lastName || last,
+          },
+          email: email,
+          photoUrl: user.photoUrl || photoUrl,
+        };
 
-      if (signedUpUser) {
-        auth.authenticate(signedUpUser.token, () => {
-          dispatch(setAccountUser(signedUpUser));
+        auth.authenticate(token, async () => {
+          dispatch(setAccountUser({ token: token, user: userSave }));
+          const savedUser = await saveUserFirebase(userSave);
+          console.log(savedUser); // remove log
+          setLoading(false);
+          // Check if there's a previous location in the state object
+          if (location.state && location.state.from) {
+            // Navigate back to the previous location
+            navigate(location.state.from);
+          } else {
+            // If there's no previous location, navigate to the user's dashboard
+            navigate("/", { replace: true });
+          }
         });
-        // Check if there's a previous location in the state object
-        if (location.state && location.state.from) {
-          // Navigate back to the previous location
-          navigate(location.state.from);
-        } else {
-          // If there's no previous location, navigate to the user's dashboard
-          navigate("/", { replace: true });
-        }
       }
     } catch (error) {
       // const errorCode = error.code;
@@ -313,7 +336,7 @@ export const AuthRegister = () => {
                   changePassword(e.target.value);
                 }}
                 autoComplete="new-password"
-                endAdornment={
+                endadornment={
                   // ricky has bugs
                   <InputAdornment position="end">
                     <IconButton
@@ -384,9 +407,9 @@ export const AuthRegister = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={error ? true : false}
+            disabled={error || loading ? true : false}
           >
-            Sign Up
+            {loading ? <CircularProgress /> : "Sign Up"}
           </Button>
           {/* </Box> */}
         </form>

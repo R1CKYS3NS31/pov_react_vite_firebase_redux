@@ -40,8 +40,8 @@ export const PoV = ({ pov }) => {
           >
             {pov.subtitle}
           </Typography>
-          {pov.points.split("\n").map((point) => (
-            <Stack direction={"row"}>
+          {pov.points.split("\n").map((point, i) => (
+            <Stack direction={"row"} key={i}>
               <LabelImportant sx={{ mr: 1 }} fontSize="small" />
               <Typography variant="p" sx={{ overflowWrap: "anywhere" }}>
                 {point}
