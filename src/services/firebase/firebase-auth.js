@@ -20,7 +20,7 @@ const auth = getAuth(firebaseApp);
 export const signInWithGoogleAUth = async () => {
   const provider = new GoogleAuthProvider();
   try {
-   return (await signInWithPopup(auth, provider));
+    return await signInWithPopup(auth, provider);
   } catch (error) {
     throw error;
   }
@@ -73,9 +73,10 @@ const updateUserProfile = async (user) => {
       displayName: user.name.first + " " + user.name.last,
       photoURL: "https://example.com/jane-q-user/profile.jpg",
     })
-      .then(() => {
+      .then((value) => {
         // Profile updated!
         // ...
+        return value;
       })
       .catch((error) => {
         throw error;

@@ -12,6 +12,8 @@ import { signOutAccountUser } from "../../services/redux/slices/user/accountUser
 import { signout } from "../../services/api/user/api-auth";
 import { Logo } from "../../components/ui/Logo";
 import { PoVs } from "../pov/PoVs";
+import { signOutFirebaseUser } from "../../services/firebase/firebase-auth";
+import { auth } from "../../utils/auth_helper";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -20,13 +22,15 @@ export const Home = () => {
 
   const handleAuth = () => {
     accountUser
-      ? signout() && dispatch(signOutAccountUser())
+      ? signOutFirebaseUser() &&
+        auth.clearJWT() &&
+        dispatch(signOutAccountUser())
       : navigate("/signin", { replace: "true" });
   };
 
   const handleProfile = () => {
     accountUser
-      ? navigate("/profile",)
+      ? navigate("/profile")
       : navigate("/signin", { replace: "true" });
   };
 
