@@ -17,7 +17,7 @@ export const savePoVFirebase = async (pov = {}) => {
       points: points,
       owner: owner,
     };
-    return await saveDocData(docName, "", povData);
+    return (await saveDocData(docName, "", povData));
   } catch (error) {
     throw error;
   }

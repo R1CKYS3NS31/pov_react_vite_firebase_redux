@@ -12,8 +12,12 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addPoV } from "../../services/redux/slices/pov/povSlice";
+import { addPoV, getPoVById } from "../../services/redux/slices/pov/povSlice";
 import { createPoV } from "../../services/api/pov/api-pov";
+import {
+  getPoVFirebase,
+  savePoVFirebase,
+} from "../../services/firebase/model/pov-firebase";
 
 export const CreatePoV = () => {
   const dispatch = useDispatch();
@@ -46,7 +50,7 @@ export const CreatePoV = () => {
         title: title,
         subtitle: subtitle,
         points: points,
-        owner: accountUser.user._id,
+        owner: accountUser.user.uid,
       };
 
       // poVFormData.append("title", newPov.id);
@@ -57,9 +61,13 @@ export const CreatePoV = () => {
       // console.log(`pov created: ${newPov.title}`);
 
       if (accountUser) {
-        const povCreated = await createPoV(newPov);
+        // const povCreated = await createPoV(newPov);
+        const povCreated = await savePoVFirebase(newPov);
         if (povCreated) {
-          dispatch(addPoV(povCreated));
+          const povId = povCreated.id;
+          const pov = await getPoVFirebase(povId);
+          console.log(pov);
+          dispatch(addPoV(pov.data));
           setTitle("");
           setSubtitle("");
           setPoints("");

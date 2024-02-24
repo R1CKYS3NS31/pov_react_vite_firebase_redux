@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPoVs } from "../../services/api/pov/api-pov";
 import { setPovs } from "../../services/redux/slices/pov/povSlice";
 import { PoV } from "../../components/pov/PoV";
+import { getPoVsFirebase } from "../../services/firebase/model/pov-firebase";
 
 export const PoVs = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,9 @@ export const PoVs = () => {
 
   useEffect(() => {
     const povsFetch = async () => {
-      const povsFetched = await fetchPoVs();
+      // const povsFetched = await fetchPoVs();
+      const povsFetched = await getPoVsFirebase()
+      console.log(povsFetched); // log povs
       if (povsFetched) {
         dispatch(setPovs(povsFetched));
       }
