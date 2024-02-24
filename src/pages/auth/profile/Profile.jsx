@@ -57,9 +57,9 @@ export const Profile = () => {
                 </Grid>
                 <Grid item sx={{ pl: 1 }}>
                   <Typography variant="h4">
-                    {accountUser.user.firstName +
+                    {accountUser.user.name.first +
                       " " +
-                      accountUser.user.lastName}
+                      accountUser.user.name.last}
                   </Typography>
                   <Typography variant="caption">
                     {new Date(accountUser.user.createdAt).toDateString()}

@@ -26,7 +26,10 @@ import {
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { signin } from "../../../services/api/user/api-auth";
 import { auth } from "../../../utils/auth_helper";
-import { isUserSignedIn, signInWithGoogleAUth } from "../../../services/firebase/firebase-auth";
+import {
+  isUserSignedIn,
+  signInWithGoogleAUth,
+} from "../../../services/firebase/firebase-auth";
 import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
 
 export const AuthLogin = () => {
@@ -64,12 +67,12 @@ export const AuthLogin = () => {
         console.log(signedIn.user); // remove log
         const token = await signedIn.user.getIdToken();
         const { uid, displayName, email, photoUrl } = signedIn.user;
-        const { firstN, lastN } = displayName;
+        const { first, last } = displayName;
         const user = {
           uid: uid, // potential error
           name: {
-            first: firstN,
-            last: lastN,
+            first: first,
+            last: last,
           },
           email: email,
           photoUrl: photoUrl,

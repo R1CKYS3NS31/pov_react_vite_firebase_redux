@@ -80,12 +80,12 @@ export const AuthRegister = () => {
         console.log(signedIn.user); // remove log
         const token = await signedIn.user.getIdToken();
         const { uid, displayName, email, photoUrl } = signedIn.user;
-        const { firstN, lastN } = displayName;
+        const { first, last } = displayName;
         const user = {
           uid: uid, // potential error
           name: {
-            first: firstN,
-            last: lastN,
+            first: first,
+            last: last,
           },
           email: email,
           photoUrl: photoUrl,

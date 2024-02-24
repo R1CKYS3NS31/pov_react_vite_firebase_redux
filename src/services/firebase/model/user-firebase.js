@@ -9,14 +9,15 @@ import {
 const docName = "users";
 export const saveUserFirebase = async (user = {}) => {
   try {
-    const { firstName, lastName, email, password, photoUrl } = user;
+    const { uid, first, last, email, password, photoUrl } = user;
     const userData = {
+      uid: uid,
       name: {
-        first: firstName,
-        last: lastName,
+        first: first,
+        last: last,
       },
       email: email,
-      password: password,
+      // password: password,
       photoUrl: photoUrl,
     };
     return await saveDocData(docName, "", userData);
