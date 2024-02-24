@@ -20,7 +20,7 @@ const auth = getAuth(firebaseApp);
 export const signInWithGoogleAUth = async () => {
   const provider = new GoogleAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
+   return (await signInWithPopup(auth, provider));
   } catch (error) {
     throw error;
   }
@@ -41,7 +41,7 @@ export const isUserSignedIn = () => {
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
-const currentUser = () => {
+export const currentUser = () => {
   onAuthStateChanged(auth, (user) => {
     return user;
   });

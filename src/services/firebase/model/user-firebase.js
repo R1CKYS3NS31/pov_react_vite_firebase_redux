@@ -9,7 +9,7 @@ import {
 const docName = "users";
 export const saveUserFirebase = async (user = {}) => {
   try {
-    const { firstName, lastName, email, password } = user;
+    const { firstName, lastName, email, password, photoUrl } = user;
     const userData = {
       name: {
         first: firstName,
@@ -17,6 +17,7 @@ export const saveUserFirebase = async (user = {}) => {
       },
       email: email,
       password: password,
+      photoUrl: photoUrl,
     };
     return await saveDocData(docName, "", userData);
   } catch (error) {

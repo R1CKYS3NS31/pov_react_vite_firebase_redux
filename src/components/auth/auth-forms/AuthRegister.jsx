@@ -34,9 +34,7 @@ import { signUp } from "../../../services/api/user/api-auth";
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { auth } from "../../../utils/auth_helper";
 import {
-  currentUser,
   isUserSignedIn,
-  saveUserAccount,
   signInWithGoogleAUth,
 } from "../../../services/firebase/firebase-auth";
 import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
@@ -76,14 +74,29 @@ export const AuthRegister = () => {
     try {
       setGoogleAuthError("");
       setLoading(true);
-      const signedInUser = await signInWithGoogleAUth();
-      if (signedInUser) {
+      const signedIn = await signInWithGoogleAUth();
+      if (signedIn && isUserSignedIn()) {
         setLoading(false);
-        if (isUserSignedIn()) {
-          const savedUser = await saveUserAccount();
-          // console.log(savedUser);
-          const token = savedUser.getIdToken()
-        }
+        console.log(signedIn.user); // remove log
+        const token = await signedIn.user.getIdToken();
+        const { uid, displayName, email, photoUrl } = signedIn.user;
+        const { firstN, lastN } = displayName;
+        const user = {
+          uid: uid, // potential error
+          name: {
+            first: firstN,
+            last: lastN,
+          },
+          email: email,
+          photoUrl: photoUrl,
+        };
+
+        auth.authenticate(token, () => {
+          dispatch(setAccountUser({ token: token, user: user }));
+        });
+
+        const savedUser = await saveUserFirebase(user);
+        console.log(savedUser); // remove log
       }
     } catch (error) {
       // setGoogleAuthError(error);
@@ -164,6 +177,7 @@ export const AuthRegister = () => {
             fullWidth
             onClick={googleHandler}
             size="large"
+            disabled={loading}
             sx={{
               color: "grey.700",
               backgroundColor: theme.palette.grey[50],
@@ -183,7 +197,7 @@ export const AuthRegister = () => {
                 />
               </Box>
             )}
-            Sign up with Google
+            {" Sign up with Google"}
           </Button>
           <FormHelperText
             sx={{

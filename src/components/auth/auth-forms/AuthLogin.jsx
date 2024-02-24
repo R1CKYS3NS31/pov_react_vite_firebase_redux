@@ -18,10 +18,16 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Google from "../../../assets/icons/social-google.svg";
-import { LockPersonOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  LockPersonOutlined,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { signin } from "../../../services/api/user/api-auth";
 import { auth } from "../../../utils/auth_helper";
+import { isUserSignedIn, signInWithGoogleAUth } from "../../../services/firebase/firebase-auth";
+import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
 
 export const AuthLogin = () => {
   const theme = useTheme();
@@ -32,10 +38,12 @@ export const AuthLogin = () => {
   const dispatch = useDispatch();
 
   const [checked, setChecked] = useState(false);
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [googleAuthError, setGoogleAuthError] = useState("");
 
   useEffect(() => {
     if (email && password) {
@@ -47,17 +55,48 @@ export const AuthLogin = () => {
 
   // sign in with Google
   const googleHandler = async () => {
-    console.error("Login via Google");
+    try {
+      setGoogleAuthError("");
+      setLoading(true);
+      const signedIn = await signInWithGoogleAUth();
+      if (signedIn && isUserSignedIn()) {
+        setLoading(false);
+        console.log(signedIn.user); // remove log
+        const token = await signedIn.user.getIdToken();
+        const { uid, displayName, email, photoUrl } = signedIn.user;
+        const { firstN, lastN } = displayName;
+        const user = {
+          uid: uid, // potential error
+          name: {
+            first: firstN,
+            last: lastN,
+          },
+          email: email,
+          photoUrl: photoUrl,
+        };
+
+        auth.authenticate(token, () => {
+          dispatch(setAccountUser({ token: token, user: user }));
+        });
+
+        const savedUser = await saveUserFirebase(user);
+        console.log(savedUser); // remove log
+      }
+    } catch (error) {
+      // setGoogleAuthError(error);
+      setLoading(false);
+      console.log(`sign in with google - ${googleAuthError}`);
+    }
   };
 
   // password visibility
   const handleClickShowPassword = () => {
-      setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   const handleMouseDownPassword = (event) => {
-      event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const signInUser = async (user) => {
     try {
@@ -126,17 +165,28 @@ export const AuthLogin = () => {
               borderColor: theme.palette.grey[100],
             }}
           >
-            <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-              <img
-                src={Google}
-                alt="google"
-                width={16}
-                height={16}
-                style={{ marginRight: matchDownSM ? 8 : 16 }}
-              />
-            </Box>
-            Sign in with Google
+            {loading ? (
+              "Loading..."
+            ) : (
+              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
+                <img
+                  src={Google}
+                  alt="google"
+                  width={16}
+                  height={16}
+                  style={{ marginRight: matchDownSM ? 8 : 16 }}
+                />
+              </Box>
+            )}
+            {" Sign in with Google"}
           </Button>
+          <FormHelperText
+            sx={{
+              color: "red",
+            }}
+          >
+            {googleAuthError}
+          </FormHelperText>
         </Grid>
         <Grid item xs={12}>
           <Box
@@ -215,21 +265,22 @@ export const AuthLogin = () => {
             label="Password"
             // type="password"
             onChange={(e) => setPassword(e.target.value)}
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
-            endAdornment={ // ricky has bugs
-                <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        size="large"
-                    >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                </InputAdornment>
+            endAdornment={
+              // ricky has bugs
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                  size="large"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
             }
           />
           <FormHelperText
