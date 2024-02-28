@@ -37,7 +37,7 @@ import { auth } from "../../../utils/auth_helper";
 import {
   isUserSignedIn,
   signInWithGoogleAUth,
-  signUpWithEmailAndPassword,
+  signUpUserWithEmailAndPassword,
 } from "../../../services/firebase/firebase-auth";
 import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
 
@@ -126,26 +126,33 @@ export const AuthRegister = () => {
     try {
       // const signedUpUser = await signUp(user);
       setLoading(true);
-      const signedUpUser = await signUpWithEmailAndPassword(
+      const signedUpUser = await signUpUserWithEmailAndPassword(
         user.email,
         user.password
       );
+      console.log(user);
+      // console.log(signedUpUser); // remove log
       if (signedUpUser && isUserSignedIn()) {
-        // setLoading(false);
-        console.log(signedUpUser); // remove log
+        setLoading(false);
+        // console.log(signedUpUser); // remove log
         const token = await signedUpUser.getIdToken();
         const { uid, displayName, email, photoUrl } = signedUpUser;
-        const { first, last } = displayName;
+        const { first, last } = displayName || (await user.name);
+        // [
+        //   await user.name.firstName,
+        //   await user.name.lastName,
+        // ];
         const userSave = {
           uid: uid, // potential error
           name: {
-            first: user.firstName || first,
-            last: user.lastName || last,
+            first: await first,
+            last: await last,
           },
           email: email,
-          photoUrl: user.photoUrl || photoUrl,
+          photoUrl: user.photoUrl || photoUrl || '/assets/images/profile_placeholder.png',
         };
 
+        console.log(userSave);
         auth.authenticate(token, async () => {
           dispatch(setAccountUser({ token: token, user: userSave }));
           const savedUser = await saveUserFirebase(userSave);
@@ -160,35 +167,47 @@ export const AuthRegister = () => {
             navigate("/", { replace: true });
           }
         });
+      } else {
+        setLoading(false);
+        console.error(signedUpUser);
       }
     } catch (error) {
       // const errorCode = error.code;
       // const errorMessage = error.message;
       // alert(errorCode + " - " + errorMessage);
       // alert(error)
-      setError(`* ${error}`);
+      console.error(error);
+      setLoading(false);
+      setError(`* ${error.message}`);
     }
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    try {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
 
-    // user register
-    const firstName = data.get("firstName");
-    const lastName = data.get("lastName");
-    const email = data.get("email");
-    const password = data.get("password");
-    const name =
-      firstName.toLocaleUpperCase() + " " + lastName.toLocaleUpperCase();
+      // user register
+      const firstName = data.get("firstName");
+      const lastName = data.get("lastName");
+      const email = data.get("email");
+      const password = data.get("password");
+      // const name =
+      //   firstName.toLocaleUpperCase() + " " + lastName.toLocaleUpperCase();
 
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-    };
-    signUpUser(user);
-    // console.log(user);
+      const user = {
+        name: {
+          first: firstName,
+          last: lastName,
+        },
+        email: email,
+        password: password,
+      };
+      signUpUser(user);
+      // console.log(user);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (

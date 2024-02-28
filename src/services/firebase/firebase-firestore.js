@@ -37,7 +37,7 @@ export const loadDocsData = async (docName, limitNo = 12) => {
     );
 
     // return (await getDocs(recentQuery)) // or
-    onSnapshot(recentQuery, (snapshot) => { // NB:// costly
+   return onSnapshot(recentQuery, (snapshot) => { // NB:// costly
       snapshot.docChanges().forEach((change) => {
         if (change.type === "removed") {
           // deleted doc - delete local doc

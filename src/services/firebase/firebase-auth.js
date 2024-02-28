@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateEmail,
@@ -28,8 +29,8 @@ export const signInWithGoogleAUth = async () => {
 };
 
 // sign-up
-export const signUpWithEmailAndPassword = async (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+export const signUpUserWithEmailAndPassword = async (email, password) => {
+  return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up
       // ...
@@ -44,8 +45,8 @@ export const signUpWithEmailAndPassword = async (email, password) => {
 };
 
 // sign-in
-export const signInWithEmailAndPassword = async (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
+export const signInUserWithEmailAndPassword = async (email, password) => {
+  return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       // ...
@@ -61,7 +62,7 @@ export const signInWithEmailAndPassword = async (email, password) => {
 // sign-out of PoV
 export const signOutFirebaseUser = async () => {
   try {
-    await signOut(auth);
+    return await signOut(auth);
   } catch (error) {
     throw error;
   }
@@ -74,13 +75,13 @@ export const isUserSignedIn = () => {
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 export const currentUser = () => {
-  onAuthStateChanged(auth, (user) => {
+  return onAuthStateChanged(auth, (user) => {
     return user;
   });
 };
-export const saveUserAccount = async () => {
+const saveUserAccount = async () => {
   try {
-    onAuthStateChanged(auth, async (user) => {
+    return onAuthStateChanged(auth, async (user) => {
       if (user) {
         const { firstN, lastN } = user.displayName.split(" ");
         const signedInUser = {
@@ -99,11 +100,11 @@ export const saveUserAccount = async () => {
   }
 };
 
-const updateUserProfile = async (user) => {
+ const updateUserProfile = async (user) => {
   if (currentUser) {
-    await updateProfile(currentUser(), {
+    return await updateProfile(currentUser(), {
       displayName: user.name.first + " " + user.name.last,
-      photoURL: "https://example.com/jane-q-user/profile.jpg",
+      photoURL: user.photoUrl,
     })
       .then((value) => {
         // Profile updated!
@@ -113,8 +114,14 @@ const updateUserProfile = async (user) => {
       .catch((error) => {
         throw error;
       });
+  } else {
+    throw Error("please sign-in");
+  }
+};
 
-    await sendEmailVerification(currentUser)
+const resetUserEmail = async (user) => {
+  if (currentUser) {
+    return await sendEmailVerification(currentUser)
       .then(async () => {
         // Email verification sent!
         // ...
@@ -122,6 +129,7 @@ const updateUserProfile = async (user) => {
           .then(() => {
             // Email updated!
             // ...
+            return currentUser;
           })
           .catch((error) => {
             // An error occurred
@@ -131,25 +139,40 @@ const updateUserProfile = async (user) => {
       .catch((error) => {
         throw error;
       });
+  } else {
+    return Error("please sign-in");
+  }
+};
 
-    await sendPasswordResetEmail(auth, "user@example.com")
+const resetUserPassword = async (user) => {
+  if (currentUser) {
+    return await sendEmailVerification(currentUser)
       .then(async () => {
-        // Password reset email sent!
-        // ..
-        await updatePassword(currentUser, "xi9ws9qa")
-          .then(() => {
-            // Update successful.
+        // Email verification sent!
+        // ...
+        return await sendPasswordResetEmail(auth, user.email)
+          .then(async () => {
+            // Password reset email sent!
+            // ..
+            return await updatePassword(currentUser, user.password)
+              .then(() => {
+                // Update successful.
+                return currentUser;
+              })
+              .catch((error) => {
+                // An error ocurred
+                // ...
+                throw error;
+              });
           })
           .catch((error) => {
-            // An error ocurred
-            // ...
             throw error;
           });
       })
       .catch((error) => {
         throw error;
       });
-  }
+  } else throw Error("please sign-in");
 };
 
 const deleteUserProfile = async () => {
@@ -163,5 +186,7 @@ const deleteUserProfile = async () => {
         // ...
         throw error;
       });
+  } else {
+    return Error("please sign-in");
   }
 };

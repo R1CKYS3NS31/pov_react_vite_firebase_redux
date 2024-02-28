@@ -103,6 +103,7 @@ export const AuthLogin = () => {
 
   const signInUser = async (user) => {
     try {
+      // const signedInUser = await signin(user);
       const signedInUser = await signin(user);
       // console.log(signedInUser);
 
