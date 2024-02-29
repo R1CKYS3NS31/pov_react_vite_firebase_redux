@@ -135,8 +135,8 @@ export const AuthRegister = () => {
       if (signedUpUser && isUserSignedIn()) {
         setLoading(false);
         // console.log(signedUpUser); // remove log
+        const { uid, displayName, email, photoUrl , accessToken } = signedUpUser;
         const token = await signedUpUser.getIdToken();
-        const { uid, displayName, email, photoUrl } = signedUpUser;
         const { first, last } = displayName || (await user.name);
         // [
         //   await user.name.firstName,
@@ -149,7 +149,10 @@ export const AuthRegister = () => {
             last: await last,
           },
           email: email,
-          photoUrl: user.photoUrl || photoUrl || '/assets/images/profile_placeholder.png',
+          photoUrl:
+            user.photoUrl ||
+            photoUrl ||
+            "/assets/images/profile_placeholder.png",
         };
 
         console.log(userSave);
