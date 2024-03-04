@@ -35,13 +35,14 @@ import {
 import { setAccountUser } from "../../../services/redux/slices/user/accountUserSlice";
 import { auth } from "../../../utils/auth_helper";
 import {
-  currentUser,
   isUserSignedIn,
   signInWithGoogleAUth,
   signUpUserWithEmailAndPassword,
-  updateUserProfile,
 } from "../../../services/firebase/firebase-auth";
-import { saveUserFirebase } from "../../../services/firebase/model/user-firebase";
+import {
+  saveUserFirebase,
+  setUserFirebase,
+} from "../../../services/firebase/model/user-firebase";
 
 export const AuthRegister = () => {
   const theme = useTheme();
@@ -128,65 +129,47 @@ export const AuthRegister = () => {
     try {
       // const signedUpUser = await signUp(user);
       setLoading(true);
+      const { first, last } = user.name;
+
       const signedUpUser = await signUpUserWithEmailAndPassword(
         user.email,
-        user.password
+        user.password,
+        first + " " + last,
+        user.photoURL || "/assets/images/profile_placeholder.png"
       );
       // console.log(user);
-      console.log('signedUpUser: ',signedUpUser); // remove log
+      console.log("signedUpUser: ", signedUpUser); // remove log
       if (signedUpUser && isUserSignedIn()) {
         setLoading(false);
-        // console.log(signedUpUser); // remove log
-        const { first, last } = await user.name;
-        const updateUserProfileDetails = await updateUserProfile(
-          await first,
-          await last,
-          user.photoUrl || "/assets/images/profile_placeholder.png"
-        );
-        console.log(updateUserProfileDetails);
+        const { accessToken, uid, email, photoURL } = signedUpUser;
 
-        if (updateUserProfileDetails) {
-          console.log('userdetails done');
-          const { uid, displayName, email, photoURL} =
-            currentUser();
-          // console.log("currect user: ",currentUser());
-          const {accessToken} = signedUpUser
+        const userSave = {
+          uid: uid,
+          name: {
+            first,
+            last,
+          },
+          email: email,
+          photoUrl: photoURL,
+          isUser: true,
+        };
 
-          const userSave = {
-            uid: uid,
-            displayName: displayName,
-            email: email,
-            photoURL: photoURL,
-          };
-
-          auth.authenticate(accessToken, async () => {
-            dispatch(setAccountUser({ token: accessToken, user: userSave }));
-            const savedUser = await saveUserFirebase(userSave);
-            console.log("savedUser", savedUser); // remove log
-            setLoading(false);
-            // Check if there's a previous location in the state object
-            if (location.state && location.state.from) {
-              // Navigate back to the previous location
-              navigate(location.state.from);
-            } else {
-              // If there's no previous location, navigate to the user's dashboard
-              navigate("/", { replace: true });
-            }
-          });
-        }
-        // const userSave = {
-        //   uid: uid, // potential error
-        //   name: {
-        //     first: await first,
-        //     last: await last,
-        //   },
-        //   email: email,
-        //   photoUrl: user.photoUrl || "/assets/images/profile_placeholder.png",
-        // };
-      } else {
-        setLoading(false);
-        console.error(signedUpUser);
+        auth.authenticate(accessToken, async () => {
+          dispatch(setAccountUser({ token: accessToken, user: userSave }));
+          const savedUser = await setUserFirebase(userSave);
+          console.log("savedUser", savedUser); // remove log
+          setLoading(false);
+          // Check if there's a previous location in the state object
+          if (location.state && location.state.from) {
+            // Navigate back to the previous location
+            navigate(location.state.from);
+          } else {
+            // If there's no previous location, navigate to the user's dashboard
+            navigate("/", { replace: true });
+          }
+        });
       }
+  
     } catch (error) {
       // const errorCode = error.code;
       // const errorMessage = error.message;

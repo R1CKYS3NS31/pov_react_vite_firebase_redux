@@ -3,24 +3,47 @@ import {
   loadDocDataById,
   loadDocsData,
   saveDocData,
+  setDocData,
   updateDocData,
 } from "../firebase-firestore";
 
 const docName = "users";
 export const saveUserFirebase = async (user = {}) => {
   try {
-    const { uid, name, email, photoUrl } = user;
+    const { uid, name, email, photoUrl, isUser } = user;
+
     const userData = {
-      uid: uid,
       name: {
-        first: name.first,
-        last: name.last,
+        first: await name.first,
+        last: await name.last,
       },
       email: email,
       // password: password,
       photoUrl: photoUrl,
+      isUser: isUser || true,
     };
-    return await saveDocData(docName, "", userData);
+    return await saveDocData(docName, '', userData);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setUserFirebase = async (user = {}) => {
+  try {
+    const { uid, name, email, photoUrl, isUser } = user;
+
+    const userData = {
+      name: {
+        first: await name.first,
+        last: await name.last,
+      },
+      email: email,
+      // password: password,
+      photoUrl: photoUrl,
+      isUser: isUser || true,
+    };
+
+    return await setDocData(docName, uid, "", userData);
   } catch (error) {
     throw error;
   }

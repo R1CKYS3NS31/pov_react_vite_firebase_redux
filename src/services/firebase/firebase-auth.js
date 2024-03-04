@@ -30,12 +30,24 @@ export const signInWithGoogleAUth = async () => {
 };
 
 // sign-up
-export const signUpUserWithEmailAndPassword = async (email, password) => {
-  return createUserWithEmailAndPassword(auth, email, password)
+export const signUpUserWithEmailAndPassword = async (
+  email,
+  password,
+  displayName,
+  photoUrl
+) => {
+  return await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up
       // ...
-      return userCredential.user;
+      const user = userCredential.user;
+      updateProfile(user, {
+        displayName: displayName,
+        photoURL: photoUrl,
+      }).catch((error) => {
+        throw error;
+      });
+      return user;
     })
     .catch((error) => {
       const errorCode = error.code;
