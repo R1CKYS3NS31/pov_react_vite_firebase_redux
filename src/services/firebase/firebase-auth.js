@@ -9,14 +9,15 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateCurrentUser,
   updateEmail,
   updatePassword,
   updateProfile,
 } from "firebase/auth";
 import { firebaseApp } from "./firebase-config";
-import { saveUserFirebase } from "./model/user-firebase";
 
 const auth = getAuth(firebaseApp);
+auth.useDeviceLanguage();
 
 // Sign-in PoV in Firebase using popup auth and Google as the identity provider.
 export const signInWithGoogleAUth = async () => {
@@ -79,43 +80,32 @@ export const currentUser = () => {
     return user;
   });
 };
-const saveUserAccount = async () => {
-  try {
-    return onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const { firstN, lastN } = user.displayName.split(" ");
-        const signedInUser = {
-          name: {
-            first: firstN,
-            last: lastN,
-          },
-          email: user.email,
-        };
-        await saveUserFirebase((user = signedInUser));
-        return user;
-      } else return null;
-    });
-  } catch (error) {
-    throw error;
-  }
-};
 
- const updateUserProfile = async (user) => {
+export const updateUserProfile = async (first, last, photoUrl) => {
   if (currentUser) {
-    return await updateProfile(currentUser(), {
-      displayName: user.name.first + " " + user.name.last,
-      photoURL: user.photoUrl,
+    return await updateProfile(auth.currentUser, {
+      displayName: first + " " + last,
+      photoURL: photoUrl,
     })
       .then((value) => {
         // Profile updated!
         // ...
-        return value;
+        return auth.currentUser;
       })
       .catch((error) => {
+        console.log(error);
         throw error;
       });
   } else {
     throw Error("please sign-in");
+  }
+};
+
+const updateUserDetails = async (user = currentUser()) => {
+  try {
+    return await updateCurrentUser(auth, user);
+  } catch (error) {
+    throw error;
   }
 };
 
