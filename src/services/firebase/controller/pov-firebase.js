@@ -57,7 +57,7 @@ export const getPoVFirebase = async (povId) => {
 //   }
 // };
 
-export const updatePoVFirebase = async (uid, povId, pov) => {
+export const updatePoVFirebase = async (povId, pov) => {
   try {
     const { title, subtitle, points, owner } = pov;
     const povData = {

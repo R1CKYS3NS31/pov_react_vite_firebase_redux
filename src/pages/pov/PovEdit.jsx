@@ -13,7 +13,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { editPoV } from "../../services/redux/slices/pov/povSlice";
-import { getPoVFirebase, updatePoVFirebase } from "../../services/firebase/controller/pov-firebase";
+import {
+  getPoVFirebase,
+  updatePoVFirebase,
+} from "../../services/firebase/controller/pov-firebase";
 
 export const PovEdit = () => {
   const dispatch = useDispatch();
@@ -37,7 +40,7 @@ export const PovEdit = () => {
     const povFetch = async () => {
       try {
         // const povFetched = await fetchPov(povId);
-        const povFetched = await getPoVFirebase(povId)
+        const povFetched = await getPoVFirebase(povId);
         if (povFetched) {
           setTitle(povFetched.data.title);
           setSubtitle(povFetched.data.subtitle);
@@ -60,6 +63,7 @@ export const PovEdit = () => {
         title: title,
         subtitle: subtitle,
         points: points,
+        owner: accountUser.user.uid,
       };
 
       // const povUpdated = await updatePoV(
@@ -68,15 +72,12 @@ export const PovEdit = () => {
       //   editPov,
       //   accountUser.token
       // );
-      const povUpdated = await updatePoVFirebase(
-        // accountUser.user.uid, // todo: update owner's pov
-        povId,
-        editPov,
-        // accountUser.token
-      );
+
+      const povUpdated = await updatePoVFirebase(povId, editPov);
 
       if (povUpdated) {
-        dispatch(editPoV(povUpdated));
+        const povFirebase = getPoVFirebase(povId);
+        dispatch(editPoV(povFirebase));
         navigate("/", { replace: true });
         setTitle("");
         setSubtitle("");
