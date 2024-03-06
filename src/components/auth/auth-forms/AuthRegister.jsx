@@ -140,7 +140,6 @@ export const AuthRegister = () => {
       // console.log(user);
       console.log("signedUpUser: ", signedUpUser); // remove log
       if (signedUpUser && isUserSignedIn()) {
-        setLoading(false);
         const { accessToken, uid, email, photoURL } = signedUpUser;
 
         const userSave = {
@@ -169,7 +168,6 @@ export const AuthRegister = () => {
           }
         });
       }
-  
     } catch (error) {
       // const errorCode = error.code;
       // const errorMessage = error.message;

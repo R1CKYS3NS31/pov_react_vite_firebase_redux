@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutAccountUser } from "../../services/redux/slices/user/accountUserSlice";
-import { signout } from "../../services/api/user/api-auth";
 import { Logo } from "../../components/ui/Logo";
 import { PoVs } from "../pov/PoVs";
 import { signOutFirebaseUser } from "../../services/firebase/firebase-auth";
@@ -20,7 +19,7 @@ export const Home = () => {
   const accountUser = useSelector((state) => state.accountUser);
   const dispatch = useDispatch();
 
-  const handleAuth = () => {
+  const handleAuth = async () => {
     accountUser
       ? signOutFirebaseUser() &&
         auth.clearJWT() &&
@@ -68,7 +67,7 @@ export const Home = () => {
               sx={{ m: "8px" }}
             />
             <Typography variant="h5">
-              {accountUser ? accountUser.user.firstName : "Guest"}
+              {accountUser ? accountUser.user.first : "Guest"}
             </Typography>
           </Fab>
           <Fab
