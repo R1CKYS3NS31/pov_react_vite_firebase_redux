@@ -39,13 +39,26 @@ export const saveDocData = async (docName, pathSegment = "", docData) => {
   }
 };
 
-export const loadDocsData = async (docName, limitNo = 12) => {
+// const applyQueryFilters = (q, { owner, sort }) => {
+//   if (owner) {
+//     q = query(q, where("owner", "==", owner));
+//   }
+//   if (sort === "createdAt" || !sort) {
+//     q = query(q, orderBy("createdAt", "desc"));
+//   } else if (sort === "updatedAt") {
+//     q = query(q, orderBy("updatedAt", "desc"));
+//   }
+//   return q;
+// };
+
+export const loadDocsData = async (docName, limitNo = 12, filters = {}) => {
   try {
     const recentQuery = query(
-      collection(firestore, docName),{},
+      collection(firestore, docName),
       orderBy("timestamp", "desc"),
-      limit(limitNo),
+      limit(limitNo)
     );
+    // const filtersApplied = applyQueryFilters(recentQuery,filters)
 
     return await getDocs(recentQuery)
       .then((snapshot) => {
@@ -60,11 +73,11 @@ export const loadDocsData = async (docName, limitNo = 12) => {
             };
           }),
         };
-      }) // or
+      })
       .catch((error) => {
         throw error;
-      });
-    // onSnapshot(recentQuery, (snapshot) => {
+      }); // or
+    // onSnapshot(recentQuery, (snapshot) => { // realtime
     //   // NB:// costly
     //   // snapshot.docChanges().forEach((change) => {
     //   //   if (change.type === "removed") {
@@ -94,6 +107,41 @@ export const loadDocDataById = async (docName, path, pathSegment = "") => {
     const docRef = doc(collection(firestore, docName), path, pathSegment);
     const docSnapshot = await getDoc(docRef);
     return docSnapshot;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loadDocsDataWhere = async (
+  docName,
+  limitNo = 12,
+  filter = { field: "", value: "" }
+) => {
+  try {
+    const recentQuery = query(
+      collection(firestore, docName),
+      orderBy("timestamp", "desc"),
+      limit(limitNo),
+      filter && where(filter.field, "==", filter.value)
+    );
+
+    return await getDocs(recentQuery)
+      .then((snapshot) => {
+        return {
+          size: snapshot.size,
+          empty: snapshot.empty,
+          docs: snapshot.docs.flatMap((doc) => {
+            return {
+              id: doc.id,
+              exists: doc.exists(),
+              ...doc.data(),
+            };
+          }),
+        };
+      })
+      .catch((error) => {
+        throw error;
+      }); // or
   } catch (error) {
     throw error;
   }

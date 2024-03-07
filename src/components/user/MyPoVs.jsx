@@ -1,9 +1,9 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPovsByOwner } from "../../services/api/pov/api-pov";
 import { setPovs } from "../../services/redux/slices/pov/povSlice";
 import { MyPoV } from "./MyPoV";
+import { getPoVsByOwnerFirebase } from "../../services/firebase/controller/pov-firebase";
 
 export const MyPoVs = () => {
   const dispatch = useDispatch();
@@ -14,8 +14,8 @@ export const MyPoVs = () => {
   useEffect(() => {
     const povsFetch = async () => {
       try {
-        const povsFetched = await fetchPovsByOwner('', accountUser.token);
-        // const povsFetched = await fetchPoVs();
+        // const povsFetched = await fetchPovsByOwner('', accountUser.token);
+        const povsFetched = await getPoVsByOwnerFirebase(accountUser.user.uid);
         if (povsFetched) {
           dispatch(setPovs(povsFetched));
         }

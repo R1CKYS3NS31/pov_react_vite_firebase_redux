@@ -4,6 +4,7 @@ import {
   loadDocDataById,
   loadDocsData,
   setDocData,
+  loadDocsDataWhere,
 } from "../config/firebase-firestore";
 
 const docName = "povs";
@@ -31,9 +32,12 @@ export const getPoVsFirebase = async () => {
   }
 };
 
-export const getPoVsByOwnerFirebase = async () => {
+export const getPoVsByOwnerFirebase = async (ownerId) => {
   try {
-    return await loadDocsData(docName);
+    return await loadDocsDataWhere(docName, 12, {
+      field: "owner",
+      value: ownerId,
+    });
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,14 @@
 import { DeleteForever, Edit, LabelImportant } from "@mui/icons-material";
-import { Card, Fab, Grid, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Card,
+  Fab,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { deletePoV } from "../../services/api/pov/api-pov";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { removePov } from "../../services/redux/slices/pov/povSlice";
@@ -36,6 +43,11 @@ export const MyPoV = ({ pov }) => {
         mb: 2,
       }}
     >
+      {error && (
+        <Alert>
+          <AlertTitle title="Error" content={error} />
+        </Alert>
+      )}
       <Grid
         item
         flexGrow={12}
@@ -83,9 +95,7 @@ export const MyPoV = ({ pov }) => {
           <Grid item>
             <Fab
               size="small"
-              onClick={() =>
-                navigate(`/pov/edit/${pov.id}`, { replace: true })
-              }
+              onClick={() => navigate(`/pov/edit/${pov.id}`, { replace: true })}
             >
               <Edit fontSize="small" />
             </Fab>
