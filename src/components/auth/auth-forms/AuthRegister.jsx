@@ -40,6 +40,7 @@ import {
   signUpUserWithEmailAndPassword,
 } from "../../../services/firebase/config/firebase-auth";
 import {
+  getUserFirebase,
   saveUserFirebase,
   setUserFirebase,
 } from "../../../services/firebase/controller/user-firebase";
@@ -154,8 +155,9 @@ export const AuthRegister = () => {
 
         auth.authenticate(accessToken, async () => {
           const savedUser = await setUserFirebase(userSave);
-          dispatch(setAccountUser({ token: accessToken, user: userSave }));
-          console.log("savedUser", savedUser); // remove log
+          const userFirebase = await getUserFirebase(uid)
+          dispatch(setAccountUser({ token: accessToken, user: userFirebase }));
+          console.log("savedUser", userFirebase); // remove log
           setLoading(false);
           // Check if there's a previous location in the state object
           if (location.state && location.state.from) {

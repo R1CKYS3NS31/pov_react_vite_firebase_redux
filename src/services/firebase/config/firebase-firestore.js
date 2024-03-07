@@ -130,11 +130,12 @@ export const loadDocsDataWhere = async (
         return {
           size: snapshot.size,
           empty: snapshot.empty,
-          docs: snapshot.docs.flatMap((doc) => {
+          docs: snapshot.docs.flatMap((docSnapshot) => {
             return {
-              id: doc.id,
-              exists: doc.exists(),
-              ...doc.data(),
+              id: docSnapshot.id,
+              exists: docSnapshot.exists(),
+              ...docSnapshot.data(),
+              metadata: docSnapshot.metadata,
             };
           }),
         };

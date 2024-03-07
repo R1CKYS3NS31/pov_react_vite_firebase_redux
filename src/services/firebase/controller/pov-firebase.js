@@ -51,6 +51,7 @@ export const getPoVFirebase = async (povId) => {
           id: povSnapshot.id,
           exists: povSnapshot.exists(),
           ...povSnapshot.data(),
+          metadata:povSnapshot.metadata
         };
       })
       .catch((error) => {

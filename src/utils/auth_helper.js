@@ -18,9 +18,9 @@ export const auth = {
         if (typeof window !== 'undefined') sessionStorage.removeItem('jwt')
         await cb()
         // optional
-        signOutAccountUser().then((data) => {
-            document.cookie = 't=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-        })
+        // signOutAccountUser().then((data) => {
+        //     document.cookie = 't=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+        // })
     },
     updateUser: async (user, cb) => {
         if (typeof window !== 'undefined') {

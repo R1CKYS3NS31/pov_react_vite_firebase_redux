@@ -59,8 +59,9 @@ export const CreatePoV = () => {
         if (povCreated) {
           const povId = povCreated.id;
           const pov = await getPoVFirebase(povId);
-                  if (pov.exists) {
-            dispatch(addPoV(pov));
+          console.log("new PoV", pov);
+          if (pov.exists) {
+            dispatch(addPoV(await pov));
             setTitle("");
             setSubtitle("");
             setPoints("");

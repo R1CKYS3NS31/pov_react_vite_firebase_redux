@@ -35,7 +35,7 @@ export const MyPoVs = () => {
       direction={"column"}
     >
       {povs ? (
-        povs.map((pov) => (
+        povs.docs.map((pov) => (
           <Grid item key={pov.id}>
             <MyPoV pov={pov} />
           </Grid>

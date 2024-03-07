@@ -64,6 +64,7 @@ export const getUserFirebase = async (userId) => {
       ...userSnapShot.data(),
       exists: userSnapShot.exists(),
       uid: userId,
+      metadata: userSnapShot.metadata
     };
   } catch (error) {
     throw error;

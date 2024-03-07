@@ -22,8 +22,9 @@ export const Home = () => {
   const handleAuth = async () => {
     accountUser
       ? signOutFirebaseUser() &&
-        auth.clearJWT() &&
-        dispatch(signOutAccountUser())
+        auth.clearJWT(() => {
+          dispatch(signOutAccountUser());
+        })
       : navigate("/signin", { replace: "true" });
   };
 
