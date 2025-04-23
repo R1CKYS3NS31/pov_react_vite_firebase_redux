@@ -19,19 +19,19 @@ import { initializeApp } from "firebase/app";
 
 const config = {
 
-  apiKey: "AIzaSyCNf2a_BRCTMORSelymuU9D7kR7BIAvEok",
+  apiKey: "AIzaSyCPupo736A6u2G7PguHJnZr_IvZU4P7Odk",
 
-  authDomain: "sensei-pov.firebaseapp.com",
+  authDomain: "pov-firebase.firebaseapp.com",
 
-  projectId: "sensei-pov",
+  projectId: "pov-firebase",
 
-  storageBucket: "sensei-pov.appspot.com",
+  storageBucket: "pov-firebase.firebasestorage.app",
 
-  messagingSenderId: "907052729976",
+  messagingSenderId: "105213180884",
 
-  appId: "1:907052729976:web:5443cdf09182e2a03d0f8d",
+  appId: "1:105213180884:web:bccb1f72bd2b05e4997441",
 
-  measurementId: "G-3V395TTKBH"
+  measurementId: "G-0639D77MJV"
 
 };
 
