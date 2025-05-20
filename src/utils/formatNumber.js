@@ -2,22 +2,27 @@
 
 // ----------------------------------------------------------------------
 
-// export function fNumber(number) {
-//   return numeral(number).format();
-// }
+export function formatNumber(number) {
+  const formatter = new Intl.NumberFormat("en-ke", {
+    localeMatcher:'best fit',
+    style: "decimal",
+    notation: "compact",
+    compactDisplay:'short',
+  });
+  return formatter.format(number);
+}
 
 // export function fCurrency(number) {
 //   const format = number ? numeral(number).format('$0,0.00') : '';
 
 //   return result(format, '.00');
 // }
-   
-   
-export  const formatCurrency = (amount) => {
+
+export const formatCurrency = (amount) => {
   // Format the price as Kenyan currency
-  const formatter = new Intl.NumberFormat('en-Ke', {
-      style: 'currency',
-      currency: 'KES',
+  const formatter = new Intl.NumberFormat("en-Ke", {
+    style: "currency",
+    currency: "KES",
   });
   return formatter.format(amount);
 };

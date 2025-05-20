@@ -1,10 +1,10 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 // project imports
-import { componentStyleOverrides } from './compStyleOverride';
-import { themePalette } from './palette';
-import { themeTypography } from './typography';
-import { color } from './color';
+import { componentStyleOverrides } from "./compStyleOverride";
+import { themePalette } from "./palette";
+import { themeTypography } from "./typography";
+import { color } from "./color";
 
 /**
  * Represent theme style and structure as per Material-UI
@@ -14,32 +14,36 @@ import { color } from './color';
 export const theme = (customization) => {
   const themeOption = {
     colors: color,
-    heading: color.grey900,
-    paper: color.paper,
-    backgroundDefault: color.paper,
-    background: color.primaryLight,
-    darkTextPrimary: color.grey700,
-    darkTextSecondary: color.grey500,
-    textDark: color.grey900,
-    menuSelected: color.secondaryDark,
-    menuSelectedBack: color.secondaryLight,
-    divider: color.grey200,
-    customization
+    heading: color.grey._900,
+    paper: color.background.paper,
+    backgroundDefault: color.background.default,
+    background: color.primary.light,
+    primaryText: color.text.primary,
+    secondaryText: color.text.secondary,
+    hintText: color.text.hint,
+    disabledText: color.text.disabled,
+    menuSelected: color.secondary.dark,
+    menuSelectedBack: color.secondary.light,
+    divider: color.grey._200,
+    customization,
   };
 
   const themeOptions = {
-    direction: 'ltr',
+    direction: "ltr",
     palette: themePalette(themeOption),
     mixins: {
       toolbar: {
-        minHeight: '48px',
-        padding: '16px',
-        '@media (min-width: 600px)': {
-          minHeight: '48px'
-        }
-      }
+        minHeight: "48px",
+        padding: "16px",
+        "@media (min-width: 600px)": {
+          minHeight: "48px",
+        },
+      },
     },
-    typography: themeTypography(themeOption)
+    typography: themeTypography(themeOption),
+    shape: {
+      borderRadius: 4,
+    },
   };
 
   const themes = createTheme(themeOptions);

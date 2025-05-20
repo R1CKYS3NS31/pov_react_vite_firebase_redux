@@ -39,16 +39,16 @@ export const themeTypography = (theme) => {
     subtitle1: {
       fontSize: '0.875rem',
       fontWeight: 500,
-      color: theme.textDark
+      color: theme.disabledText
     },
     subtitle2: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      color: theme.darkTextSecondary
+      color: theme.secondaryText
     },
     caption: {
       fontSize: '0.75rem',
-      color: theme.darkTextSecondary,
+      color: theme.secondaryText,
       fontWeight: 400
     },
     body1: {
@@ -60,7 +60,7 @@ export const themeTypography = (theme) => {
       letterSpacing: '0em',
       fontWeight: 400,
       lineHeight: '1.5em',
-      color: theme.darkTextPrimary
+      color: theme.primaryText
     },
     button: {
       textTransform: 'capitalize'
@@ -71,7 +71,7 @@ export const themeTypography = (theme) => {
       '& > label': {
         top: 23,
         left: 0,
-        color: theme.grey500,
+        color: theme.backgroundDefault,
         '&[data-shrink="false"]': {
           top: 5
         }
@@ -107,7 +107,7 @@ export const themeTypography = (theme) => {
     subMenuCaption: {
       fontSize: '0.6875rem',
       fontWeight: 500,
-      color: theme.darkTextSecondary,
+      color: theme.secondaryText,
       textTransform: 'capitalize'
     },
     commonAvatar: {
