@@ -19,37 +19,37 @@ export const Routes = () => {
       children: [
         { element: <Navigate to="/home" />, index: true },
         { path: "home", element: <Home /> },
-        {
-          path: "chat",
-          element: (
-            <PrivateRoute component={Chat} rest={{ location: "/chat" }} />
-          ),
-        },
-        { path: "profile/:userId", element: <Profile /> },
-        {
-          path: "account",
-          children: [
-            { element: <Navigate to="account/account" />, index: "true" },
-            {
-              path: "account",
-              element: (
-                <PrivateRoute
-                  component={Account}
-                  rest={{ location: "/account" }}
-                />
-              ),
-            },
-            {
-              path: "setting",
-              element: (
-                <PrivateRoute
-                  component={AccountSetting}
-                  rest={{ location: "/account/setting" }}
-                />
-              ),
-            },
-          ],
-        },
+        // {
+        //   path: "chat",
+        //   element: (
+        //     <PrivateRoute component={Chat} rest={{ location: "/chat" }} />
+        //   ),
+        // },
+        // { path: "profile/:userId", element: <Profile /> },
+        // {
+        //   path: "account",
+        //   children: [
+        //     { element: <Navigate to="account/account" />, index: "true" },
+        //     {
+        //       path: "account",
+        //       element: (
+        //         <PrivateRoute
+        //           component={Account}
+        //           rest={{ location: "/account" }}
+        //         />
+        //       ),
+        //     },
+        //     {
+        //       path: "setting",
+        //       element: (
+        //         <PrivateRoute
+        //           component={AccountSetting}
+        //           rest={{ location: "/account/setting" }}
+        //         />
+        //       ),
+        //     },
+        //   ],
+        // },
         { path: "test", element: <Test /> },
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },

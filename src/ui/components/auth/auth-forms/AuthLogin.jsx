@@ -25,6 +25,8 @@ import {
 import { setUserAccount } from "../../../../services/redux/slices/user/userAccountSlice";
 import { auth } from "../../../../utils/auth_helper";
 import { signin } from "../../../../services/api/user/api-auth";
+import { isUserSignedIn, signInUserWithEmailAndPassword } from "../../../../services/firebase/config/firebase-auth";
+import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
 export const AuthLogin = () => {
   const theme = useTheme();
@@ -55,7 +57,6 @@ export const AuthLogin = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
@@ -70,18 +71,15 @@ export const AuthLogin = () => {
 
   const signInUser = async (user) => {
     try {
-      const signedInUser = await signin(user);
+      const signedInUser = await signInUserWithEmailAndPassword(await user.email,await user.password);
       // console.log('signed user',signedInUser); // remove log
 
-      if (signedInUser) {
-        auth.authenticate(signedInUser.token, () => {
-          // if (checked) {
-          dispatch(setUserAccount(signedInUser));
-          // }
-
-          setLoading(false);
-
-          // Check if there's a previous location in the state object
+      if (signedInUser && isUserSignedIn()) {
+        const {uid, accessToken } = signedInUser
+        const userFirebase = await getUserFirebase(uid)
+        if (userFirebase.exists && accessToken) {
+          setLoading(false)
+           // Check if there's a previous location in the state object
           if (location.state && location.state.from) {
             // Navigate back to the previous location
             navigate(location.state.from);
@@ -89,7 +87,7 @@ export const AuthLogin = () => {
             // If there's no previous location, navigate to the user's dashboard
             navigate("/", { replace: true });
           }
-        });
+        }
       }
     } catch (error) {
       // const errorCode = error.code;
