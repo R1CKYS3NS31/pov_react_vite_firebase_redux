@@ -191,8 +191,8 @@ export const Chat = () => {
       if (token) {
         newChat = {
           name: formJson.name.trim(),
-          // createdBy: userAccount.user.id, // not necccessary
-          members: [...selectedMembers, userAccount.user.id],
+          // createdBy: userAccount.user.uid, // not necccessary
+          members: [...selectedMembers, userAccount.user.uid],
           description: formJson.description.trim(),
           photoUrl: file,
         };
@@ -255,7 +255,7 @@ export const Chat = () => {
             sentAt: new Date().toISOString(),
             reciever: selectedChat.members.filter(
               // todo: private receivers in a chat
-              (member) => member !== userAccount.user.id
+              (member) => member !== userAccount.user.uid
             ),
 
             chat: selectedChat,
@@ -606,21 +606,21 @@ export const Chat = () => {
                           borderRadius: "8px",
                           maxWidth: "75%",
                           bgcolor:
-                            message.sender.id === userAccount.user.id
+                            message.sender.uid === userAccount.user.uid
                               ? "primary.light"
                               : "secondary.dark", // if sender === auth user
                           color:
-                            message.sender.id === userAccount.user.id
+                            message.sender.uid === userAccount.user.uid
                               ? "primary.contrastText"
                               : "secondary.contrastText",
                           ml:
-                            message.sender.id === userAccount.user.id
+                            message.sender.uid === userAccount.user.uid
                               ? "auto"
                               : "0",
                         }}
                       >
                         <Stack direction={"column"} spacing={1}>
-                          {message.sender.id === userAccount.user.id ? (
+                          {message.sender.uid === userAccount.user.uid ? (
                             <Typography variant="overline" noWrap>
                               You
                             </Typography>

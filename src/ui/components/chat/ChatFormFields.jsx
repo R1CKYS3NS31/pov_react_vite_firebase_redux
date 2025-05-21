@@ -109,7 +109,7 @@ export const ChatFormFields = ({
             user && user.name.first + " " + user.name.last
           }
           defaultValue={users.filter(
-            (user) => user.id === userAccount.user.id
+            (user) => user.uid=== userAccount.user.uid
           )}
           value={selectedMembers}
           onChange={(event, newValue) => {

@@ -56,9 +56,9 @@ export const PoV = ({ pov }) => {
 
   useEffect(() => {
     const likeFound = pov.likes.find(
-      (like) => userAccount && userAccount.user.id === like
+      (like) => userAccount && userAccount.user.uid=== like
     );
-    userAccount && userAccount.user.id === pov.author.id
+    userAccount && userAccount.user.uid=== pov.author.id
       ? setSpeedActions([
           {
             icon: <DeleteSweep />,
@@ -143,7 +143,7 @@ export const PoV = ({ pov }) => {
   const handleLike = async () => {
     const token = await auth.isAuthenticated();
     if (token) {
-      const likeFound = pov.likes.find((like) => like === userAccount.user.id);
+      const likeFound = pov.likes.find((like) => like === userAccount.user.uid);
       // console.log("like found ", likeFound);
       if (likeFound) {
         // console.log("clicked to unlike");
