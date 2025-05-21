@@ -13,16 +13,15 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPoVs, searchPoVs } from "../../../services/api/pov/api-pov";
-import { setPovs } from "../../../services/redux/slices/pov/povSlice";
 import { MainCard } from "../../components/ui/cards/MainCard";
 import { PoV } from "../../components/pov/PoV";
 import { Search } from "@mui/icons-material";
 
 export const Home = () => {
-  const dispatch = useDispatch();
-  const povs = useSelector((state) => state.povs);
+
+  const [povs, setPovs] = useState({ size: 0,
+    empty: true,
+    docs: [],})
 
   // const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,32 +34,32 @@ export const Home = () => {
     setOpenErrorSnackBar(false);
   };
 
-  useEffect(() => {
-    // setLoading(true);
-    fetchPoVs()
-      .then((poVsFetched) => {
-        dispatch(setPovs(poVsFetched));
-      })
-      .catch((error) => {
-        setError(error);
-        setOpenErrorSnackBar(true);
-      });
-    // .finally(() => setLoading(false));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // setLoading(true);
+  //   fetchPoVs()
+  //     .then((poVsFetched) => {
+  //       dispatch(setPovs(poVsFetched));
+  //     })
+  //     .catch((error) => {
+  //       setError(error);
+  //       setOpenErrorSnackBar(true);
+  //     });
+  //   // .finally(() => setLoading(false));
+  // }, [dispatch]);
 
   const handleSearch = async (event, povSearch) => {
     event.preventDefault();
 
-    await searchPoVs(povSearch ? await povSearch.title : "")
-      .then((povFetched) => {
-        console.log(povFetched);
+    // await searchPoVs(povSearch ? await povSearch.title : "")
+    //   .then((povFetched) => {
+    //     console.log(povFetched);
 
-        dispatch(setPovs(povFetched));
-      })
-      .catch((error) => {
-        setError(error);
-        setOpenErrorSnackBar(true);
-      });
+    //     dispatch(setPovs(povFetched));
+    //   })
+    //   .catch((error) => {
+    //     setError(error);
+    //     setOpenErrorSnackBar(true);
+    //   });
   };
 
   const poVFilterOptoins = createFilterOptions({
@@ -79,7 +78,7 @@ export const Home = () => {
               freeSolo
               id="search"
               autoHighlight
-              options={povs}
+              options={povs.docs}
               getOptionLabel={(pov) => pov.title}
               filterOptions={poVFilterOptoins}
               onChange={handleSearch}
@@ -130,8 +129,8 @@ export const Home = () => {
           </Grid2>
         </Grid2>
         <Grid2 item container spacing={0.5}>
-          {povs ? (
-            povs.map((pov) => (
+          {!povs.empty ? (
+            povs.docs.map((pov) => (
               <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
                 <PoV pov={pov} />
               </Grid2>

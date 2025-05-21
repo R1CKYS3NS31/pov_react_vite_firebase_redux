@@ -25,14 +25,10 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import {
   strengthColor,
   strengthIndicator,
 } from "../../../../utils/password-strength";
-import { setUserAccount } from "../../../../services/redux/slices/user/userAccountSlice";
-import { auth } from "../../../../utils/auth_helper";
-import { signUp } from "../../../../services/api/user/api-auth";
 import { signUpUserWithEmailAndPassword } from "../../../../services/firebase/config/firebase-auth";
 
 export const AuthRegister = () => {
@@ -41,7 +37,7 @@ export const AuthRegister = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+
 
   // agreement
   const [checked, setChecked] = useState(false);

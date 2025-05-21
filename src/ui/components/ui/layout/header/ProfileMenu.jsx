@@ -23,12 +23,12 @@ import {
   LogoutOutlined,
   SettingsOutlined,
 } from "@mui/icons-material";
-import { auth } from "../../../../../utils/auth_helper";
-import { useDispatch, useSelector } from "react-redux";
-import { signOutUserAccount } from "../../../../../services/redux/slices/user/userAccountSlice";
 import { MainCard } from "../../cards/MainCard";
 import Transitions from "../../@extended/Transitions";
-import { currentUser } from "../../../../../services/firebase/config/firebase-auth";
+import {
+  currentUser,
+  signOutFirebaseUser,
+} from "../../../../../services/firebase/config/firebase-auth";
 import { getUserFirebase } from "../../../../../services/firebase/controller/user-firebase";
 
 // const avatar1 = "/assets/users/user-round.svg";
@@ -62,8 +62,6 @@ function a11yProps(index) {
 
 export const ProfileMenu = () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  // const userAccount = useSelector((state) => state.userAccount);
 
   const [userAccount, setUserAccount] = useState({
     exists: false,
@@ -86,9 +84,8 @@ export const ProfileMenu = () => {
     }
   }, []);
 
-  
   const handleLogout = async () => {
-    userAccount && auth.clearJWT(() => dispatch(signOutUserAccount()));
+    await signOutFirebaseUser();
   };
 
   const anchorRef = useRef(null);
@@ -113,7 +110,7 @@ export const ProfileMenu = () => {
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase
-      oncl
+        oncl
         sx={{
           p: 0.25,
           bgcolor: open ? "grey.100" : "transparent",
@@ -191,7 +188,9 @@ export const ProfileMenu = () => {
                                   ? userAccount.user.name.first.toUpperCase()
                                   : "Guest"
                               }
-                              src={userAccount && userAccount.user.displayPicture}
+                              src={
+                                userAccount && userAccount.user.displayPicture
+                              }
                               sx={{ width: 32, height: 32 }}
                             />
                             <Stack>

@@ -16,15 +16,11 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import {
   LockPersonOutlined,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { setUserAccount } from "../../../../services/redux/slices/user/userAccountSlice";
-import { auth } from "../../../../utils/auth_helper";
-import { signin } from "../../../../services/api/user/api-auth";
 import { isUserSignedIn, signInUserWithEmailAndPassword } from "../../../../services/firebase/config/firebase-auth";
 import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
@@ -34,7 +30,6 @@ export const AuthLogin = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
 
   const [checked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

@@ -1,31 +1,48 @@
 import { MainCard } from "../../../components/ui/cards/MainCard";
-import { useDispatch, useSelector } from "react-redux";
 import { Alert, AlertTitle, Grid2, Snackbar } from "@mui/material";
 import { SubCard } from "../../../components/ui/cards/SubCard";
 import { UserForm } from "../../../components/auth/account/UserForm";
 import { PasswordForm } from "../../../components/auth/account/PasswordForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../../../utils/auth_helper";
-import {
-  fetchUserAccount,
-  updateUserAccount,
-} from "../../../../services/api/user/api-account";
-import { editUserAccount } from "../../../../services/redux/slices/user/userAccountSlice";
+import { currentUser } from "../../../../services/firebase/config/firebase-auth";
+import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
 export const AccountSetting = () => {
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const userAccount = useSelector((state) => state.userAccount.user);
-  useEffect(() => {
-    !userAccount && navigate("/signin");
-  }, [userAccount, navigate]);
-
+  
+ 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
   const [errorPassword, setErrorPassword] = useState("");
+
+  const [userAccount, setUserAccount] = useState({
+    exists: false,
+    uid: "",
+    name: { first: "", last: "" },
+  });
+
+  useEffect(() => {
+    const user = currentUser();
+    if (user) {
+      getUserFirebase(user.uid)
+        .then((userFirebase) => {
+          if (userFirebase.exists) {
+            setUserAccount(userFirebase);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, []);
+  
+ useEffect(() => {
+    !userAccount.exists && navigate("/signin");
+  }, [userAccount, navigate]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -86,69 +103,69 @@ export const AccountSetting = () => {
   };
 
   const handleSubmitPassword = async (event) => {
-    event.preventDefault();
-    setLoading(true);
+    // event.preventDefault();
+    // setLoading(true);
 
-    const data = new FormData(event.currentTarget);
-    const dataObject = Object.fromEntries(data.entries());
+    // const data = new FormData(event.currentTarget);
+    // const dataObject = Object.fromEntries(data.entries());
 
-    try {
-      const token = await auth.isAuthenticated();
-      // console.log("user: ", token);
-      if (token) {
-        const fetchedUserAccount = await fetchUserAccount(token);
-        const userAccountPassword = await fetchedUserAccount.password; // ricky has bugs - no returning pass - improvise new GET pass @ server
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   // console.log("user: ", token);
+    //   if (token) {
+    //     const fetchedUserAccount = await fetchUserAccount(token);
+    //     const userAccountPassword = await fetchedUserAccount.password; // ricky has bugs - no returning pass - improvise new GET pass @ server
 
-        if (userAccountPassword === dataObject.currentPassword) {
-          if (dataObject.newPassword === dataObject.confirmPassword) {
-            // console.log(dataObject.newPassword);
+    //     if (userAccountPassword === dataObject.currentPassword) {
+    //       if (dataObject.newPassword === dataObject.confirmPassword) {
+    //         // console.log(dataObject.newPassword);
 
-            await updateUserHandle({
-              password: dataObject.newPassword,
-            });
-          } else {
-            setErrorPassword("*please match the correct password");
-          }
-        } else {
-          setErrorPassword("*incorrect current password");
-        }
-      } else {
-        setErrorPassword("*please sign-in");
-      }
-    } catch (error) {
-      setErrorPassword(`*${error}`);
-    } finally {
-      setLoading(false);
-    }
+    //         await updateUserHandle({
+    //           password: dataObject.newPassword,
+    //         });
+    //       } else {
+    //         setErrorPassword("*please match the correct password");
+    //       }
+    //     } else {
+    //       setErrorPassword("*incorrect current password");
+    //     }
+    //   } else {
+    //     setErrorPassword("*please sign-in");
+    //   }
+    // } catch (error) {
+    //   setErrorPassword(`*${error}`);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const updateUserHandle = async (user) => {
-    try {
-      const token = await auth.isAuthenticated();
-      // console.log("user: ", token);
-      if (token) {
-        const updatedUserAccount = await updateUserAccount(user, token);
-        // console.log("user account: ", updatedUserAccount); // remove log
-        // if (updatedUserAccount) { // debug later
-        //   auth.updateUser(updatedUserAccount, () => {
-        //     dispatch(updateUserAccount(updatedUserAccount));
-        //     setLoading(false);
-        //   });
-        // }
-        if (updatedUserAccount) {
-          dispatch(editUserAccount({ token: token, user: updatedUserAccount }));
-          setLoading(false);
-        }
-      } else {
-        setError("*please sign-in");
-      }
-      setLoading(false);
-    } catch (error) {
-      // alert(error)
-      setLoading(false);
-      setError(`* ${error}`);
-      setOpen(true);
-    }
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   // console.log("user: ", token);
+    //   if (token) {
+    //     const updatedUserAccount = await updateUserAccount(user, token);
+    //     // console.log("user account: ", updatedUserAccount); // remove log
+    //     // if (updatedUserAccount) { // debug later
+    //     //   auth.updateUser(updatedUserAccount, () => {
+    //     //     dispatch(updateUserAccount(updatedUserAccount));
+    //     //     setLoading(false);
+    //     //   });
+    //     // }
+    //     if (updatedUserAccount) {
+    //       dispatch(editUserAccount({ token: token, user: updatedUserAccount }));
+    //       setLoading(false);
+    //     }
+    //   } else {
+    //     setError("*please sign-in");
+    //   }
+    //   setLoading(false);
+    // } catch (error) {
+    //   // alert(error)
+    //   setLoading(false);
+    //   setError(`* ${error}`);
+    //   setOpen(true);
+    // }
   };
 
   return (

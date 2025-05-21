@@ -13,22 +13,25 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import { MainCard } from "../../components/ui/cards/MainCard";
 import { useEffect, useState } from "react";
 import { PoV } from "../../components/pov/PoV";
 import { useParams } from "react-router-dom";
-import { fetchUser } from "../../../services/api/user/api-user";
-import { fetchPovsByAuthor } from "../../../services/api/pov/api-pov";
-import { auth } from "../../../utils/auth_helper";
-import { setPovs } from "../../../services/redux/slices/pov/povSlice";
-import { setProfile } from "../../../services/redux/slices/user/profileSlice";
 
 export const Profile = () => {
-  const dispatch = useDispatch();
-  const profile = useSelector((state) => state.profile);
-  const povs = useSelector((state) => state.povs);
+ 
+  // const profile = useSelector((state) => state.profile);
+
   const { userId } = useParams();
+
+    const [povs, setPovs] = useState({ size: 0,
+      empty: true,
+      docs: [],})
+      const [profile, setProfile] = useState({
+        exists: false,
+        uid: "",
+        name: { first: "", last: "" },
+      });
 
   // const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -36,30 +39,30 @@ export const Profile = () => {
 
   useEffect(() => {
     // setLoading(true);
-    auth.isAuthenticated().then((token) => {
-      if (token) {
-        fetchUser(userId)
-          .then((profileFetched) => {
-            // dispatch
-            dispatch(setProfile(profileFetched));
-            // setProfile(profileFetched);
-            fetchPovsByAuthor(profileFetched.id).then(
-              (povsByAuthorFetched) => {
-                dispatch(setPovs(povsByAuthorFetched));
-              }
-            );
-          })
-          .catch((error) => {
-            setError(error);
-            setOpenErrorSnackBar(true);
-          });
-        // .finally(() => setLoading(false));
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-      }
-    });
-  }, [userId, dispatch]);
+    // auth.isAuthenticated().then((token) => {
+    //   if (token) {
+    //     fetchUser(userId)
+    //       .then((profileFetched) => {
+    //         // dispatch
+    //         dispatch(setProfile(profileFetched));
+    //         // setProfile(profileFetched);
+    //         fetchPovsByAuthor(profileFetched.id).then(
+    //           (povsByAuthorFetched) => {
+    //             dispatch(setPovs(povsByAuthorFetched));
+    //           }
+    //         );
+    //       })
+    //       .catch((error) => {
+    //         setError(error);
+    //         setOpenErrorSnackBar(true);
+    //       });
+    //     // .finally(() => setLoading(false));
+    //   } else {
+    //     setError("Please sign-in");
+    //     setOpenErrorSnackBar(true);
+    //   }
+    // });
+  }, [userId]);
 
   const handleCloseErrorSnackBar = (event, reason) => {
     if (reason === "clickaway") {
@@ -77,8 +80,8 @@ export const Profile = () => {
             <Grid2 item xs={4}>
               <Avatar
                 variant="rounded"
-                alt={profile ? profile.name.first : "Guest"}
-                src={profile && profile.displayPicture}
+                alt={profile.exists ? profile.name.first : "Guest"}
+                src={profile.exists && profile.displayPicture}
                 sx={{
                   width: "100px",
                   height: "100px",
@@ -87,13 +90,13 @@ export const Profile = () => {
             </Grid2>
             <Grid2 item xs={8}>
               <Typography variant="h2">
-                {profile
+                {profile.exists
                   ? profile.name.first + " " + profile.name.last
                   : "Guest"}
               </Typography>
               <Typography variant="body2">
                 {`Joined: ${new Date(
-                  profile && profile.createdAt
+                  profile.exists && profile.createdAt
                 ).toDateString()}`}
               </Typography>
             </Grid2>
@@ -101,7 +104,7 @@ export const Profile = () => {
           <Grid2 item xs={12} md={6}>
             <Typography variant="h4">About</Typography>
             <Typography variant="body1">
-              {profile && profile.description}
+              {profile.exists && profile.description}
             </Typography>
             <List component={Stack} direction={"row"} spacing={1}>
               <ListItem>
@@ -111,7 +114,7 @@ export const Profile = () => {
                 <ListItemText
                   primary={
                     <Typography variant="subtitle1">
-                      {profile && profile.email}
+                      {profile.exists && profile.email}
                     </Typography>
                   }
                 />
@@ -123,7 +126,7 @@ export const Profile = () => {
                 <ListItemText
                   primary={
                     <Typography variant="subtitle1">
-                      {profile && profile.tel}
+                      {profile.exists && profile.tel}
                     </Typography>
                   }
                 />

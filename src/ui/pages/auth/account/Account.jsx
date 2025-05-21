@@ -29,36 +29,64 @@ import { PoV } from "../../../components/pov/PoV";
 import { auth } from "../../../../utils/auth_helper";
 import { DialogForm } from "../../../components/ui/dialog/DialogForm";
 import { PoVFormFields } from "../../../components/pov/PoVFormFields";
+import { currentUser } from "../../../../services/firebase/config/firebase-auth";
+import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
 export const Account = () => {
-  const dispatch = useDispatch();
-  const userAccount = useSelector((state) => state.userAccount.user);
-  const povs = useSelector((state) => state.povs);
+  
+
+  
 
   // const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [openPoVDialog, setOpenPoVDialog] = useState(false);
   const [openErrorSnackBar, setOpenErrorSnackBar] = useState(false);
 
-  useEffect(() => {
-    // setLoading(true);
-    auth.isAuthenticated().then((token) => {
-      if (token) {
-        fetchPovsByOwner(token)
-          .then((ownersPoVsFetched) => {
-            dispatch(setPovs(ownersPoVsFetched));
+  const [povs, setPovs] = useState({ size: 0,
+    empty: true,
+    docs: [],})
+  const [userAccount, setUserAccount] = useState({
+      exists: false,
+      uid: "",
+      name: { first: "", last: "" },
+    });
+  
+    useEffect(() => {
+      const user = currentUser();
+      if (user) {
+        getUserFirebase(user.uid)
+          .then((userFirebase) => {
+            if (userFirebase.exists) {
+              setUserAccount(userFirebase);
+            }
           })
           .catch((error) => {
-            setError(error);
-            setOpenErrorSnackBar(true);
+            console.error(error);
           });
-        // .finally(() => setLoading(false));
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
       }
-    });
-  }, [dispatch]);
+    }, []);
+
+    
+
+  // useEffect(() => {
+  //   // setLoading(true);
+  //   auth.isAuthenticated().then((token) => {
+  //     if (token) {
+  //       fetchPovsByOwner(token)
+  //         .then((ownersPoVsFetched) => {
+  //           dispatch(setPovs(ownersPoVsFetched));
+  //         })
+  //         .catch((error) => {
+  //           setError(error);
+  //           setOpenErrorSnackBar(true);
+  //         });
+  //       // .finally(() => setLoading(false));
+  //     } else {
+  //       setError("Please sign-in");
+  //       setOpenErrorSnackBar(true);
+  //     }
+  //   });
+  // }, [dispatch]);
 
   const handleCloseErrorSnackBar = (event, reason) => {
     if (reason === "clickaway") {
@@ -108,22 +136,22 @@ export const Account = () => {
   };
 
   const createPoVHandle = async (poV) => {
-    try {
-      const token = await auth.isAuthenticated();
-      if (token) {
-        const poVCreated = await createPoV(poV, token);
-        if (poVCreated) {
-          dispatch(addPoV(poVCreated));
-          handleClosePoVDialog();
-        }
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-      }
-    } catch (error) {
-      setError(error);
-      setOpenErrorSnackBar(true);
-    }
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   if (token) {
+    //     const poVCreated = await createPoV(poV, token);
+    //     if (poVCreated) {
+    //       dispatch(addPoV(poVCreated));
+    //       handleClosePoVDialog();
+    //     }
+    //   } else {
+    //     setError("Please sign-in");
+    //     setOpenErrorSnackBar(true);
+    //   }
+    // } catch (error) {
+    //   setError(error);
+    //   setOpenErrorSnackBar(true);
+    // }
   };
 
   return (

@@ -6,10 +6,6 @@ import { Register } from "../pages/auth/signUp/Register";
 import { PrivateRoute } from "../components/private_route/PrivateRoute";
 import { Test } from "../pages/test/Test";
 import { MainLayout } from "../components/ui/layout/MainLayout";
-import { Account } from "../pages/auth/account/Account";
-import { AccountSetting } from "../pages/auth/account/AccountSetting";
-import { Profile } from "../pages/profile/Profile";
-import { Chat } from "../pages/chat/Chat";
 
 export const Routes = () => {
   return useRoutes([

@@ -25,26 +25,13 @@ import {
 import { useEffect, useState } from "react";
 import { DialogForm } from "../ui/dialog/DialogForm";
 import { PoVFormFields } from "./PoVFormFields";
-import { auth } from "../../../utils/auth_helper";
-import {
-  commentPoV,
-  deletePoV,
-  likePoV,
-  unLikePoV,
-  updatePoV,
-} from "../../../services/api/pov/api-pov";
-import {
-  editPoV,
-  removePov,
-} from "../../../services/redux/slices/pov/povSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatNumber } from "../../../utils/formatNumber";
 import { DialogDelete} from "../ui/dialog/DialogDelete";
 import { DialogCommentPoV } from "../ui/dialog/DialogCommentPoV";
 
 export const PoV = ({ pov }) => {
-  const dispatch = useDispatch();
+
   const userAccount = useSelector((state) => state.userAccount);
 
   const [editedPoV, setEditedPoV] = useState(pov);
@@ -141,43 +128,43 @@ export const PoV = ({ pov }) => {
   };
 
   const handleLike = async () => {
-    const token = await auth.isAuthenticated();
-    if (token) {
-      const likeFound = pov.likes.find((like) => like === userAccount.user.uid);
-      // console.log("like found ", likeFound);
-      if (likeFound) {
-        // console.log("clicked to unlike");
-        await unLikePoV(pov.id, token)
-          .then((unLikedPoV) => {
-            // console.log("like pov ", likedPoV);
-            // dispatch pov edit
-            if (unLikedPoV) {
-              dispatch(editPoV(unLikedPoV));
-            }
-          })
-          .catch((error) => {
-            setError(error);
-            setOpenErrorSnackBar(true);
-          });
-      } else {
-        // console.log("clicked to like");
-        await likePoV(pov.id, token)
-          .then((likedPoV) => {
-            // console.log("like pov ", likedPoV);
-            // dispatch pov edit
-            if (likedPoV) {
-              dispatch(editPoV(likedPoV));
-            }
-          })
-          .catch((error) => {
-            setError(error);
-            setOpenErrorSnackBar(true);
-          });
-      }
-    } else {
-      setError("Please sign-in");
-      setOpenErrorSnackBar(true);
-    }
+    // const token = await auth.isAuthenticated();
+    // if (token) {
+    //   const likeFound = pov.likes.find((like) => like === userAccount.user.uid);
+    //   // console.log("like found ", likeFound);
+    //   if (likeFound) {
+    //     // console.log("clicked to unlike");
+    //     await unLikePoV(pov.id, token)
+    //       .then((unLikedPoV) => {
+    //         // console.log("like pov ", likedPoV);
+    //         // dispatch pov edit
+    //         if (unLikedPoV) {
+    //           dispatch(editPoV(unLikedPoV));
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         setError(error);
+    //         setOpenErrorSnackBar(true);
+    //       });
+    //   } else {
+    //     // console.log("clicked to like");
+    //     await likePoV(pov.id, token)
+    //       .then((likedPoV) => {
+    //         // console.log("like pov ", likedPoV);
+    //         // dispatch pov edit
+    //         if (likedPoV) {
+    //           dispatch(editPoV(likedPoV));
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         setError(error);
+    //         setOpenErrorSnackBar(true);
+    //       });
+    //   }
+    // } else {
+    //   setError("Please sign-in");
+    //   setOpenErrorSnackBar(true);
+    // }
   };
 
   const handleCommentPoV = async (event) => {
@@ -191,25 +178,25 @@ export const PoV = ({ pov }) => {
   };
 
   const commentPoVHandle = async (povComment) => {
-    try {
-      const token = await auth.isAuthenticated();
-      if (token) {
-        // console.log("comment ", await povComment);
-        const povCommented = await commentPoV(await povComment, token);
-        if (povCommented) {
-          dispatch(editPoV(povCommented));
-          // handleClosePoVDialog();
-        }
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-        handleClosePoVDialog();
-      }
-    } catch (error) {
-      setError(error);
-      setOpenErrorSnackBar(true);
-      handleClosePoVDialog();
-    }
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   if (token) {
+    //     // console.log("comment ", await povComment);
+    //     const povCommented = await commentPoV(await povComment, token);
+    //     if (povCommented) {
+    //       dispatch(editPoV(povCommented));
+    //       // handleClosePoVDialog();
+    //     }
+    //   } else {
+    //     setError("Please sign-in");
+    //     setOpenErrorSnackBar(true);
+    //     handleClosePoVDialog();
+    //   }
+    // } catch (error) {
+    //   setError(error);
+    //   setOpenErrorSnackBar(true);
+    //   handleClosePoVDialog();
+    // }
   };
 
   const handleClickAction = (action) => {
@@ -272,45 +259,45 @@ export const PoV = ({ pov }) => {
   };
 
   const updatePoVHandle = async (povUpdate) => {
-    try {
-      const token = await auth.isAuthenticated();
-      if (token) {
-        const poVUpdated = await updatePoV(pov.id, povUpdate, token);
-        if (poVUpdated) {
-          dispatch(editPoV(poVUpdated));
-          handleClosePoVDialog();
-        }
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-        handleClosePoVDialog();
-      }
-    } catch (error) {
-      setError(error);
-      setOpenErrorSnackBar(true);
-      handleClosePoVDialog();
-    }
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   if (token) {
+    //     const poVUpdated = await updatePoV(pov.id, povUpdate, token);
+    //     if (poVUpdated) {
+    //       dispatch(editPoV(poVUpdated));
+    //       handleClosePoVDialog();
+    //     }
+    //   } else {
+    //     setError("Please sign-in");
+    //     setOpenErrorSnackBar(true);
+    //     handleClosePoVDialog();
+    //   }
+    // } catch (error) {
+    //   setError(error);
+    //   setOpenErrorSnackBar(true);
+    //   handleClosePoVDialog();
+    // }
   };
 
   const handlePoVDelete = async () => {
-    try {
-      const token = await auth.isAuthenticated();
-      if (token) {
-        const poVDeleted = await deletePoV(pov.id, token);
-        if (poVDeleted) {
-          dispatch(removePov(poVDeleted.id));
-          handleCloseDeleteDialog();
-        }
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-        handleCloseDeleteDialog();
-      }
-    } catch (error) {
-      setError(error);
-      setOpenErrorSnackBar(true);
-      handleCloseDeleteDialog();
-    }
+    // try {
+    //   const token = await auth.isAuthenticated();
+    //   if (token) {
+    //     const poVDeleted = await deletePoV(pov.id, token);
+    //     if (poVDeleted) {
+    //       dispatch(removePov(poVDeleted.id));
+    //       handleCloseDeleteDialog();
+    //     }
+    //   } else {
+    //     setError("Please sign-in");
+    //     setOpenErrorSnackBar(true);
+    //     handleCloseDeleteDialog();
+    //   }
+    // } catch (error) {
+    //   setError(error);
+    //   setOpenErrorSnackBar(true);
+    //   handleCloseDeleteDialog();
+    // }
   };
 
   return (

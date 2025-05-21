@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { auth } from "../../../utils/auth_helper";
+import { isUserSignedIn } from "../../../services/firebase/config/firebase-auth";
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const authUser = useSelector((state) => state.userAccount);
-  return auth.isAuthenticated() && authUser && authUser.token ? (
+  
+  return isUserSignedIn ? (
     <Component />
   ) : (
     <Navigate

@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
-import { Routes } from "./routes/routes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { theme } from "./styles/themes/index";
+import { Routes } from "./ui/routes/routes";
 
 // import env from 'dotenv'
 // env.config()
@@ -11,7 +11,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Routes />
+        <Routes/>
       </Router>
     </ThemeProvider>
   );
