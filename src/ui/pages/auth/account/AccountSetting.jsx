@@ -5,15 +5,18 @@ import { UserForm } from "../../../components/auth/account/UserForm";
 import { PasswordForm } from "../../../components/auth/account/PasswordForm";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { currentUser } from "../../../../services/firebase/config/firebase-auth";
-import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
+import {
+  currentUser,
+  isUserSignedIn,
+} from "../../../../services/firebase/config/firebase-auth";
+import {
+  getUserFirebase,
+  updateUserFirebase,
+} from "../../../../services/firebase/controller/user-firebase";
 
 export const AccountSetting = () => {
-
   const navigate = useNavigate();
 
-  
- 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
@@ -39,8 +42,8 @@ export const AccountSetting = () => {
         });
     }
   }, []);
-  
- useEffect(() => {
+
+  useEffect(() => {
     !userAccount.exists && navigate("/signin");
   }, [userAccount, navigate]);
 
@@ -105,21 +108,17 @@ export const AccountSetting = () => {
   const handleSubmitPassword = async (event) => {
     // event.preventDefault();
     // setLoading(true);
-
     // const data = new FormData(event.currentTarget);
     // const dataObject = Object.fromEntries(data.entries());
-
     // try {
     //   const token = await auth.isAuthenticated();
     //   // console.log("user: ", token);
     //   if (token) {
     //     const fetchedUserAccount = await fetchUserAccount(token);
     //     const userAccountPassword = await fetchedUserAccount.password; // ricky has bugs - no returning pass - improvise new GET pass @ server
-
     //     if (userAccountPassword === dataObject.currentPassword) {
     //       if (dataObject.newPassword === dataObject.confirmPassword) {
     //         // console.log(dataObject.newPassword);
-
     //         await updateUserHandle({
     //           password: dataObject.newPassword,
     //         });
@@ -140,36 +139,27 @@ export const AccountSetting = () => {
   };
 
   const updateUserHandle = async (user) => {
-    // try {
-    //   const token = await auth.isAuthenticated();
-    //   // console.log("user: ", token);
-    //   if (token) {
-    //     const updatedUserAccount = await updateUserAccount(user, token);
-    //     // console.log("user account: ", updatedUserAccount); // remove log
-    //     // if (updatedUserAccount) { // debug later
-    //     //   auth.updateUser(updatedUserAccount, () => {
-    //     //     dispatch(updateUserAccount(updatedUserAccount));
-    //     //     setLoading(false);
-    //     //   });
-    //     // }
-    //     if (updatedUserAccount) {
-    //       dispatch(editUserAccount({ token: token, user: updatedUserAccount }));
-    //       setLoading(false);
-    //     }
-    //   } else {
-    //     setError("*please sign-in");
-    //   }
-    //   setLoading(false);
-    // } catch (error) {
-    //   // alert(error)
-    //   setLoading(false);
-    //   setError(`* ${error}`);
-    //   setOpen(true);
-    // }
+    if (isUserSignedIn()) {
+      updateUserFirebase(userAccount.uid, user)
+        .then((updatedUserAccount) => {
+          setUserAccount(updatedUserAccount);
+          setLoading(false);
+        })
+        .catch((error) => {
+          // alert(error)
+          setLoading(false);
+          setError(error.message);
+          setOpen(true);
+        });
+      // console.log("user account: ", updatedUserAccount); // remove log
+    } else {
+      setError("*please sign-in");
+      setLoading(false);
+    }
   };
 
   return (
-    <MainCard title={"Account Setting"} sx={{pb:5}}>
+    <MainCard title={"Account Setting"} sx={{ pb: 5 }}>
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} lg={6}>
           <SubCard title={"User"}>

@@ -16,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import { MainCard } from "../../components/ui/cards/MainCard";
 import { PoV } from "../../components/pov/PoV";
 import { Search } from "@mui/icons-material";
+import { getPoVsFirebase } from "../../../services/firebase/controller/pov-firebase";
 
 export const Home = () => {
 
@@ -34,18 +35,18 @@ export const Home = () => {
     setOpenErrorSnackBar(false);
   };
 
-  // useEffect(() => {
-  //   // setLoading(true);
-  //   fetchPoVs()
-  //     .then((poVsFetched) => {
-  //       dispatch(setPovs(poVsFetched));
-  //     })
-  //     .catch((error) => {
-  //       setError(error);
-  //       setOpenErrorSnackBar(true);
-  //     });
-  //   // .finally(() => setLoading(false));
-  // }, [dispatch]);
+  useEffect(() => {
+    // setLoading(true);
+    getPoVsFirebase()
+      .then((poVsFetched) => {
+        setPovs(poVsFetched)
+      })
+      .catch((error) => {
+        setError(error);
+        setOpenErrorSnackBar(true);
+      });
+    // .finally(() => setLoading(false));
+  }, []);
 
   const handleSearch = async (event, povSearch) => {
     event.preventDefault();
@@ -136,7 +137,7 @@ export const Home = () => {
               </Grid2>
             ))
           ) : (
-            <Typography variant="h4" sx={{ justifySelf: "center" }}>
+            <Typography variant="h4" sx={{ justifyContent: "center" }}>
               no pov available
             </Typography>
           )}

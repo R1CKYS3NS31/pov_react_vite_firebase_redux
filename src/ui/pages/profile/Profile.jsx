@@ -17,21 +17,20 @@ import { MainCard } from "../../components/ui/cards/MainCard";
 import { useEffect, useState } from "react";
 import { PoV } from "../../components/pov/PoV";
 import { useParams } from "react-router-dom";
+import { isUserSignedIn } from "../../../services/firebase/config/firebase-auth";
+import { getUserFirebase } from "../../../services/firebase/controller/user-firebase";
+import { getPoVsByOwnerFirebase } from "../../../../services/firebase/controller/pov-firebase";
 
 export const Profile = () => {
- 
-  // const profile = useSelector((state) => state.profile);
 
   const { userId } = useParams();
 
-    const [povs, setPovs] = useState({ size: 0,
-      empty: true,
-      docs: [],})
-      const [profile, setProfile] = useState({
-        exists: false,
-        uid: "",
-        name: { first: "", last: "" },
-      });
+  const [povs, setPovs] = useState({ size: 0, empty: true, docs: [] });
+  const [profile, setProfile] = useState({
+    exists: false,
+    uid: "",
+    name: { first: "", last: "" },
+  });
 
   // const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -39,36 +38,33 @@ export const Profile = () => {
 
   useEffect(() => {
     // setLoading(true);
-    // auth.isAuthenticated().then((token) => {
-    //   if (token) {
-    //     fetchUser(userId)
-    //       .then((profileFetched) => {
-    //         // dispatch
-    //         dispatch(setProfile(profileFetched));
-    //         // setProfile(profileFetched);
-    //         fetchPovsByAuthor(profileFetched.id).then(
-    //           (povsByAuthorFetched) => {
-    //             dispatch(setPovs(povsByAuthorFetched));
-    //           }
-    //         );
-    //       })
-    //       .catch((error) => {
-    //         setError(error);
-    //         setOpenErrorSnackBar(true);
-    //       });
-    //     // .finally(() => setLoading(false));
-    //   } else {
-    //     setError("Please sign-in");
-    //     setOpenErrorSnackBar(true);
-    //   }
-    // });
+    if (isUserSignedIn()) {
+      getUserFirebase(userId)
+        .then((profileFetched) => {
+          setProfile(profileFetched);
+          getPoVsByOwnerFirebase(profileFetched.id)
+            .then((povsByAuthorFetched) => {
+              setPovs(povsByAuthorFetched);
+            })
+            .catch((error) => {
+              throw error;
+            });
+        })
+        .catch((error) => {
+          setError(error);
+          setOpenErrorSnackBar(true);
+        });
+      // .finally(() => setLoading(false));
+    } else {
+      setError("Please sign-in");
+      setOpenErrorSnackBar(true);
+    }
   }, [userId]);
 
   const handleCloseErrorSnackBar = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpenErrorSnackBar(false);
   };
 
@@ -140,9 +136,9 @@ export const Profile = () => {
             PoVs
           </Typography>
           <Grid2 container spacing={0.5}>
-            {povs ? (
-              povs.map((pov) => (
-                <Grid2 item size={{ xs: 12, md: 6, }} key={pov.id}>
+            {!povs.empty ? (
+              povs.docs.map((pov) => (
+                <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
                   <PoV pov={pov} />
                 </Grid2>
               ))

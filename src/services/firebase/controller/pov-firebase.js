@@ -35,7 +35,7 @@ export const getPoVsFirebase = async () => {
 export const getPoVsByOwnerFirebase = async (ownerId) => {
   try {
     return await loadDocsDataWhere(docName, 12, {
-      field: "owner",
+      field: "author",
       value: ownerId,
     });
   } catch (error) {
