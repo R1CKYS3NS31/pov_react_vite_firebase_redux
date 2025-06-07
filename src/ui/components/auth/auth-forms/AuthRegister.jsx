@@ -30,6 +30,7 @@ import {
   strengthIndicator,
 } from "../../../../utils/password-strength";
 import { signUpUserWithEmailAndPassword } from "../../../../services/firebase/config/firebase-auth";
+import { saveUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
 export const AuthRegister = () => {
   const theme = useTheme();
@@ -37,7 +38,6 @@ export const AuthRegister = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
 
   // agreement
   const [checked, setChecked] = useState(false);
@@ -86,36 +86,51 @@ export const AuthRegister = () => {
   };
 
   const signUpUser = async (user) => {
-    try {
-      const signedUpUser = await signUpUserWithEmailAndPassword(
-        user.email,
-        user.password,
-        user.name.first + " " + user.name.last,
-        "https://source.unsplash.com/random"
-      );
-      // console.log("signedup: ", signedUpUser);
+    await signUpUserWithEmailAndPassword(
+      user.email,
+      user.password,
+      user.name.first + " " + user.name.last,
+      "https://source.unsplash.com/random"
+    )
+      .then((signedUpUser) => {
+        if (signedUpUser) {
+          saveUserFirebase({
+            uid: signUpUser.uid,
+            displayName: signUpUser.displayName,
+            email: signUpUser.email,
+            name: user.name,
+          })
+            .then((savedUserFirebase) => {
+              console.log(savedUserFirebase);
+              setLoading(false);
 
-      if (signedUpUser) {
-        setLoading(false);
-
-        // Check if there's a previous location in the state object
-        if (location.state && location.state.from) {
-          // Navigate back to the previous location
-          navigate(location.state.from);
-        } else {
-          // If there's no previous location, navigate to the user's dashboard
-          navigate("/", { replace: true });
+              // Check if there's a previous location in the state object
+              if (location.state && location.state.from) {
+                // Navigate back to the previous location
+                navigate(location.state.from);
+              } else {
+                // If there's no previous location, navigate to the user's dashboard
+                navigate("/", { replace: true });
+              }
+            })
+            .catch((error) => {
+              setLoading(false);
+              setError(error.message);
+              setOpen(true);
+            })
+            .finally(setLoading(false));
         }
-      }
-    } catch (error) {
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
-      // alert(errorCode + " - " + errorMessage);
-      // alert(error)
-      setLoading(false);
-      setError(error.message);
-      setOpen(true);
-    }
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // alert(errorCode + " - " + errorMessage);
+        // alert(error)
+        setLoading(false);
+        setError(error.message);
+        setOpen(true);
+      });
+    // console.log("signedup: ", signedUpUser);
   };
 
   const handleSubmit = (event) => {

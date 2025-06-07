@@ -100,7 +100,7 @@ export const AccountSetting = () => {
       await updateUserHandle(user);
     } catch (error) {
       setLoading(false);
-      setError(error);
+      setError(error.message);
       setOpen(true);
     }
   };

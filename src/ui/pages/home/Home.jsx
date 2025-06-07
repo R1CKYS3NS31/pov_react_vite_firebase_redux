@@ -42,7 +42,7 @@ export const Home = () => {
         setPovs(poVsFetched)
       })
       .catch((error) => {
-        setError(error);
+        setError(error.message);
         setOpenErrorSnackBar(true);
       });
     // .finally(() => setLoading(false));
@@ -58,7 +58,7 @@ export const Home = () => {
     //     dispatch(setPovs(povFetched));
     //   })
     //   .catch((error) => {
-    //     setError(error);
+    //     setError(error.message);
     //     setOpenErrorSnackBar(true);
     //   });
   };

@@ -51,7 +51,7 @@ export const Profile = () => {
             });
         })
         .catch((error) => {
-          setError(error);
+          setError(error.message);
           setOpenErrorSnackBar(true);
         });
       // .finally(() => setLoading(false));

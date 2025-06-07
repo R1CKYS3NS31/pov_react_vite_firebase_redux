@@ -38,12 +38,13 @@ export const Account = () => {
 
   useEffect(() => {
     const user = currentUser();
-    console.log(currentUser());
+    console.log(user);
     
     if (user) {
       getUserFirebase(user.uid)
         .then((userFirebase) => {
-                
+          console.log("user account",userFirebase);
+          
           if (userFirebase.exists) {
             setUserAccount(userFirebase);
           }
@@ -135,7 +136,7 @@ export const Account = () => {
     //     setOpenErrorSnackBar(true);
     //   }
     // } catch (error) {
-    //   setError(error);
+    //   setError(error.message);
     //   setOpenErrorSnackBar(true);
     // }
   };

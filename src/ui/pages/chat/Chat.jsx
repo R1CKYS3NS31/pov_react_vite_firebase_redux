@@ -90,7 +90,7 @@ export const Chat = () => {
     //       setChats(memberChatsFetched)
     //     })
     //     .catch((error) => {
-    //       setError(error);
+    //       setError(error.message);
     //       setOpenErrorSnackBar(true);
     //     });
     //   // .finally(() => setLoading(false));
@@ -105,7 +105,7 @@ export const Chat = () => {
         setUsers(usersFetched);
       })
       .catch((error) => {
-        setError(error);
+        setError(error.message);
         setOpenErrorSnackBar(true);
       });
   }, [userAccount]);
@@ -294,7 +294,7 @@ export const Chat = () => {
         setOpenErrorSnackBar(true);
       }
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setOpenErrorSnackBar(true);
     }
   };
@@ -398,7 +398,7 @@ export const Chat = () => {
             }
           })
           .catch((error) => {
-            setError(error);
+            setError(error.message);
             setOpenErrorSnackBar(true);
             handleCloseDeleteDialog();
           });

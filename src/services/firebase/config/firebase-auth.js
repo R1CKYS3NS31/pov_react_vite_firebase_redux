@@ -88,9 +88,10 @@ export const isUserSignedIn = () => {
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 export const currentUser = () => {
-  return onAuthStateChanged(auth, (user) => {
-    return user;
-  });
+  // return onAuthStateChanged(auth, (user) => {
+  //   return user;
+  // });
+  return auth.currentUser
 };
 
 export const updateUserProfile = async (first, last, displayPicture) => {
