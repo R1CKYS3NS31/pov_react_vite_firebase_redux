@@ -93,15 +93,18 @@ export const AuthRegister = () => {
       "https://source.unsplash.com/random"
     )
       .then((signedUpUser) => {
+        // console.log("signed up user to save ",signedUpUser) remove
         if (signedUpUser) {
           saveUserFirebase({
-            uid: signUpUser.uid,
-            displayName: signUpUser.displayName,
-            email: signUpUser.email,
+            uid: signedUpUser.uid,
+            displayName: signedUpUser.displayName,
+            email: signedUpUser.email,
+            displayPicture:signedUpUser.photoURL,
             name: user.name,
+
           })
             .then((savedUserFirebase) => {
-              console.log(savedUserFirebase);
+              // console.log(savedUserFirebase); // remove
               setLoading(false);
 
               // Check if there's a previous location in the state object
@@ -114,11 +117,8 @@ export const AuthRegister = () => {
               }
             })
             .catch((error) => {
-              setLoading(false);
-              setError(error.message);
-              setOpen(true);
-            })
-            .finally(setLoading(false));
+              throw error;
+            });
         }
       })
       .catch((error) => {
@@ -129,7 +129,8 @@ export const AuthRegister = () => {
         setLoading(false);
         setError(error.message);
         setOpen(true);
-      });
+      })
+      .finally(setLoading(false));
     // console.log("signedup: ", signedUpUser);
   };
 

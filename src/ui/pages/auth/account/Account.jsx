@@ -19,7 +19,10 @@ import { useEffect, useState } from "react";
 import { PoV } from "../../../components/pov/PoV";
 import { DialogForm } from "../../../components/ui/dialog/DialogForm";
 import { PoVFormFields } from "../../../components/pov/PoVFormFields";
-import { currentUser, isUserSignedIn } from "../../../../services/firebase/config/firebase-auth";
+import {
+  currentUser,
+  isUserSignedIn,
+} from "../../../../services/firebase/config/firebase-auth";
 import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 import { getPoVsByOwnerFirebase } from "../../../../services/firebase/controller/pov-firebase";
 
@@ -38,13 +41,14 @@ export const Account = () => {
 
   useEffect(() => {
     const user = currentUser();
-    console.log(user);
-    
-    if (user) {
+    // console.log("current user - ", user);
+
+    if (user && isUserSignedIn()) {
       getUserFirebase(user.uid)
         .then((userFirebase) => {
-          console.log("user account",userFirebase);
           
+          console.log("user account", userFirebase);
+
           if (userFirebase.exists) {
             setUserAccount(userFirebase);
           }
@@ -56,23 +60,23 @@ export const Account = () => {
   }, []);
 
   console.log(userAccount);
-  
+
   useEffect(() => {
     // setLoading(true);
     if (isUserSignedIn) {
-          getPoVsByOwnerFirebase(userAccount.uid)
-          .then((ownersPoVsFetched) => {
-            setPovs(ownersPoVsFetched)
-          })
-          .catch((error) => {
-            setError(error.message);
-            setOpenErrorSnackBar(true);
-          });
-        // .finally(() => setLoading(false));
-      } else {
-        setError("Please sign-in");
-        setOpenErrorSnackBar(true);
-      }
+      getPoVsByOwnerFirebase(userAccount.uid)
+        .then((ownersPoVsFetched) => {
+          setPovs(ownersPoVsFetched);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setOpenErrorSnackBar(true);
+        });
+      // .finally(() => setLoading(false));
+    } else {
+      setError("Please sign-in");
+      setOpenErrorSnackBar(true);
+    }
   }, [userAccount]);
 
   const handleCloseErrorSnackBar = (event, reason) => {
@@ -99,8 +103,8 @@ export const Account = () => {
       const formJson = Object.fromEntries(formData.entries());
 
       let newPov;
-      
-      if ( isUserSignedIn() && userAccount.uid) {
+
+      if (isUserSignedIn() && userAccount.uid) {
         newPov = {
           // id: new Date(),
           title: formJson.title,

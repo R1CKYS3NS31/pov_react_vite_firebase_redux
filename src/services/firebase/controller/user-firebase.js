@@ -19,7 +19,7 @@ export const saveUserFirebase = async (user = {}) => {
       },
       email: email,
       // password: password,
-      displayPicture: displayPicture,
+      displayPicture: displayPicture ,
       isUser: isUser || true,
     };
     return await saveDocData(docName, "", userData);

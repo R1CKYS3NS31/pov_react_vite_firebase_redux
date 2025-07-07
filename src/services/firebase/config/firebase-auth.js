@@ -43,7 +43,7 @@ export const signUpUserWithEmailAndPassword = async (
       const user = userCredential.user;
       updateProfile(user, {
         displayName: displayName,
-        displayPicture: displayPicture,
+        photoURL: displayPicture,
       }).catch((error) => {
         throw error;
       });
@@ -98,7 +98,7 @@ export const updateUserProfile = async (first, last, displayPicture) => {
   if (currentUser) {
     return await updateProfile(auth.currentUser, {
       displayName: first + " " + last,
-      displayPicture: displayPicture,
+      photoURL: displayPicture,
     })
       .then((value) => {
         // Profile updated!

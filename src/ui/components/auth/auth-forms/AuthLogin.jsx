@@ -21,7 +21,10 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { isUserSignedIn, signInUserWithEmailAndPassword } from "../../../../services/firebase/config/firebase-auth";
+import {
+  isUserSignedIn,
+  signInUserWithEmailAndPassword,
+} from "../../../../services/firebase/config/firebase-auth";
 import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 
 export const AuthLogin = () => {
@@ -65,35 +68,43 @@ export const AuthLogin = () => {
   };
 
   const signInUser = async (user) => {
-    try {
-      const signedInUser = await signInUserWithEmailAndPassword(await user.email,await user.password);
-      // console.log('signed user',signedInUser); // remove log
-
-      if (signedInUser && isUserSignedIn()) {
-        const {uid, accessToken } = signedInUser
-        const userFirebase = await getUserFirebase(uid)
-        if (userFirebase.exists && accessToken) {
-          setLoading(false)
-           // Check if there's a previous location in the state object
-          if (location.state && location.state.from) {
-            // Navigate back to the previous location
-            navigate(location.state.from);
-          } else {
-            // If there's no previous location, navigate to the user's dashboard
-            navigate("/", { replace: true });
-          }
+    await signInUserWithEmailAndPassword(await user.email, await user.password)
+      .then((signedInUser) => {
+        // console.log(signedInUser); remove
+        
+        if (signedInUser) {
+          const { uid, accessToken } = signedInUser;
+          getUserFirebase(uid)
+            .then((userFirebase) => {
+              // console.log(userFirebase); remove
+              
+              if (userFirebase.uid && accessToken) {
+                setLoading(false);
+                // Check if there's a previous location in the state object
+                if (location.state && location.state.from) {
+                  // Navigate back to the previous location
+                  navigate(location.state.from);
+                } else {
+                  // If there's no previous location, navigate to the user's dashboard
+                  navigate("/", { replace: true });
+                }
+              }
+            })
+            .catch((error) => {
+              throw error;
+            });
         }
-      }
-    } catch (error) {
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
-      // alert(errorCode + " - " + errorMessage);
-      // alert(error);
-      setLoading(false);
-      console.log(error)
-      setError(error.message);
-      setOpen(true);
-    }
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // alert(errorCode + " - " + errorMessage);
+        // alert(error);
+        setLoading(false);
+        console.log(error);
+        setError(error.message);
+        setOpen(true);
+      });
   };
 
   const handleSubmit = (event) => {
