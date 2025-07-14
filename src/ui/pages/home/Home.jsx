@@ -51,7 +51,7 @@ export const Home = () => {
     //   .then((povFetched) => {
     //     console.log(povFetched);
 
-    //     dispatch(setPovs(povFetched));
+    //     // dispatch(setPovs(povFetched));
     //   })
     //   .catch((error) => {
     //     setError(error.message);
@@ -112,7 +112,7 @@ export const Home = () => {
               />
             )}
           />
-          {/* <Input
+          <Input
               label="Search for PoV..."
               placeholder="Search for PoV..."
               fullWidth
@@ -121,7 +121,7 @@ export const Home = () => {
                 type: "search",
               }}
               startAdornment={<Search />}
-            /> */}
+            />
         </Grid2>
       </Grid2>
       <Grid2 item container spacing={0.5}>

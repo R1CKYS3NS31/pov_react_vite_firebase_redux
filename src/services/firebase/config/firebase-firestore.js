@@ -42,13 +42,15 @@ export const loadDocsData = async (docName, limitNo = 12, filters = {}) => {
   try {
     const recentQuery = query(
       collection(firestore, docName),
-      orderBy("timestamp", "desc"),
+      // orderBy("timestamp", "desc"),
       limit(limitNo)
     );
     // const filtersApplied = applyQueryFilters(recentQuery,filters)
 
     return await getDocs(recentQuery)
       .then((snapshot) => {
+        console.log(snapshot.size);
+        
         return {
           size: snapshot.size,
           empty: snapshot.empty,
@@ -87,7 +89,7 @@ export const loadDocsDataWhere = async (
   try {
     const recentQuery = query(
       collection(firestore, docName),
-      orderBy("timestamp", "desc"),
+      // orderBy("timestamp", "desc"),
       limit(limitNo),
       // filter && where(filter.field, "==", filter.value)
       where(filter.field, "==", filter.value)

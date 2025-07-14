@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import {

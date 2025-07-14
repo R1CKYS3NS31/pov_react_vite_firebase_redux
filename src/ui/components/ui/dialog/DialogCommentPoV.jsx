@@ -41,7 +41,7 @@ export const DialogCommentPoV = ({ open, handleClose, handleSubmit, pov }) => {
             size={{ xs: 12 }}
           >
             <Grid2 item size={{ xs: 12 }}>
-              {pov.comments.map((comment) => (
+              {pov.comments && pov.comments.map((comment) => (
                 // <Card>
                 <ListItem sx={{ p: 0 }}>
                   <ListItemAvatar>

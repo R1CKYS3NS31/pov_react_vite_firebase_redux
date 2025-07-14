@@ -26,6 +26,7 @@ export const savePoVFirebase = async (pov = {}) => {
 
 export const getPoVsFirebase = async () => {
   try {
+    console.log(await loadDocsData(docName))
     return await loadDocsData(docName);
   } catch (error) {
     throw error;

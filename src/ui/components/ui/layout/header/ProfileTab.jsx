@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState } from "react";
 
 // material-ui
@@ -21,7 +20,7 @@ export const ProfileTab = ({ handleLogout }) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const [selectedIndex, setSelectedIndex] = useState("account/profile");
+  const [selectedIndex, setSelectedIndex] = useState("account/account");
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
     navigate(index);
@@ -39,8 +38,8 @@ export const ProfileTab = ({ handleLogout }) => {
       }}
     >
       <ListItemButton
-        selected={selectedIndex === "account/profile"}
-        onClick={(event) => handleListItemClick(event, "account/profile")}
+        selected={selectedIndex === "account/account"}
+        onClick={(event) => handleListItemClick(event, "account/account")}
       >
         <ListItemIcon>
           <PersonOutlined />

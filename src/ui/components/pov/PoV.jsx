@@ -11,11 +11,7 @@ import {
   Share,
 } from "@mui/icons-material";
 import {
-  Alert,
-  AlertTitle,
-  Avatar,
   Card,
-  Snackbar,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
@@ -25,7 +21,6 @@ import {
 import { useEffect, useState } from "react";
 import { DialogForm } from "../ui/dialog/DialogForm";
 import { PoVFormFields } from "./PoVFormFields";
-import { Link } from "react-router-dom";
 import { formatNumber } from "../../../utils/formatNumber";
 import { DialogDelete } from "../ui/dialog/DialogDelete";
 import { DialogCommentPoV } from "../ui/dialog/DialogCommentPoV";
@@ -62,48 +57,48 @@ export const PoV = ({ pov }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const likeFound = pov.likes.find(
-      (like) => userAccount && userAccount.uid === like
-    );
-    userAccount && userAccount.uid === pov.author.id
-      ? setSpeedActions([
-          {
-            icon: <DeleteSweep />,
-            name: "Delete",
-          },
-          { icon: <EditNote />, name: "Edit" },
-          pov.published
-            ? { icon: <Public />, name: "Unpublish" }
-            : { icon: <Public />, name: "Publish" },
-          // { icon: <FileCopy />, name: "Copy" },
-          { icon: <Share />, name: "Share" },
-          { icon: <Comment />, name: "Comment" },
-          likeFound
-            ? {
-                icon: <Favorite />,
-                name: `UnLike (${formatNumber(pov.likes.length)})`,
-              }
-            : {
-                icon: <FavoriteBorder />,
-                name: `Like (${formatNumber(pov.likes.length)})`,
-              },
-        ])
-      : setSpeedActions([
-          { icon: <FileCopy />, name: "Copy" },
-          { icon: <Share />, name: "Share" },
-          { icon: <Comment />, name: "Comment" },
-          likeFound
-            ? {
-                icon: <Favorite />,
-                name: `UnLike (${formatNumber(pov.likes.length)})`,
-              }
-            : {
-                icon: <FavoriteBorder />,
-                name: `Like (${formatNumber(pov.likes.length)})`,
-              },
-        ]);
-  }, [userAccount, pov]);
+  // useEffect(() => {
+  //   const likeFound = pov.likes.find(
+  //     (like) => userAccount && userAccount.uid === like
+  //   );
+  //   userAccount && userAccount.uid === pov.author.id
+  //     ? setSpeedActions([
+  //         {
+  //           icon: <DeleteSweep />,
+  //           name: "Delete",
+  //         },
+  //         { icon: <EditNote />, name: "Edit" },
+  //         pov.published
+  //           ? { icon: <Public />, name: "Unpublish" }
+  //           : { icon: <Public />, name: "Publish" },
+  //         // { icon: <FileCopy />, name: "Copy" },
+  //         { icon: <Share />, name: "Share" },
+  //         { icon: <Comment />, name: "Comment" },
+  //         likeFound
+  //           ? {
+  //               icon: <Favorite />,
+  //               name: `UnLike (${formatNumber(pov.likes.length)})`,
+  //             }
+  //           : {
+  //               icon: <FavoriteBorder />,
+  //               name: `Like (${formatNumber(pov.likes.length)})`,
+  //             },
+  //       ])
+  //     : setSpeedActions([
+  //         { icon: <FileCopy />, name: "Copy" },
+  //         { icon: <Share />, name: "Share" },
+  //         { icon: <Comment />, name: "Comment" },
+  //         likeFound
+  //           ? {
+  //               icon: <Favorite />,
+  //               name: `UnLike (${formatNumber(pov.likes.length)})`,
+  //             }
+  //           : {
+  //               icon: <FavoriteBorder />,
+  //               name: `Like (${formatNumber(pov.likes.length)})`,
+  //             },
+  //       ]);
+  // }, [userAccount, pov]);
 
   const [error, setError] = useState("");
   const [openPoVDialog, setOpenPoVDialog] = useState(false);
@@ -345,12 +340,12 @@ export const PoV = ({ pov }) => {
       >
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={1}>
-            <Link to={`/profile/${pov.author.id}`}>
+            {/* <Link to={`/profile/${pov.author.id}`}>
               <Avatar
                 src={pov.author.displayPicture}
                 alt={pov.author.name.first}
-              />{" "}
-            </Link>
+              />
+            </Link> */}
             <Stack>
               <Typography
                 variant="h4"
@@ -364,7 +359,8 @@ export const PoV = ({ pov }) => {
                 color={"secondary"}
                 sx={{ overflowWrap: "anywhere", wordWrap: "break-word" }}
               >
-                {`${pov.author.name.first} ${pov.author.name.last}`}
+                {/* {`${pov.author.name.first} ${pov.author.name.last}`} */}
+                {pov.author}
               </Typography>
             </Stack>
           </Stack>{" "}
