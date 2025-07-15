@@ -18,6 +18,8 @@ export const savePoVFirebase = async (pov = {}) => {
       // subtitle: subtitle,
       points: points,
       author: author,
+      likes:[],
+      comments:[]
     };
     return await saveDocData(docName, "", povData);
   } catch (error) {

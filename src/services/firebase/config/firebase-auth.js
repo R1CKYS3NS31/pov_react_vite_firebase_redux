@@ -3,7 +3,6 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   getAuth,
-  onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,

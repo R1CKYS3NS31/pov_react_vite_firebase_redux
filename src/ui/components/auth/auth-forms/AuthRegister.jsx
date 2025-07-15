@@ -100,7 +100,7 @@ export const AuthRegister = () => {
               setLoading(false);
 
               // Check if there's a previous location in the state object
-              if (location.state && location.state.from) {
+              if (location.state || location.state.from) {
                 // Navigate back to the previous location
                 navigate(location.state.from);
               } else {
