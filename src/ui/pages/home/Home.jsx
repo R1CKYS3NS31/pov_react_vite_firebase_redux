@@ -123,12 +123,14 @@ export const Home = () => {
         </Grid2>
       </Grid2>
       <Grid2 item container spacing={0.5}>
-        {!povs.empty ? (
-          povs.docs.map((pov) => (
-            <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
-              <PoV poV={pov} />
-            </Grid2>
-          ))
+        {!povs.empty && povs.docs.filter((pov) => pov.published).length > 0 ? (
+          povs.docs
+            .filter((pov) => pov.published)
+            .map((pov) => (
+              <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
+                <PoV poV={pov} />
+              </Grid2>
+            ))
         ) : (
           <Typography variant="h4" sx={{ justifyContent: "center" }}>
             no pov available
