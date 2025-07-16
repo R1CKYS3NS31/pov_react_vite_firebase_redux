@@ -1,5 +1,5 @@
 import { MainCard } from "../../../components/ui/cards/MainCard";
-import { Alert, AlertTitle, Grid2, Snackbar } from "@mui/material";
+import { Grid2, } from "@mui/material";
 import { SubCard } from "../../../components/ui/cards/SubCard";
 import { UserForm } from "../../../components/auth/account/UserForm";
 import { PasswordForm } from "../../../components/auth/account/PasswordForm";
@@ -45,7 +45,7 @@ export const AccountSetting = () => {
   }, []);
 
   useEffect(() => {
-    !userAccount.exists && navigate("/signin");
+    !isUserSignedIn() && navigate("/signin");
   }, [userAccount, navigate]);
 
   const handleCloseErrorSnackBar = (event, reason) => {

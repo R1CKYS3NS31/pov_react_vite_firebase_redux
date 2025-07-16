@@ -22,6 +22,7 @@ import {
 } from "../../../../services/firebase/config/firebase-auth";
 import { getUserFirebase } from "../../../../services/firebase/controller/user-firebase";
 import {
+  getPoVFirebase,
   getPoVsByAuthorFirebase,
   savePoVFirebase,
 } from "../../../../services/firebase/controller/pov-firebase";
@@ -41,7 +42,7 @@ export const Account = () => {
 
   useEffect(() => {
     const user = currentUser();
-      if (user && isUserSignedIn()) {
+    if (user && isUserSignedIn()) {
       getUserFirebase(user.uid)
         .then((userFirebase) => {
           if (userFirebase.exists) {
@@ -59,7 +60,7 @@ export const Account = () => {
       getPoVsByAuthorFirebase(userAccount.uid)
         .then((authorsPoVsFetched) => {
           console.log("author's povs -", authorsPoVsFetched);
-          
+
           setPovs(authorsPoVsFetched);
         })
         .catch((error) => {
@@ -123,11 +124,18 @@ export const Account = () => {
     if (isUserSignedIn()) {
       console.log("pov to save - ", poV);
 
-      savePoVFirebase(poV)
+      await savePoVFirebase(poV)
         .then((savedFirebasePoV) => {
-          console.log("new POV - ", savedFirebasePoV);
           if (savedFirebasePoV) {
-            handleClosePoVDialog();
+            getPoVFirebase(savedFirebasePoV)
+              .then((firebasePoV) => {
+                console.log("new POV - ", firebasePoV);
+                setPovs([...povs, firebasePoV]);
+                handleClosePoVDialog();
+              })
+              .catch((error) => {
+                throw error;
+              });
           }
         })
         .catch((error) => {
@@ -245,11 +253,11 @@ export const Account = () => {
           handleSubmit={handleSubmitPoV}
           fields={<PoVFormFields />} // todo: implement the dependencies
         />
-         <ErrorSnackbar
-                openErrorSnackBar={openErrorSnackBar}
-                handleCloseErrorSnackBar={handleCloseErrorSnackBar}
-                error={error}
-              />
+        <ErrorSnackbar
+          openErrorSnackBar={openErrorSnackBar}
+          handleCloseErrorSnackBar={handleCloseErrorSnackBar}
+          error={error}
+        />
       </Grid2>
     </MainCard>
   );
