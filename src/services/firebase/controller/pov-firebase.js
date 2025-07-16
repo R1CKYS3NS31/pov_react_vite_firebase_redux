@@ -110,7 +110,7 @@ export const getPoVsByAuthorFirebase = async (authorId) => {
                   }))
                   .catch((error) => {
                     console.warn(
-                      `Failed to load postedBy user ${comment.postedBy}:`,
+                      `Failed to load postedBy user`,
                       error
                     );
                     return comment;
@@ -201,13 +201,7 @@ export const getPoVFirebase = async (povId) => {
 
 export const updatePoVFirebase = async (povId, pov) => {
   try {
-    const { title, points, author } = pov;
-    const povData = {
-      title: title,
-      points: points,
-      author: author,
-    };
-    return await setDocData(docName, povId, "", povData);
+       return await setDocData(docName, povId, "", pov);
   } catch (error) {
     throw error;
   }
@@ -227,7 +221,7 @@ export const likePoVFirebase = async (povId, userId) => {
     if (!pov.exists) throw new Error("PoV not found");
 
     const updatedLikes = Array.from(new Set([...(pov.likes || []), userId]));
-    return await setDocData("povs", povId, "", { likes: updatedLikes });
+    return await setDocData(docName, povId, "", { likes: updatedLikes });
   } catch (error) {
     throw error;
   }
@@ -239,7 +233,7 @@ export const unLikePoVFirebase = async (povId, userId) => {
     if (!pov.exists) throw new Error("PoV not found");
 
     const updatedLikes = (pov.likes || []).filter((id) => id !== userId);
-    return await setDocData("povs", povId, "", { likes: updatedLikes });
+    return await setDocData(docName, povId, "", { likes: updatedLikes });
   } catch (error) {
     throw error;
   }
@@ -258,7 +252,7 @@ export const commentOnPoVFirebase = async (povId, userId, commentText) => {
     };
 
     const updatedComments = [...(pov.comments || []), newComment];
-    return await setDocData("povs", povId, "", { comments: updatedComments });
+    return await setDocData(docName, povId, "", { comments: updatedComments });
   } catch (error) {
     throw error;
   }
@@ -272,7 +266,7 @@ export const uncommentPoVFirebase = async (povId, postedBy) => {
     const updatedComments = (pov.comments || []).filter(
       (comment) => comment.postedBy !== postedBy
     );
-    return await setDocData("povs", povId, "", { comments: updatedComments });
+    return await setDocData(docName, povId, "", { comments: updatedComments });
   } catch (error) {
     throw error;
   }

@@ -34,13 +34,15 @@ import { ErrorSnackbar } from "../ui/snackbar/ErrorSnackbar";
 import {
   commentOnPoVFirebase,
   deletePoVFirebase,
+  getPoVFirebase,
   likePoVFirebase,
   unLikePoVFirebase,
   updatePoVFirebase,
 } from "../../../services/firebase/controller/pov-firebase";
 import { Link } from "react-router-dom";
 
-export const PoV = ({ pov }) => {
+export const PoV = ({ poV }) => {
+  const [pov, setPoV] = useState(poV);
   const [editedPoV, setEditedPoV] = useState(pov);
   const [speedActions, setSpeedActions] = useState([
     { icon: <FileCopy />, name: "Copy" },
@@ -86,7 +88,7 @@ export const PoV = ({ pov }) => {
               : { icon: <Public />, name: "Publish" },
             // { icon: <FileCopy />, name: "Copy" },
             { icon: <Share />, name: "Share" },
-            { icon: <Comment />, name: "Comment" },
+            { icon: <Comment />, name: `Comment (${formatNumber(pov.comments.length)})` },
             likeFound
               ? {
                   icon: <Favorite />,
@@ -100,7 +102,7 @@ export const PoV = ({ pov }) => {
         : setSpeedActions([
             { icon: <FileCopy />, name: "Copy" },
             { icon: <Share />, name: "Share" },
-            { icon: <Comment />, name: "Comment" },
+            { icon: <Comment />, name: `Comment (${formatNumber(pov.comments.length)})` },
             likeFound
               ? {
                   icon: <Favorite />,
@@ -164,12 +166,18 @@ export const PoV = ({ pov }) => {
       if (likeFound) {
         // console.log("clicked to unlike");
         await unLikePoVFirebase(pov.id, userAccount.uid)
-          .then((unLikedPoVFirebase) => {
-            console.log("like pov ", unLikedPoVFirebase);
-            // dispatch pov edit
-            // if (unLikedPoV) {
-            //   dispatch(editPoV(unLikedPoV));
-            // }
+          .then((_) => {
+            getPoVFirebase(pov.id)
+              .then((povFirebase) => {
+                setPoV(povFirebase);
+                handleClosePoVDialog();
+              })
+              .catch((error) => {
+                throw error;
+              });
+          })
+          .catch((error) => {
+            throw error;
           })
           .catch((error) => {
             setError(error.message);
@@ -178,12 +186,15 @@ export const PoV = ({ pov }) => {
       } else {
         // console.log("clicked to like");
         await likePoVFirebase(pov.id, userAccount.uid)
-          .then((likedPoVFirebase) => {
-            console.log("like pov ", likedPoVFirebase);
-            // dispatch pov edit
-            // if (likedPoV) {
-            //   dispatch(editPoV(likedPoV));
-            // }
+           .then((_) => {
+            getPoVFirebase(pov.id)
+              .then((povFirebase) => {
+                setPoV(povFirebase);
+                handleClosePoVDialog();
+              })
+              .catch((error) => {
+                throw error;
+              });
           })
           .catch((error) => {
             setError(error.message);
@@ -211,11 +222,15 @@ export const PoV = ({ pov }) => {
       if (isUserSignedIn()) {
         // console.log("comment ", await povComment);
         await commentOnPoVFirebase(pov.id, userAccount.uid, await povComment)
-          .then((povCommentedFirebase) => {
-            if (povCommentedFirebase) {
-              console.log("comment on pov - ", povCommentedFirebase); // remove
-              handleClosePoVDialog();
-            }
+          .then((_) => {
+            getPoVFirebase(pov.id)
+              .then((povFirebase) => {
+                setPoV(povFirebase);
+                handleClosePoVDialog();
+              })
+              .catch((error) => {
+                throw error;
+              });
           })
           .catch((error) => {
             throw error;
@@ -288,17 +303,26 @@ export const PoV = ({ pov }) => {
   const handleSubmitPoVUpdate = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    // const formJson = Object.fromEntries(formData.entries());
-    await updatePoVHandle(formData);
+    const formJson = Object.fromEntries(formData.entries());
+    // const povUpdateData = {...pov,...formJson}
+    await updatePoVHandle(formJson);
   };
 
   const updatePoVHandle = async (povUpdate) => {
     try {
       if (isUserSignedIn()) {
+        console.log("pov-update - ", povUpdate);
+
         await updatePoVFirebase(pov.id, povUpdate)
-          .then((poVUpdatedFirebase) => {
-            console.log("updated pov - ", poVUpdatedFirebase); // remove
-            handleClosePoVDialog();
+          .then((_) => {
+            getPoVFirebase(pov.id)
+              .then((povFirebase) => {
+                setPoV(povFirebase);
+                handleClosePoVDialog();
+              })
+              .catch((error) => {
+                throw error;
+              });
           })
           .catch((error) => {
             throw error;
@@ -319,7 +343,8 @@ export const PoV = ({ pov }) => {
     try {
       if (isUserSignedIn()) {
         await deletePoVFirebase(pov.id)
-          .then((poVDeletedFirebase) => {
+          .then((_) => {
+            // setPoV()
             handleCloseDeleteDialog();
           })
           .catch((error) => {

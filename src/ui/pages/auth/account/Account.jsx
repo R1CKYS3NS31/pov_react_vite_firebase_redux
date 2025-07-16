@@ -223,7 +223,7 @@ export const Account = () => {
             {!povs.empty ? (
               povs.docs.map((pov) => (
                 <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
-                  <PoV pov={pov} />
+                  <PoV poV={pov} />
                 </Grid2>
               ))
             ) : (

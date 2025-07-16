@@ -32,8 +32,6 @@ export const Home = () => {
     // setLoading(true);
     getPoVsFirebase()
       .then((poVsFetched) => {
-        console.log("fetched povs - ",poVsFetched); // remove
-
         setPovs(poVsFetched);
       })
       .catch((error) => {
@@ -128,7 +126,7 @@ export const Home = () => {
         {!povs.empty ? (
           povs.docs.map((pov) => (
             <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
-              <PoV pov={pov} />
+              <PoV poV={pov} />
             </Grid2>
           ))
         ) : (
