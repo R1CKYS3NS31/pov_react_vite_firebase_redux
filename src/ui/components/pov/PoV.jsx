@@ -74,7 +74,7 @@ export const PoV = ({ pov }) => {
       const likeFound = pov.likes.find(
         (like) => userAccount && userAccount.uid === like
       );
-      userAccount && userAccount.uid === pov.author.id
+      userAccount && userAccount.uid === pov.author.uid
         ? setSpeedActions([
             {
               icon: <DeleteSweep />,
@@ -172,7 +172,7 @@ export const PoV = ({ pov }) => {
             // }
           })
           .catch((error) => {
-            setError(error);
+            setError(error.message);
             setOpenErrorSnackBar(true);
           });
       } else {
@@ -186,7 +186,7 @@ export const PoV = ({ pov }) => {
             // }
           })
           .catch((error) => {
-            setError(error);
+            setError(error.message);
             setOpenErrorSnackBar(true);
           });
       }
@@ -213,9 +213,7 @@ export const PoV = ({ pov }) => {
         await commentOnPoVFirebase(pov.id, userAccount.uid, await povComment)
           .then((povCommentedFirebase) => {
             if (povCommentedFirebase) {
-              console.log("comment on pov - ", povCommentedFirebase);
-
-              // dispatch(editPoV(povCommented));
+              console.log("comment on pov - ", povCommentedFirebase); // remove
               handleClosePoVDialog();
             }
           })
@@ -228,7 +226,8 @@ export const PoV = ({ pov }) => {
         handleClosePoVDialog();
       }
     } catch (error) {
-      setError(error);
+      console.error(error); // remove
+      setError(error.message);
       setOpenErrorSnackBar(true);
       handleClosePoVDialog();
     }
@@ -298,12 +297,8 @@ export const PoV = ({ pov }) => {
       if (isUserSignedIn()) {
         await updatePoVFirebase(pov.id, povUpdate)
           .then((poVUpdatedFirebase) => {
-            if (poVUpdatedFirebase) {
-              console.log("updated pov - ", poVUpdatedFirebase); // remove
-
-              // dispatch(editPoV(poVUpdated));
-              handleClosePoVDialog();
-            }
+            console.log("updated pov - ", poVUpdatedFirebase); // remove
+            handleClosePoVDialog();
           })
           .catch((error) => {
             throw error;
@@ -314,7 +309,7 @@ export const PoV = ({ pov }) => {
         handleClosePoVDialog();
       }
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setOpenErrorSnackBar(true);
       handleClosePoVDialog();
     }
@@ -325,10 +320,7 @@ export const PoV = ({ pov }) => {
       if (isUserSignedIn()) {
         await deletePoVFirebase(pov.id)
           .then((poVDeletedFirebase) => {
-            if (poVDeletedFirebase) {
-              // dispatch(removePov(poVDeleted.id));
-              handleCloseDeleteDialog();
-            }
+            handleCloseDeleteDialog();
           })
           .catch((error) => {
             throw error;
@@ -339,7 +331,7 @@ export const PoV = ({ pov }) => {
         handleCloseDeleteDialog();
       }
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setOpenErrorSnackBar(true);
       handleCloseDeleteDialog();
     }
@@ -389,10 +381,9 @@ export const PoV = ({ pov }) => {
                 sx={{ overflowWrap: "anywhere", wordWrap: "break-word" }}
               >
                 {`${pov.author.name.first} ${pov.author.name.last}`}
-                {/* {pov.author} */}
               </Typography>
             </Stack>
-          </Stack>{" "}
+          </Stack>
           {pov.published && <Public fontSize="small" />}{" "}
         </Stack>
 
@@ -422,6 +413,9 @@ export const PoV = ({ pov }) => {
       >
         {speedActions.map((action) => (
           <SpeedDialAction
+            slotProps={{
+              tooltip: {},
+            }}
             FabProps={{ size: "small" }}
             onClick={() => handleClickAction(action.name)}
             key={action.name}

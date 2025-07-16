@@ -18,23 +18,15 @@ export const savePoVFirebase = async (pov = {}) => {
       // subtitle: subtitle,
       points: points,
       author: author,
-      likes:[],
-      comments:[]
+      likes: [],
+      comments: [],
+      published: false,
     };
     return await saveDocData(docName, "", povData);
   } catch (error) {
     throw error;
   }
 };
-
-// export const getPoVsFirebase = async () => {
-//   try {
-//     // console.log(await loadDocsData(docName));
-//     return await loadDocsData(docName);
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 export const getPoVsFirebase = async () => {
   try {
@@ -43,19 +35,40 @@ export const getPoVsFirebase = async () => {
     const povsWithAuthors = await Promise.all(
       povSnapshots.docs.map((povData) => {
         return getUserFirebase(povData.author)
-          .then((author) => ({
-            id: povData.id,
-            exists: true,
-            ...povData,
-            author,
-          }))
-          .catch((err) => {
-            console.warn(`Failed to load author ${povData.author}:`, err);
+          .then((author) => {
+            const comments = povData.comments || [];
+
+            return Promise.all(
+              comments.map((comment) => {
+                return getUserFirebase(comment.postedBy)
+                  .then((user) => ({
+                    ...comment,
+                    postedBy: user,
+                  }))
+                  .catch((error) => {
+                    console.warn(
+                      `Failed to load postedBy user ${comment.postedBy}:`,
+                      error
+                    );
+                    return comment;
+                  });
+              })
+            ).then((commentsWithUsers) => ({
+              id: povData.id,
+              exists: true,
+              ...povData,
+              author,
+              comments: commentsWithUsers,
+            }));
+          })
+          .catch((error) => {
+            console.warn(`Failed to load author ${povData.author}:`, error);
             return {
               id: povData.id,
               exists: true,
               ...povData,
               author: null,
+              comments: povData.comments || [],
             };
           });
       })
@@ -86,19 +99,39 @@ export const getPoVsByAuthorFirebase = async (authorId) => {
     const povsByAuthorWithAuthor = await Promise.all(
       povsByAuthorSnapshots.docs.map((povData) => {
         return getUserFirebase(povData.author)
-          .then((author) => ({
-            id: povData.id,
-            exists: true,
-            ...povData,
-            author,
-          }))
-          .catch((err) => {
-            console.warn(`Failed to load author ${povData.author}:`, err);
+          .then((author) => {
+            const comments = povData.comments || [];
+            return Promise.all(
+              comments.map((comment) => {
+                return getUserFirebase(comment.postedBy)
+                  .then((user) => ({
+                    ...comment,
+                    postedBy: user,
+                  }))
+                  .catch((error) => {
+                    console.warn(
+                      `Failed to load postedBy user ${comment.postedBy}:`,
+                      error
+                    );
+                    return comment;
+                  });
+              })
+            ).then((commentsWithUsers) => ({
+              id: povData.id,
+              exists: true,
+              ...povData,
+              author,
+              comments: commentsWithUsers,
+            }));
+          })
+          .catch((error) => {
+            console.warn(`Failed to load author ${povData.author}:`, error);
             return {
               id: povData.id,
               exists: true,
               ...povData,
               author: null,
+              comments: povData.comments || [],
             };
           });
       })
@@ -122,14 +155,40 @@ export const getPoVFirebase = async (povId) => {
         const povData = povSnapshot.data();
 
         return getUserFirebase(povData.author)
-          .then((author) => ({
-            id: povSnapshot.id,
-            exists: true,
-            ...povData,
-            author,
-          }))
+          .then((author) => {
+            const comments = povData.comments || [];
+            return Promise.all(
+              comments.map((comment) => {
+                return getUserFirebase(comment.postedBy)
+                  .then((user) => ({
+                    ...comment,
+                    postedBy: user,
+                  }))
+                  .catch((error) => {
+                    console.warn(
+                      `Failed to load postedBy user ${comment.postedBy}:`,
+                      error
+                    );
+                    return comment;
+                  });
+              })
+            ).then((commentsWithUsers) => ({
+              id: povSnapshot.id,
+              exists: true,
+              ...povData,
+              author,
+              comments: commentsWithUsers,
+            }));
+          })
           .catch((error) => {
-            throw error;
+            console.warn(`Failed to load author ${povData.author}:`, error);
+            return {
+              id: povData.id,
+              exists: true,
+              ...povData,
+              author: null,
+              comments: povData.comments || [],
+            };
           });
       })
       .catch((error) => {
@@ -192,10 +251,10 @@ export const commentOnPoVFirebase = async (povId, userId, commentText) => {
     if (!pov.exists) throw new Error("PoV not found");
 
     const newComment = {
-      id: crypto.randomUUID(),
+      // id: crypto.randomUUID(),
       postedBy: userId,
       text: commentText,
-      timestamp: Date.now(),
+      postedAt: Date.now(),
     };
 
     const updatedComments = [...(pov.comments || []), newComment];
@@ -205,13 +264,13 @@ export const commentOnPoVFirebase = async (povId, userId, commentText) => {
   }
 };
 
-export const uncommentPoVFirebase = async (povId, commentId) => {
+export const uncommentPoVFirebase = async (povId, postedBy) => {
   try {
     const pov = await getPoVFirebase(povId);
     if (!pov.exists) throw new Error("PoV not found");
 
     const updatedComments = (pov.comments || []).filter(
-      (comment) => comment.id !== commentId
+      (comment) => comment.postedBy !== postedBy
     );
     return await setDocData("povs", povId, "", { comments: updatedComments });
   } catch (error) {
