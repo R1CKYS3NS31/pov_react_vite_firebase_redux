@@ -80,16 +80,62 @@ export const getPoVsFirebase = async () => {
   }
 };
 
-// export const getPoVsByAuthorFirebase = async (authorId) => {
-//   try {
-//     return await loadDocsDataWhere(docName, 12, {
-//       field: "author",
-//       value: authorId,
-//     });
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+
+export const searchPoVsByTitleFirebase = async (title) => {
+  try {
+    const povsByAuthorSnapshots = await loadDocsDataWhere(docName, 12, {
+      field: "title",
+      value: title,
+    });
+    const povsByAuthorWithAuthor = await Promise.all(
+      povsByAuthorSnapshots.docs.map((povData) => {
+        return getUserFirebase(povData.author)
+          .then((author) => {
+            const comments = povData.comments || [];
+            return Promise.all(
+              comments.map((comment) => {
+                return getUserFirebase(comment.postedBy)
+                  .then((user) => ({
+                    ...comment,
+                    postedBy: user,
+                  }))
+                  .catch((error) => {
+                    console.warn(
+                      `Failed to load postedBy user`,
+                      error
+                    );
+                    return comment;
+                  });
+              })
+            ).then((commentsWithUsers) => ({
+              id: povData.id,
+              exists: true,
+              ...povData,
+              author,
+              comments: commentsWithUsers,
+            }));
+          })
+          .catch((error) => {
+            console.warn(`Failed to load author ${povData.author}:`, error);
+            return {
+              id: povData.id,
+              exists: true,
+              ...povData,
+              author: null,
+              comments: povData.comments || [],
+            };
+          });
+      })
+    );
+    return {
+      ...povsByAuthorSnapshots,
+      docs: povsByAuthorWithAuthor,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPoVsByAuthorFirebase = async (authorId) => {
   try {
     const povsByAuthorSnapshots = await loadDocsDataWhere(docName, 12, {

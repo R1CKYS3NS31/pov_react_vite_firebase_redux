@@ -12,7 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import { PoV } from "../../components/pov/PoV";
 import { Search } from "@mui/icons-material";
-import { getPoVsFirebase } from "../../../services/firebase/controller/pov-firebase";
+import {
+  getPoVsFirebase,
+  searchPoVsByTitleFirebase,
+} from "../../../services/firebase/controller/pov-firebase";
 import { ErrorSnackbar } from "../../components/ui/snackbar/ErrorSnackbar";
 
 export const Home = () => {
@@ -45,20 +48,19 @@ export const Home = () => {
   const handleSearch = async (event, povSearch) => {
     event.preventDefault();
 
-    // await searchPoVs(povSearch ? await povSearch.title : "")
-    //   .then((povFetched) => {
-    //     console.log(povFetched);
-
-    //     // dispatch(setPovs(povFetched));
-    //   })
-    //   .catch((error) => {
-    //     setError(error.message);
-    //     setOpenErrorSnackBar(true);
-    //   });
+    await searchPoVsByTitleFirebase(povSearch ? await povSearch.title : "")
+      .then((povsSearchedFirebase) => {
+        console.log(povsSearchedFirebase);
+        setPovs(povsSearchedFirebase);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setOpenErrorSnackBar(true);
+      });
   };
 
   const poVFilterOptoins = createFilterOptions({
-    stringify: (pov) => `${pov.title} (${pov.points})`,
+    stringify: (pov) => `${pov.title || ""} (${pov.points ?? ""})`,
   });
 
   return (
@@ -73,7 +75,7 @@ export const Home = () => {
             id="search"
             autoHighlight
             options={povs.docs}
-            getOptionLabel={(pov) => pov.title}
+            getOptionLabel={(pov) => pov.title ?? ""}
             filterOptions={poVFilterOptoins}
             onChange={handleSearch}
             renderOption={(props, pov) => (
@@ -81,7 +83,7 @@ export const Home = () => {
                 <ListItemAvatar>
                   <Avatar
                     variant="rounded"
-                    alt={pov.author.name.first}
+                    alt={pov.author.name.first || "Guest"}
                     src={pov.author.displayPicture}
                   />
                 </ListItemAvatar>
