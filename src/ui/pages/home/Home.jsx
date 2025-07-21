@@ -47,7 +47,6 @@ export const Home = () => {
 
   const handleSearch = async (event, povSearch) => {
     event.preventDefault();
-
     await searchPoVsByTitleFirebase(povSearch ? await povSearch.title : "")
       .then((povsSearchedFirebase) => {
         console.log(povsSearchedFirebase);

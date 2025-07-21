@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff, VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
+import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -26,18 +26,16 @@ export const PasswordForm = ({
   const [showPassword, setShowPassword] = useState(false);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState(true);
-
-  const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
-    if (password && newPassword && confirmPassword) {
+    if (newPassword && newPassword) {
       setErrorPassword("");
     } else {
       setErrorPassword("*please fill required fields");
     }
-  }, [password, newPassword, confirmPassword, setErrorPassword]);
+  }, [newPassword, setErrorPassword]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -62,34 +60,7 @@ export const PasswordForm = ({
   return (
     <form onSubmit={handleSubmitPassword}>
       <Grid2 container spacing={2}>
-        <Grid2 item xs={12} sm={6} lg={6}>
-          <TextField
-            required
-            fullWidth
-            variant="standard"
-            name="currentPassword"
-            placeholder="current password"
-            label="Current Password"
-            // type="password"
-            type={showPassword ? "text" : "password"}
-            id="currentPassword"
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-             InputProps={{
-              endAdornment: (
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                  size="large"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              ),
-            }}
-          />
-        </Grid2>
+        <Grid2 item xs={12} sm={6} lg={6}></Grid2>
         <Grid2 item xs={12} sm={6} lg={6}>
           <TextField
             required

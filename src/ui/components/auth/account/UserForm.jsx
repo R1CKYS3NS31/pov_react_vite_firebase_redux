@@ -19,12 +19,23 @@ export const UserForm = ({
   error,
   setError,
 }) => {
-  const [email, setEmail] = useState(userAccount.email);
-  const [tel, setTel] = useState(userAccount.tel);
-  const [firstName, setFirstName] = useState(userAccount.name.first);
-  const [lastName, setLastName] = useState(userAccount.name.last);
-  const [description, setDescription] = useState(userAccount.description);
-  const [displayPicture, setPhotoUrl] = useState(userAccount.displayPicture);
+  const [email, setEmail] = useState("");
+  const [tel, setTel] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [description, setDescription] = useState("");
+  const [displayPicture, setDisplayPicture] = useState("");
+
+  useEffect(() => {
+    if (userAccount) {
+      setEmail(userAccount.email || "");
+      setTel(userAccount.tel || "");
+      setFirstName(userAccount.name?.first || "");
+      setLastName(userAccount.name?.last || "");
+      setDescription(userAccount.description || "");
+      setDisplayPicture(userAccount.displayPicture || "");
+    }
+  }, [userAccount]);
 
   useEffect(() => {
     if (firstName && lastName && email && tel && description) {
@@ -39,7 +50,7 @@ export const UserForm = ({
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPhotoUrl(reader.result);
+      setDisplayPicture(reader.result);
     };
     reader.readAsDataURL(file);
 
@@ -47,7 +58,6 @@ export const UserForm = ({
     user.append("displayPicture", file);
     await updateUserHandle(user);
   };
-
   return (
     <form onSubmit={handleSubmitUser}>
       <Grid2 container size={{ xs: 12 }} spacing={2} sx={{ p: 1 }}>

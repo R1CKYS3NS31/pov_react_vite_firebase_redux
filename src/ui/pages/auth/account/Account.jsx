@@ -59,8 +59,6 @@ export const Account = () => {
     if (isUserSignedIn) {
       getPoVsByAuthorFirebase(userAccount.uid)
         .then((authorsPoVsFetched) => {
-          console.log("author's povs -", authorsPoVsFetched);
-
           setPovs(authorsPoVsFetched);
         })
         .catch((error) => {
@@ -122,14 +120,11 @@ export const Account = () => {
 
   const createPoVHandle = async (poV) => {
     if (isUserSignedIn()) {
-      console.log("pov to save - ", poV);
-
       await savePoVFirebase(poV)
         .then((savedFirebasePoV) => {
           if (savedFirebasePoV) {
             getPoVFirebase(savedFirebasePoV.id)
               .then((firebasePoV) => {
-                console.log("new POV - ", firebasePoV);
                 setPovs((prev) => ({
                   size: prev.size + 1,
                   empty: false,

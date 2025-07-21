@@ -1,5 +1,5 @@
 import { MainCard } from "../../../components/ui/cards/MainCard";
-import { Grid2, } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import { SubCard } from "../../../components/ui/cards/SubCard";
 import { UserForm } from "../../../components/auth/account/UserForm";
 import { PasswordForm } from "../../../components/auth/account/PasswordForm";
@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import {
   currentUser,
   isUserSignedIn,
+  updateUserEmailFirebase,
+  updateUserPasswordFirebase,
+  updateUserProfile,
 } from "../../../../services/firebase/config/firebase-auth";
 import {
   getUserFirebase,
@@ -68,7 +71,6 @@ export const AccountSetting = () => {
       const email = data.get("email");
       const tel = data.get("tel");
       const description = data.get("description");
-      const seller = !!data.get("seller");
       // const displayPicture = data.get("displayPicture");
 
       // handle changes in input fields
@@ -92,9 +94,8 @@ export const AccountSetting = () => {
           first: firstName,
           last: lastName,
         },
-        email: email,
+        displayName: firstName + " " + lastName,
         description: description,
-        seller: seller,
         tel: tel,
         // displayPicture: displayPicture,
       };
@@ -107,52 +108,66 @@ export const AccountSetting = () => {
   };
 
   const handleSubmitPassword = async (event) => {
-    // event.preventDefault();
-    // setLoading(true);
-    // const data = new FormData(event.currentTarget);
-    // const dataObject = Object.fromEntries(data.entries());
-    // try {
-    //   const token = await auth.isAuthenticated();
-    //   // console.log("user: ", token);
-    //   if (token) {
-    //     const fetchedUserAccount = await fetchUserAccount(token);
-    //     const userAccountPassword = await fetchedUserAccount.password; // ricky has bugs - no returning pass - improvise new GET pass @ server
-    //     if (userAccountPassword === dataObject.currentPassword) {
-    //       if (dataObject.newPassword === dataObject.confirmPassword) {
-    //         // console.log(dataObject.newPassword);
-    //         await updateUserHandle({
-    //           password: dataObject.newPassword,
-    //         });
-    //       } else {
-    //         setErrorPassword("*please match the correct password");
-    //       }
-    //     } else {
-    //       setErrorPassword("*incorrect current password");
-    //     }
-    //   } else {
-    //     setErrorPassword("*please sign-in");
-    //   }
-    // } catch (error) {
-    //   setErrorPassword(`*${error}`);
-    // } finally {
-    //   setLoading(false);
-    // }
+    event.preventDefault();
+    setLoading(true);
+    const data = new FormData(event.currentTarget);
+    const dataObject = Object.fromEntries(data.entries());
+    try {
+      if (isUserSignedIn()) {
+        if (dataObject.newPassword === dataObject.confirmPassword) {
+          await updateUserPasswordFirebase(dataObject.newPassword)
+            .then(() => {
+              setLoading(false);
+            })
+            .catch((error) => {
+              throw error;
+            });
+        } else {
+          setErrorPassword("*please match the correct password");
+        }
+      } else {
+        setErrorPassword("*incorrect current password");
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+      setOpen(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateUserHandle = async (user) => {
     if (isUserSignedIn()) {
-      updateUserFirebase(userAccount.uid, user)
-        .then((updatedUserAccount) => {
-          setUserAccount(updatedUserAccount);
-          setLoading(false);
+      await updateUserFirebase(userAccount.uid, user)
+        .then((_) => {
+          updateUserProfile(userAccount.displayName, userAccount.displayPicture)
+            .then((updatedUserProfileFirebase) => {
+              updateUserEmailFirebase(userAccount.email)
+                .then(() => {
+                  getUserFirebase(updatedUserProfileFirebase.uid)
+                    .then((userAccountFirebase) => {
+                      setUserAccount(userAccountFirebase);
+                      setLoading(false);
+                    })
+                    .catch((error) => {
+                      throw error;
+                    });
+                })
+                .catch((error) => {
+                  throw error;
+                });
+            })
+            .catch((error) => {
+              throw error;
+            });
         })
         .catch((error) => {
-          // alert(error)
+          console.error(error);
           setLoading(false);
           setError(error.message);
           setOpen(true);
         });
-      // console.log("user account: ", updatedUserAccount); // remove log
     } else {
       setError("*please sign-in");
       setLoading(false);

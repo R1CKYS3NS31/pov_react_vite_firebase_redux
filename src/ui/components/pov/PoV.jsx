@@ -88,7 +88,10 @@ export const PoV = ({ poV }) => {
               : { icon: <Public />, name: "Publish" },
             // { icon: <FileCopy />, name: "Copy" },
             { icon: <Share />, name: "Share" },
-            { icon: <Comment />, name: `Comment (${formatNumber(pov.comments.length)})` },
+            {
+              icon: <Comment />,
+              name: `Comment (${formatNumber(pov.comments.length)})`,
+            },
             likeFound
               ? {
                   icon: <Favorite />,
@@ -102,7 +105,10 @@ export const PoV = ({ poV }) => {
         : setSpeedActions([
             { icon: <FileCopy />, name: "Copy" },
             { icon: <Share />, name: "Share" },
-            { icon: <Comment />, name: `Comment (${formatNumber(pov.comments.length)})` },
+            {
+              icon: <Comment />,
+              name: `Comment (${formatNumber(pov.comments.length)})`,
+            },
             likeFound
               ? {
                   icon: <Favorite />,
@@ -162,9 +168,7 @@ export const PoV = ({ poV }) => {
   const handleLike = async () => {
     if (isUserSignedIn()) {
       const likeFound = pov.likes.find((like) => like === userAccount.uid);
-      console.log("like found ", likeFound); // remove
       if (likeFound) {
-        // console.log("clicked to unlike");
         await unLikePoVFirebase(pov.id, userAccount.uid)
           .then((_) => {
             getPoVFirebase(pov.id)
@@ -184,9 +188,8 @@ export const PoV = ({ poV }) => {
             setOpenErrorSnackBar(true);
           });
       } else {
-        // console.log("clicked to like");
         await likePoVFirebase(pov.id, userAccount.uid)
-           .then((_) => {
+          .then((_) => {
             getPoVFirebase(pov.id)
               .then((povFirebase) => {
                 setPoV(povFirebase);
@@ -241,7 +244,6 @@ export const PoV = ({ poV }) => {
         handleClosePoVDialog();
       }
     } catch (error) {
-      console.error(error); // remove
       setError(error.message);
       setOpenErrorSnackBar(true);
       handleClosePoVDialog();

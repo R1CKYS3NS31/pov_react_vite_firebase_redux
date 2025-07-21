@@ -86,7 +86,6 @@ export const AuthRegister = () => {
       "https://source.unsplash.com/random"
     )
       .then((signedUpUser) => {
-        // console.log("signed up user to save ",signedUpUser) remove
         if (signedUpUser) {
           setUserFirebase({
             uid: signedUpUser.uid,
@@ -96,9 +95,7 @@ export const AuthRegister = () => {
             name: user.name,
           })
             .then((savedUserFirebase) => {
-              // console.log(savedUserFirebase); // remove
               setLoading(false);
-
               // Check if there's a previous location in the state object
               if (location.state && location.state.from) {
                 // Navigate back to the previous location

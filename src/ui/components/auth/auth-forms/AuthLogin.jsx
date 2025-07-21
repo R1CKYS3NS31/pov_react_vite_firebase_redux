@@ -60,14 +60,10 @@ export const AuthLogin = () => {
   const signInUser = async (user) => {
     await signInUserWithEmailAndPassword(await user.email, await user.password)
       .then((signedInUser) => {
-        // console.log(signedInUser); remove
-
         if (signedInUser) {
           const { uid, accessToken } = signedInUser;
           getUserFirebase(uid)
             .then((userFirebase) => {
-              // console.log(userFirebase); remove
-
               if (userFirebase.uid && accessToken) {
                 setLoading(false);
                 // Check if there's a previous location in the state object

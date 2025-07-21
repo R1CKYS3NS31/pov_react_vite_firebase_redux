@@ -90,13 +90,13 @@ export const currentUser = () => {
   // return onAuthStateChanged(auth, (user) => {
   //   return user;
   // });
-  return auth.currentUser
+  return auth.currentUser;
 };
 
-export const updateUserProfile = async (first, last, displayPicture) => {
+export const updateUserProfile = async (displayName, displayPicture) => {
   if (currentUser) {
     return await updateProfile(auth.currentUser, {
-      displayName: first + " " + last,
+      displayName: displayName,
       photoURL: displayPicture,
     })
       .then((value) => {
@@ -111,6 +111,26 @@ export const updateUserProfile = async (first, last, displayPicture) => {
   } else {
     throw Error("please sign-in");
   }
+};
+
+export const updateUserEmailFirebase = async (email) => {
+  return await updateEmail(auth.currentUser, email)
+    .then(() => {
+      return;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const updateUserPasswordFirebase = async (password) => {
+  return await updatePassword(auth.currentUser, password)
+    .then(() => {
+      return;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
 
 const updateUserDetails = async (user = currentUser()) => {
@@ -181,7 +201,7 @@ const deleteUserProfile = async () => {
   if (currentUser) {
     await deleteUser(currentUser)
       .then(() => {
-        // User deleted.
+        return
       })
       .catch((error) => {
         // An error ocurred

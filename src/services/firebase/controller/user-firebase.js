@@ -74,13 +74,7 @@ export const getUserFirebase = async (userId) => {
 
 export const updateUserFirebase = async (userId, user) => {
   try {
-    const { firstName, lastName, email } = user;
-    const userData = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-    };
-    return await updateDocData(docName, userId, "", userData);
+    return await updateDocData(docName, userId, "", user);
   } catch (error) {
     throw error;
   }
