@@ -4,7 +4,7 @@ import {
   Button,
   CircularProgress,
   FormHelperText,
-  Grid2,
+  Grid,
   IconButton,
   InputAdornment,
   TextField,
@@ -181,8 +181,8 @@ export const AuthLogin = () => {
               "Sign In"
             )}
           </Button>
-          <Grid2 container>
-            <Grid2 item xs>
+          <Grid container>
+            <Grid item size={12}>
               <Typography
                 component={Link}
                 to="/signin"
@@ -191,8 +191,8 @@ export const AuthLogin = () => {
               >
                 Forgot password?
               </Typography>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
       <ErrorSnackbar

@@ -7,7 +7,7 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
-  Grid2,
+  Grid,
   IconButton,
   InputAdornment,
   TextField,
@@ -158,8 +158,8 @@ export const AuthRegister = () => {
         </Avatar>
 
         <form onSubmit={handleSubmit}>
-          <Grid2 container spacing={2} sx={{ mt: 1 }}>
-            <Grid2 item xs={12} sm={6}>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid item size={{ sm: 6 }}>
               <TextField
                 autoComplete="given-name"
                 name="firstName"
@@ -171,8 +171,8 @@ export const AuthRegister = () => {
                 onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
-            </Grid2>
-            <Grid2 item xs={12} xl={6}>
+            </Grid>
+            <Grid item size={{ xl: 6 }}>
               <TextField
                 required
                 fullWidth
@@ -183,8 +183,8 @@ export const AuthRegister = () => {
                 autoComplete="family-name"
                 onChange={(e) => setLastName(e.target.value)}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </Grid>
+            <Grid item size={12}>
               <TextField
                 required
                 fullWidth
@@ -195,8 +195,8 @@ export const AuthRegister = () => {
                 autoComplete="email"
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </Grid>
+            <Grid item size={12}>
               <TextField
                 required
                 fullWidth
@@ -233,19 +233,19 @@ export const AuthRegister = () => {
               {strength !== 0 && (
                 <FormControl fullWidth="true">
                   <Box sx={{ my: 1 }}>
-                    <Grid2 container spacing={2} alignItems="center">
-                      <Grid2 item>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
                         <Box
                           style={{ backgroundColor: level?.color }}
                           sx={{ width: 85, height: 8, borderRadius: "7px" }}
                         />
-                      </Grid2>
-                      <Grid2 item>
+                      </Grid>
+                      <Grid item>
                         <Typography variant="subtitle1" fontSize="0.75rem">
                           {level?.label}
                         </Typography>
-                      </Grid2>
-                    </Grid2>
+                      </Grid>
+                    </Grid>
                   </Box>
                 </FormControl>
               )}
@@ -257,9 +257,9 @@ export const AuthRegister = () => {
               >
                 {error}
               </FormHelperText>
-            </Grid2>
+            </Grid>
 
-            <Grid2 item xs={12}>
+            <Grid item size={12}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -279,8 +279,8 @@ export const AuthRegister = () => {
                   </Typography>
                 }
               />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
           <Button
             type="submit"
             fullWidth

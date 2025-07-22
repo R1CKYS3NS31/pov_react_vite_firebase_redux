@@ -3,7 +3,7 @@ import {
   Avatar,
   Divider,
   Fab,
-  Grid2,
+  Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -154,10 +154,10 @@ export const Account = () => {
 
   return (
     <MainCard title={"Account"} sx={{ minHeight: "100vh" }}>
-      <Grid2 container direction={"column"} spacing={2}>
-        <Grid2 item xs={6} container spacing={2}>
-          <Grid2 item xs={12} md={6} container spacing={2}>
-            <Grid2 item xs={4}>
+      <Grid container direction={"column"} spacing={2}>
+        <Grid item size={6} container spacing={2}>
+          <Grid item size={{md:6}} container spacing={2}>
+            <Grid item size={4}>
               <Avatar
                 variant="rounded"
                 alt={userAccount.exists ? userAccount.name.first : "Guest"}
@@ -167,8 +167,8 @@ export const Account = () => {
                   height: "100px",
                 }}
               />
-            </Grid2>
-            <Grid2 item xs={8}>
+            </Grid>
+            <Grid item size={8}>
               <Typography variant="h2">
                 {userAccount.exists
                   ? userAccount.name.first + " " + userAccount.name.last
@@ -180,9 +180,9 @@ export const Account = () => {
                   userAccount.createdAt.toDate().toDateString()
                 }`}
               </Typography>
-            </Grid2>
-          </Grid2>
-          <Grid2 item xs={12} md={6}>
+            </Grid>
+          </Grid>
+          <Grid item size={{md:6}}>
             <Typography variant="h4">About</Typography>
             <Typography variant="body1">{userAccount.description}</Typography>
             <List component={Stack} direction={"row"} spacing={1}>
@@ -211,29 +211,29 @@ export const Account = () => {
                 />
               </ListItem>
             </List>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <Divider />
-        <Grid2 item xs={6}>
+        <Grid item size={6}>
           <Typography variant="h4" justifySelf={"center"}>
             PoVs
           </Typography>
-          <Grid2 container spacing={0.5}>
+          <Grid container spacing={0.5}>
             {loading ? (
               <LoadingLinear message="Loading PoVs..." />
             ) : !povs.empty ? (
               povs.docs.map((pov) => (
-                <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
+                <Grid item size={{ xs: 12, md: 6 }} key={pov.id}>
                   <PoV poV={pov} />
-                </Grid2>
+                </Grid>
               ))
             ) : (
               <Typography variant="h4" sx={{ justifySelf: "center" }}>
                 no pov available
               </Typography>
             )}
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <Fab
           variant="extended"
           sx={{
@@ -263,7 +263,7 @@ export const Account = () => {
           handleCloseErrorSnackBar={handleCloseErrorSnackBar}
           error={error}
         />
-      </Grid2>
+      </Grid>
     </MainCard>
   );
 };

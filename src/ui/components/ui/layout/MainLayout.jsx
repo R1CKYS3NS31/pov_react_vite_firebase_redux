@@ -5,7 +5,7 @@ import {
   BottomNavigationAction,
   Box,
   Container,
-  Grid2,
+  Grid,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -25,8 +25,8 @@ export const MainLayout = () => {
   };
 
   return (
-    <Grid2 container direction={"column"} justifyContent={"center"} spacing={1}>
-      <Grid2 item minHeight={100} xs={12} sm={12} md={8} lg={6} xl={6}>
+    <Grid container direction={"column"} justifyContent={"center"} spacing={1}>
+      <Grid item minHeight={100} xs={12} sm={12} md={8} lg={6} xl={6}>
         <AppBar variant="outlined"  maxWidth="md">
           <Toolbar disableGutters>
             <Box sx={{ flexGrow: 1 }}></Box>
@@ -38,13 +38,13 @@ export const MainLayout = () => {
             </Box>
           </Toolbar>
         </AppBar>
-      </Grid2>
-      <Grid2 item container xs={12} sm={12} md={8} lg={6} xl={6}>
+      </Grid>
+      <Grid item container xs={12} sm={12} md={8} lg={6} xl={6}>
         <Container>
           <Outlet />
         </Container>
-      </Grid2>
-      <Grid2 itemxs={12} sm={12} md={8} lg={6} xl={6}>
+      </Grid>
+      <Grid itemxs={12} sm={12} md={8} lg={6} xl={6}>
         <BottomNavigation
           showLabels
           sx={{ width: "100%", bottom: 0, position: "fixed" }}
@@ -63,7 +63,7 @@ export const MainLayout = () => {
             icon={<Person3 />}
           />
         </BottomNavigation>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };

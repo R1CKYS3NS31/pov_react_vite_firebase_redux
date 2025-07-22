@@ -2,7 +2,7 @@ import {
   Autocomplete,
   Avatar,
   createFilterOptions,
-  Grid2,
+  Grid,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -67,12 +67,12 @@ export const Home = () => {
   });
 
   return (
-    <Grid2 container>
-      <Grid2 item xs={12} container spacing={2} direction={"row"}>
-        <Grid2 item xs={6}>
+    <Grid container>
+      <Grid item container spacing={2} direction={"row"}>
+        <Grid item >
           <Typography variant="h3">PoV Blog</Typography>
-        </Grid2>
-        <Grid2 item size={{ xs: 6 }}>
+        </Grid>
+        <Grid item size={{ xs: 6 }}>
           <Autocomplete
             freeSolo
             id="search"
@@ -121,9 +121,9 @@ export const Home = () => {
               },
             }}
           />
-        </Grid2>
-      </Grid2>
-      <Grid2 item container spacing={0.5}>
+        </Grid>
+      </Grid>
+      <Grid item container spacing={0.5}>
         {loading ? (
           <LoadingLinear message="Loading PoVs..." />
         ) : !povs.empty &&
@@ -131,19 +131,19 @@ export const Home = () => {
           povs.docs
             .filter((pov) => pov.published)
             .map((pov) => (
-              <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
+              <Grid item size={{  md: 6 }} key={pov.id}>
                 <PoV poV={pov} />
-              </Grid2>
+              </Grid>
             ))
         ) : (
           <NoData message="No PoVs available yet!" />
         )}
-      </Grid2>
+      </Grid>
       <ErrorSnackbar
         openErrorSnackBar={openErrorSnackBar}
         handleCloseErrorSnackBar={handleCloseErrorSnackBar}
         error={error}
       />
-    </Grid2>
+    </Grid>
   );
 };

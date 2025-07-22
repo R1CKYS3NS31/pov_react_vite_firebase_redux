@@ -6,7 +6,7 @@ import {
   ButtonBase,
   CardContent,
   ClickAwayListener,
-  Grid2,
+  Grid,
   IconButton,
   Paper,
   Popper,
@@ -165,12 +165,12 @@ export const ProfileMenu = () => {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MainCard elevation={0} border={false} content={false}>
                     <CardContent sx={{ px: 2.5, pt: 3 }}>
-                      <Grid2
+                      <Grid
                         container
                         justifyContent="space-between"
                         alignItems="center"
                       >
-                        <Grid2 item>
+                        <Grid item>
                           <Stack
                             direction="row"
                             spacing={1.25}
@@ -203,8 +203,8 @@ export const ProfileMenu = () => {
                               </Typography>
                             </Stack>
                           </Stack>
-                        </Grid2>
-                        <Grid2 item>
+                        </Grid>
+                        <Grid item>
                           <IconButton
                             size="large"
                             color="secondary"
@@ -212,8 +212,8 @@ export const ProfileMenu = () => {
                           >
                             <LogoutOutlined />
                           </IconButton>
-                        </Grid2>
-                      </Grid2>
+                        </Grid>
+                      </Grid>
                     </CardContent>
                     {open && (
                       <>

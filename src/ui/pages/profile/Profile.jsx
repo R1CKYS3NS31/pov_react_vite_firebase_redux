@@ -2,7 +2,7 @@ import { EmailOutlined, PhoneOutlined } from "@mui/icons-material";
 import {
   Avatar,
   Divider,
-  Grid2,
+  Grid,
   List,
   ListItem,
   ListItemIcon,
@@ -20,7 +20,6 @@ import { getPoVsByAuthorFirebase } from "../../../services/firebase/controller/p
 import { ErrorSnackbar } from "../../components/ui/snackbar/ErrorSnackbar";
 
 export const Profile = () => {
-
   const { userId } = useParams();
 
   const [povs, setPovs] = useState({ size: 0, empty: true, docs: [] });
@@ -68,10 +67,10 @@ export const Profile = () => {
 
   return (
     <MainCard title={"Profile"} sx={{ minHeight: "100vh" }}>
-      <Grid2 container direction={"column"} spacing={2}>
-        <Grid2 item xs={6} container spacing={2}>
-          <Grid2 item xs={12} md={6} container spacing={2}>
-            <Grid2 item xs={4}>
+      <Grid container direction={"column"} spacing={2}>
+        <Grid item size={6} container spacing={2}>
+          <Grid item size={{ md: 6 }} container spacing={2}>
+            <Grid item size={4}>
               <Avatar
                 variant="rounded"
                 alt={profile.exists ? profile.name.first : "Guest"}
@@ -81,8 +80,8 @@ export const Profile = () => {
                   height: "100px",
                 }}
               />
-            </Grid2>
-            <Grid2 item xs={8}>
+            </Grid>
+            <Grid item size={8}>
               <Typography variant="h2">
                 {profile.exists
                   ? profile.name.first + " " + profile.name.last
@@ -93,9 +92,9 @@ export const Profile = () => {
                   profile.exists && profile.createdAt
                 ).toDateString()}`}
               </Typography>
-            </Grid2>
-          </Grid2>
-          <Grid2 item xs={12} md={6}>
+            </Grid>
+          </Grid>
+          <Grid item size={{ md: 6 }}>
             <Typography variant="h4">About</Typography>
             <Typography variant="body1">
               {profile.exists && profile.description}
@@ -126,33 +125,33 @@ export const Profile = () => {
                 />
               </ListItem>
             </List>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <Divider />
-        <Grid2 item xs={6}>
+        <Grid item size={6}>
           <Typography variant="h4" justifySelf={"center"}>
             PoVs
           </Typography>
-          <Grid2 container spacing={0.5}>
+          <Grid container spacing={0.5}>
             {!povs.empty ? (
               povs.docs.map((pov) => (
-                <Grid2 item size={{ xs: 12, md: 6 }} key={pov.id}>
+                <Grid item size={{ xs: 12, md: 6 }} key={pov.id}>
                   <PoV pov={pov} />
-                </Grid2>
+                </Grid>
               ))
             ) : (
               <Typography variant="h4" sx={{ justifySelf: "center" }}>
                 no pov available
               </Typography>
             )}
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <ErrorSnackbar
-               openErrorSnackBar={openErrorSnackBar}
-               handleCloseErrorSnackBar={handleCloseErrorSnackBar}
-               error={error}
-             />
-      </Grid2>
+          openErrorSnackBar={openErrorSnackBar}
+          handleCloseErrorSnackBar={handleCloseErrorSnackBar}
+          error={error}
+        />
+      </Grid>
     </MainCard>
   );
 };

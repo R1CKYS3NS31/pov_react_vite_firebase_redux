@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import {
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -21,28 +21,28 @@ export const Login = () => {
 
   return (
     <AuthWrapper>
-      <Grid2
+      <Grid
         container
         direction={"column"}
         justifyContent={"flex-end"}
         sx={{ minheight: "100vh" }}
       >
-        <Grid2 item xs={12}>
-          <Grid2
+        <Grid item >
+          <Grid
             container
             justifyContent={"center"}
             alignItems={"center"}
             sx={{ minHeight: "calc(100vh-60px)" }}
           >
-            <Grid2 item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+            <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <AuthCardWrapper>
-                <Grid2
+                <Grid
                   container
                   spacing={2}
                   alignItems={"center"}
                   justifyContent={"center"}
                 >
-                  <Grid2 item sx={{ mb: 0 }}>
+                  <Grid item sx={{ mb: 0 }}>
                     <Typography
                       component={Link}
                       to="/"
@@ -51,15 +51,15 @@ export const Login = () => {
                     >
                       <Logo />
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={12}>
-                    <Grid2
+                  </Grid>
+                  <Grid item >
+                    <Grid
                       container
                       direction={matchDownSM ? "column-reverse" : "row"}
                       alignItems={"center"}
                       justifyContent={"center"}
                     >
-                      <Grid2 item>
+                      <Grid item>
                         <Stack
                           alignItems={"center"}
                           justifyContent={"center"}
@@ -80,18 +80,18 @@ export const Login = () => {
                             Enter your credentials to continue
                           </Typography>
                         </Stack>
-                      </Grid2>
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item xs={12}>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item >
                     {/* auth form - login */}
                     <AuthLogin />
-                  </Grid2>
-                  <Grid2 item xs={12}>
+                  </Grid>
+                  <Grid item >
                     <Divider />
-                  </Grid2>
-                  <Grid2 item xs={12}>
-                    <Grid2
+                  </Grid>
+                  <Grid item >
+                    <Grid
                       item
                       container
                       direction={"column"}
@@ -106,17 +106,17 @@ export const Login = () => {
                       >
                         Don&apos;t have an account?
                       </Typography>
-                    </Grid2>
-                  </Grid2>
-                </Grid2>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </AuthCardWrapper>
-            </Grid2>
-          </Grid2>
-        </Grid2>
-        <Grid2 item xs={12} sx={{ m: 3, mt: 1 }}>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item sx={{ m: 3, mt: 1 }}>
           <AuthFooter />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </AuthWrapper>
   );
 };

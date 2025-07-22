@@ -5,7 +5,7 @@ import {
 import { AuthFooter } from "../../../components/ui/cards/AuthFooter";
 import {
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -21,28 +21,28 @@ export const Register = () => {
 
   return (
     <AuthWrapper>
-      <Grid2
+      <Grid
         container
         direction="column"
         justifyContent="flex-end"
         sx={{ minHeight: "100vh" }}
       >
-        <Grid2 item xs={12}>
-          <Grid2
+        <Grid item>
+          <Grid
             container
             justifyContent="center"
             alignItems="center"
             sx={{ minHeight: "calc(100vh - 68px)" }}
           >
-            <Grid2 item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
+            <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <AuthCardWrapper>
-                <Grid2
+                <Grid
                   container
                   spacing={2}
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Grid2 item sx={{ mb: 0 }}>
+                  <Grid item sx={{ mb: 0 }}>
                     <Typography
                       component={Link}
                       to="/"
@@ -51,15 +51,15 @@ export const Register = () => {
                     >
                       <Logo />
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={12}>
-                    <Grid2
+                  </Grid>
+                  <Grid item>
+                    <Grid
                       container
                       direction={matchDownSM ? "column-reverse" : "row"}
                       alignItems="center"
                       justifyContent="center"
                     >
-                      <Grid2 item>
+                      <Grid item>
                         <Stack
                           alignItems="center"
                           justifyContent="center"
@@ -80,23 +80,22 @@ export const Register = () => {
                             Enter your credentials to continue
                           </Typography>
                         </Stack>
-                      </Grid2>
-                    </Grid2>
-                  </Grid2>
-                  <Grid2 item xs={12}>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item >
                     <AuthRegister />
-                  </Grid2>
-                  <Grid2 item xs={12}>
+                  </Grid>
+                  <Grid item >
                     <Divider />
-                  </Grid2>
-                  <Grid2 item xs={12}>
-                    <Grid2
+                  </Grid>
+                  <Grid item >
+                    <Grid
                       item
                       container
                       direction="column"
                       alignItems="center"
-                      xs={12}
-                    >
+                                          >
                       <Typography
                         component={Link}
                         to="/signin"
@@ -105,17 +104,17 @@ export const Register = () => {
                       >
                         Already have an account?
                       </Typography>
-                    </Grid2>
-                  </Grid2>
-                </Grid2>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </AuthCardWrapper>
-            </Grid2>
-          </Grid2>
-        </Grid2>
-        <Grid2 item xs={12} sx={{ m: 3, mt: 1 }}>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item  sx={{ m: 3, mt: 1 }}>
           <AuthFooter />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </AuthWrapper>
   );
 };

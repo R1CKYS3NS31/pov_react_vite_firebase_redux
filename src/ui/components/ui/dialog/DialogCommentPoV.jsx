@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid2,
+  Grid,
   Input,
   ListItem,
   ListItemAvatar,
@@ -32,15 +32,15 @@ export const DialogCommentPoV = ({ open, handleClose, handleSubmit, pov }) => {
         <DialogContentText mb={2}>
           Comment on '{pov.title}' PoV
         </DialogContentText>
-        <Grid2 container spacing={1} direction={"row"}>
-          <Grid2
+        <Grid container spacing={1} direction={"row"}>
+          <Grid
             item
             container
             direction={"column"}
             spacing={1}
             size={{ xs: 12 }}
           >
-            <Grid2 item size={{ xs: 12 }}>
+            <Grid item size={{ xs: 12 }}>
               {pov.comments && pov.comments.map((comment) => (
                 // <Card>
                 <ListItem sx={{ p: 0 }}>
@@ -66,8 +66,8 @@ export const DialogCommentPoV = ({ open, handleClose, handleSubmit, pov }) => {
                 </ListItem>
                 // </Card>
               ))}
-            </Grid2>
-            <Grid2 item spacing={1} size={{ xs: 12 }}>
+            </Grid>
+            <Grid item spacing={1} size={{ xs: 12 }}>
               <Input // could use TextAreaAutoSize
                 variant="standard"
                 margin="dense"
@@ -83,9 +83,9 @@ export const DialogCommentPoV = ({ open, handleClose, handleSubmit, pov }) => {
                 }
                 // helperText="Comment on PoV"
               />
-            </Grid2>
-          </Grid2>
-        </Grid2>
+            </Grid>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button type="reset" onClick={handleClose}>

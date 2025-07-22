@@ -1,6 +1,5 @@
 import { useTheme } from "@emotion/react";
 import { Typography } from "@mui/material";
-import React from "react";
 // import PoV from "../../../ui/assets/icons/ic_launcher-playstore.png";
 
 export const Logo = () => {

@@ -1,5 +1,5 @@
 import { MainCard } from "../../../components/ui/cards/MainCard";
-import { Grid2 } from "@mui/material";
+import { Grid } from "@mui/material";
 import { SubCard } from "../../../components/ui/cards/SubCard";
 import { UserForm } from "../../../components/auth/account/UserForm";
 import { PasswordForm } from "../../../components/auth/account/PasswordForm";
@@ -176,8 +176,8 @@ export const AccountSetting = () => {
 
   return (
     <MainCard title={"Account Setting"} sx={{ pb: 5 }}>
-      <Grid2 container spacing={2}>
-        <Grid2 item xs={12} lg={6}>
+      <Grid container spacing={2}>
+        <Grid item  size={{lg:6}} >
           <SubCard title={"User"}>
             <UserForm
               handleSubmitUser={handleSubmitUser}
@@ -188,8 +188,8 @@ export const AccountSetting = () => {
               setError={setError}
             />
           </SubCard>
-        </Grid2>
-        <Grid2 item xs={12} lg={6}>
+        </Grid>
+        <Grid item size={{lg:6}} >
           <SubCard title="Password Change">
             <PasswordForm
               handleSubmitPassword={handleSubmitPassword}
@@ -198,8 +198,8 @@ export const AccountSetting = () => {
               setErrorPassword={setErrorPassword}
             />
           </SubCard>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
       <ErrorSnackbar
         openErrorSnackBar={openErrorSnackBar}
         handleCloseErrorSnackBar={handleCloseErrorSnackBar}

@@ -5,7 +5,7 @@ import {
   CircularProgress,
   FormControl,
   FormHelperText,
-  Grid2,
+  Grid,
   IconButton,
   InputAdornment,
   TextField,
@@ -59,9 +59,9 @@ export const PasswordForm = ({
   };
   return (
     <form onSubmit={handleSubmitPassword}>
-      <Grid2 container spacing={2}>
-        <Grid2 item xs={12} sm={6} lg={6}></Grid2>
-        <Grid2 item xs={12} sm={6} lg={6}>
+      <Grid container spacing={2}>
+        <Grid item size={{ xs: 12, sm: 6 }}></Grid>
+        <Grid item size={{ sm: 6 }}>
           <TextField
             required
             fullWidth
@@ -100,8 +100,8 @@ export const PasswordForm = ({
           {strength !== 0 && (
             <FormControl>
               <Box sx={{ my: 1 }}>
-                <Grid2 container spacing={2} alignItems="center">
-                  <Grid2 item>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item>
                     <Box
                       style={{ backgroundColor: level?.color }}
                       sx={{
@@ -110,18 +110,18 @@ export const PasswordForm = ({
                         borderRadius: "7px",
                       }}
                     />
-                  </Grid2>
-                  <Grid2 item>
+                  </Grid>
+                  <Grid item>
                     <Typography variant="subtitle1" fontSize="0.75rem">
                       {level?.label}
                     </Typography>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </Box>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 item xs={12} sm={6} lg={6}>
+        </Grid>
+        <Grid item size={{ sm: 6 }}>
           <TextField
             required
             fullWidth
@@ -138,33 +138,34 @@ export const PasswordForm = ({
               changeConfirmPassword(e.target.value);
             }}
             autoComplete="new-password"
-            InputProps={{
-              // soko with bugs
-              endadornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                    size="large"
-                  >
-                    {showPassword ? (
-                      <VisibilityOutlined />
-                    ) : (
-                      <VisibilityOffOutlined />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPassword ? (
+                        <VisibilityOutlined />
+                      ) : (
+                        <VisibilityOffOutlined />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
           {strength !== 0 && (
             <FormControl>
               <Box sx={{ my: 1 }}>
-                <Grid2 container spacing={2} alignItems="center">
-                  <Grid2 item>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item>
                     <Box
                       style={{ backgroundColor: level?.color }}
                       sx={{
@@ -173,18 +174,18 @@ export const PasswordForm = ({
                         borderRadius: "7px",
                       }}
                     />
-                  </Grid2>
-                  <Grid2 item>
+                  </Grid>
+                  <Grid item>
                     <Typography variant="subtitle1" fontSize="0.75rem">
                       {level?.label}
                     </Typography>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </Box>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 item xs={12}>
+        </Grid>
+        <Grid item size={12}>
           <FormHelperText
             component={Typography}
             variant="subtitle1"
@@ -194,8 +195,8 @@ export const PasswordForm = ({
           >
             {errorPassword}
           </FormHelperText>
-        </Grid2>
-        <Grid2 item xs={12} sm={6} md={6} lg={6}>
+        </Grid>
+        <Grid item size={{sm:6}}>
           <Button
             type="submit"
             fullWidth
@@ -208,8 +209,8 @@ export const PasswordForm = ({
               "Change Password"
             )}
           </Button>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </form>
   );
 };

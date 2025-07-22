@@ -1,10 +1,10 @@
-import { Grid2, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import React from "react";
 
 export const PoVFormFields = ({ editedPoV = {}, handleInputChange }) => {
   return (
-    <Grid2 container spacing={1}>
-       {/* <Grid2 item xs ={6}>
+    <Grid container spacing={1}>
+       {/* <Grid item xs ={6}>
         <Avatar
           variant="rounded"
           alt={editedPoV.title}
@@ -41,8 +41,8 @@ export const PoVFormFields = ({ editedPoV = {}, handleInputChange }) => {
             PoV attachment
           </Button>
         </label>
-      </Grid2> */}
-      <Grid2 item size={{xs:8}}>
+      </Grid> */}
+      <Grid item size={8}>
         <TextField
           autoFocus
           required
@@ -57,9 +57,9 @@ export const PoVFormFields = ({ editedPoV = {}, handleInputChange }) => {
           variant="standard"
           helperText="Product name"
         />
-      </Grid2>
+      </Grid>
 
-      <Grid2 item size={{xs:12}}>
+      <Grid item size={12}>
         <TextField // could use TextAreaAutoSize
           required
           variant="standard"
@@ -75,7 +75,7 @@ export const PoVFormFields = ({ editedPoV = {}, handleInputChange }) => {
           autoComplete="points"
           helperText="Point of View"
         />
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };

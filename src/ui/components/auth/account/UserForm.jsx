@@ -4,7 +4,7 @@ import {
   Button,
   CircularProgress,
   FormHelperText,
-  Grid2,
+  Grid,
   Stack,
   TextField,
   Typography,
@@ -60,8 +60,8 @@ export const UserForm = ({
   };
   return (
     <form onSubmit={handleSubmitUser}>
-      <Grid2 container size={{ xs: 12 }} spacing={2} sx={{ p: 1 }}>
-        <Grid2 item size={{ xs: 12, sm: 4 }}>
+      <Grid container size={{ xs: 12 }} spacing={2} sx={{ p: 1 }}>
+        <Grid item size={{ xs: 12, sm: 4 }}>
           <Stack direction={"column"}>
             <Avatar
               variant="rounded"
@@ -97,9 +97,9 @@ export const UserForm = ({
               name="displayPicture"
             />
           </Stack>
-        </Grid2>
-        <Grid2 item size={{ xs: 12, sm: 8 }} container spacing={1}>
-          <Grid2 item size={{ xs: 12, sm: 6 }}>
+        </Grid>
+        <Grid item size={{ xs: 12, sm: 8 }} container spacing={1}>
+          <Grid item size={{ xs: 12, sm: 6 }}>
             <TextField
               autoComplete="given-name"
               name="firstName"
@@ -113,8 +113,8 @@ export const UserForm = ({
               onChange={(e) => setFirstName(e.target.value)}
               // autoFocus
             />
-          </Grid2>
-          <Grid2 item size={{ xs: 12, sm: 6 }}>
+          </Grid>
+          <Grid item size={{ xs: 12, sm: 6 }}>
             <TextField
               required
               fullWidth
@@ -127,8 +127,8 @@ export const UserForm = ({
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-          </Grid2>
-          <Grid2 item size={{ xs: 12, sm: 8 }}>
+          </Grid>
+          <Grid item size={{ xs: 12, sm: 8 }}>
             <TextField
               required
               fullWidth
@@ -141,9 +141,9 @@ export const UserForm = ({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </Grid2>
-        </Grid2>
-        <Grid2 item size={{ xs: 12, md: 6 }}>
+          </Grid>
+        </Grid>
+        <Grid item size={{ xs: 12, md: 6 }}>
           <TextField
             required
             fullWidth
@@ -157,8 +157,8 @@ export const UserForm = ({
             value={tel}
             onChange={(e) => setTel(e.target.value)}
           />
-        </Grid2>
-        <Grid2 item size={{ xs: 12, md: 6 }}>
+        </Grid>
+        <Grid item size={{ xs: 12, md: 6 }}>
           <TextField
             required
             variant="standard"
@@ -175,8 +175,8 @@ export const UserForm = ({
             autoComplete="description"
             helperText="user description or about"
           />
-        </Grid2>
-        <Grid2 item size={{ xs: 12 }}>
+        </Grid>
+        <Grid item size={{ xs: 12 }}>
           <FormHelperText
             component={Typography}
             variant="subtitle1"
@@ -186,8 +186,8 @@ export const UserForm = ({
           >
             {error}
           </FormHelperText>
-        </Grid2>
-        <Grid2 item size={{ xs: 12, sm: 6 }}>
+        </Grid>
+        <Grid item size={{ xs: 12, sm: 6 }}>
           <Button
             type="submit"
             fullWidth
@@ -200,8 +200,8 @@ export const UserForm = ({
               "Submit Account Setting"
             )}
           </Button>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </form>
   );
 };
