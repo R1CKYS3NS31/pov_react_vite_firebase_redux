@@ -1,48 +1,39 @@
 {
-  "name": "pov_react_firebase",
-  "version": "0.1.0",
+  "name": "pov_react_vite_redux_firebase",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.2",
-    "@mui/material": "^7.3.2",
-    "@mui/x-data-grid": "^7.23.5",
-    "@reduxjs/toolkit": "^2.5.1",
-    "cra-template": "1.2.0",
-    "dayjs": "^1.11.13",
-    "dotenv": "^16.4.7",
-    "firebase": "^11.8.0",
-    "react": "^19.1.0",
-    "react-device-detect": "^2.2.3",
-    "react-dom": "^19.1.0",
-    "react-perfect-scrollbar": "^1.5.8",
-    "react-phone-number-input": "^3.4.10",
-    "react-router-dom": "^7.1.1",
-    "react-scripts": "5.0.1"
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^9.0.0",
+    "@reduxjs/toolkit": "^2.11.2",
+    "firebase": "^12.12.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.14.2",
+    "redux-persist": "^6.0.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@eslint/js": "^10.0.1",
+    "@rolldown/plugin-babel": "^0.2.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.5.0",
+    "vite": "^8.0.10"
   }
 }
