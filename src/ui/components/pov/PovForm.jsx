@@ -26,8 +26,9 @@ const PovForm = ({
     title: pov?.title || "",
     description: pov?.description || "",
     points: Array.isArray(pov?.points)
-      ? pov.points.join("\n")
+      ? pov?.points.join("\n")
       : pov?.points || "",
+    isLocal: pov?.isLocal || false,
   });
 
   const [errors, setErrors] = useState({});
@@ -192,7 +193,7 @@ const PovForm = ({
                 Cancel
               </Button>
 
-               {/* Secondary Action Button (Drafts) */}
+              {/* Secondary Action Button (Drafts) */}
               {(!pov || formData.isLocal) && (
                 <Button
                   onClick={(e) => handleSubmit(e, false)}

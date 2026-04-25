@@ -21,51 +21,25 @@ export const PovDialog = ({ open, onClose, povToEdit = null, isLocal }) => {
     loading,
   } = useAccount();
 
-  const handleSubmit = async (formData, isServerPost = false) => {
-    let userData;
-    if (povToEdit) {
-      userData = {
-        ...povToEdit,
-        ...formData,
-      };
-    } else if (isLocal) {
-      userData = {
-        ...formData,
-        author: {
-          id: await account?.id,
-          name: await account?.name,
-          displayPicture: await account?.displayPicture,
-        },
-      };
-    } else {
-      userData = {
-        ...formData,
-        author: await account?.id,
-      };
-    }
+  const handleSubmit = (formData, isServerPost = false) => {
+  const isUpdate = !!povToEdit?.id;
 
-    try {
-      if (isServerPost) {
-        if (povToEdit && !isLocal) {
-          await updatePov(povToEdit.id, userData);
-        } else {
-          await createPov(userData);
-          if (isLocal && povToEdit?.id) {
-            delete povToEdit?.id;
-          }
-        }
-      } else {
-        if (povToEdit && isLocal) {
-          updatePovLocal(povToEdit.id, userData);
-        } else {
-          await createPovLocal(userData);
-        }
-      }
-      onClose();
-    } catch (err) {
-      console.error("Submission failed:", err);
-    }
+  const userData = {
+    ...povToEdit,
+    ...formData,
+    author: (isLocal || !isUpdate) 
+      ? { id: account?.id, name: account?.name, displayPicture: account?.displayPicture } 
+      : account?.id
   };
+
+  const action = isServerPost
+    ? (isUpdate && !isLocal ? () => updatePov(povToEdit.id, userData) : () => createPov(userData))
+    : (isUpdate && isLocal ? () => updatePovLocal(povToEdit.id, userData) : () => createPovLocal(userData));
+
+  action()
+    .then(onClose)
+    .catch((err) => console.error("Submission failed:", err));
+};
 
   return (
     <Dialog

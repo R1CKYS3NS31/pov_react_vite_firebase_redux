@@ -26,7 +26,6 @@ export const useAuth = () => {
   const { notification, notify, closeNotification, handleApiError } =
     notificationHandler;
 
-  // const isAuthenticated = useCallback(() => !!isUserSignedIn(), []);
   useEffect(() => {
     const unsubscribe = onAuthStateChangedFirebase((currentUser) => {
       setUser(currentUser);

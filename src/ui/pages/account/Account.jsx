@@ -211,6 +211,13 @@ const Account = () => {
               sx={{ mb: 3, flexWrap: "wrap" }}
             >
               <Chip
+                label={`${localItems.length} Drafted`}
+                size="small"
+                variant="outlined"
+                color="primary"
+                sx={{ fontWeight: 700, fontSize: "0.72rem" }}
+              />
+              <Chip
                 label={`${myItems.length} Posted`}
                 size="small"
                 variant="outlined"
