@@ -232,7 +232,7 @@ const PovForm = ({
                   textTransform: "none",
                 }}
               >
-                {pov ? "Update POV" : "Post POV"}
+                {loading ? "Saving..." : pov && !formData.isLocal ? "Update POV" : "Post POV"}
               </Button>
             </Stack>
           </Grid>
