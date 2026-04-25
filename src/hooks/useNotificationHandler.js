@@ -1,45 +1,28 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
-
-const NOTIFICATION_EVENT = "pov-notification";
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { showNotification, hideNotification } from '../services/redux/slices/ui/notificationSlice';
+import { selectNotification } from '../services/redux/selectors/notificationSelectors';
 
 export const useNotificationHandler = () => {  
-  const [notification, setNotification] = useState({
-    open: false,
-    message: '',
-    severity: 'info',
-    isAuthError: false,
-  });
+  const dispatch = useDispatch();
+  const reduxNotification = useSelector(selectNotification);
 
-  useEffect(() => {
-    const handleNotification = (event) => {
-      setNotification(event.detail);
-    };
-
-    window.addEventListener(NOTIFICATION_EVENT, handleNotification);
-    return () => window.removeEventListener(NOTIFICATION_EVENT, handleNotification);
-  }, []);
-
-  const dispatchNotification = (newNotification) => {
-    window.dispatchEvent(new CustomEvent(NOTIFICATION_EVENT, { detail: newNotification }));
-  };
+  // We keep the notification object for local compatibility in hooks, 
+  // but it's now synced with Redux.
+  const notification = useMemo(() => ({
+    open: reduxNotification.open,
+    message: reduxNotification.message,
+    severity: reduxNotification.severity,
+    isAuthError: reduxNotification.isAuthError || false,
+  }), [reduxNotification]);
 
   const notify = useCallback((message, severity = 'info', isAuthError = false) => {
-    dispatchNotification({
-      open: true,
-      message,
-      severity,
-      isAuthError,
-    });
-  }, []);
+    dispatch(showNotification({ message, severity, isAuthError }));
+  }, [dispatch]);
 
   const closeNotification = useCallback(() => {
-    dispatchNotification({
-      open: false,
-      message: '',
-      severity: 'info',
-      isAuthError: false,
-    });
-  }, []); 
+    dispatch(hideNotification());
+  }, [dispatch]); 
   
   const handleApiError = useCallback((err, customFallbackMessage = null) => {
     let message = customFallbackMessage || 'An unexpected error occurred. Please try again.';
@@ -76,9 +59,6 @@ export const useNotificationHandler = () => {
     } else if (err?.message) {
       if (err.message.toLowerCase().includes('network') || err.message.toLowerCase().includes('failed to fetch')) {
         message = 'Network error. Please check your internet connection.';
-      } else if (err?.code === 'auth/popup-closed-by-user') {
-        notify('Sign-in cancelled.', 'info');
-        return;
       } else {
         message = err.message;
       }
@@ -91,12 +71,12 @@ export const useNotificationHandler = () => {
     }
   }, [notify]);
 
-  return useMemo(() => ({
+  const value = useMemo(() => ({
     notification,
     notify,
     handleApiError,
     closeNotification,
   }), [notification, notify, handleApiError, closeNotification]);
+
+  return value;
 };
-
-

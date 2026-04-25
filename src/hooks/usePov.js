@@ -1,9 +1,13 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useFetchData } from "./useFetchData";
 import {
   getPoVsPublishedFirebase,
   searchPoVsByTitleFirebase,
 } from "../service/firebase/controller/pov-firebase";
 import { useNotificationHandler } from "./useNotificationHandler";
+import { selectPovsPage } from "../service/redux/slices/povs/povsSlice";
+import { setPovs } from "../service/redux/slices/pov/povSlice";
+import { useEffect } from "react";
 
 export const usePov = ({
   search = "",
@@ -11,13 +15,16 @@ export const usePov = ({
   size = 12,
   sortBy = "createdAt",
 } = {}) => {
- 
+  const dispatch = useDispatch();
+  
   const notificationHandler = useNotificationHandler();
   const { notification, closeNotification } =
     notificationHandler;
 
+  const reduxPovsPage = useSelector(selectPovsPage);
+
   // Fetching all PoVs
-  const { data: allPovsData, loading: allLoading } = useFetchData(
+  const { data: fetchedPovsData, loading: allLoading } = useFetchData(
     getPoVsPublishedFirebase,
     { page, size, sortBy },
     { notificationHandler },
@@ -30,27 +37,29 @@ export const usePov = ({
     { notificationHandler },
   );
 
-  const allPovs = allPovsData?.empty ? {
-    size: 12,
-    empty: true,
-    content: [],
-    totalPages: 1,
-    totalElements: 0,
-    number: 0,
-  } : allPovsData;
+  useEffect(() => {
+    if (fetchedPovsData) {
+      dispatch(setPovs(fetchedPovsData));
+    }
+  }, [fetchedPovsData, dispatch]);
 
-  const searchedAllPovs = searchedPovsData?.empty ? {
-    size: 12,
-    empty: true,
-    content: [],
-    totalPages: 1,
-    totalElements: 0,
-    number: 0,
-  } : searchedPovsData;
+  useEffect(() => {
+    if (searchedPovsData && search) {
+      dispatch(setPovs(searchedPovsData));
+    }
+  }, [searchedPovsData, search, dispatch]);
+  
+  const allPovs = fetchedPovsData?.empty ? 
+    reduxPovsPage
+   : fetchedPovsData;
+
+  const searchedPovs = searchedPovsData?.empty ? 
+    reduxPovsPage
+  : searchedPovsData;
 
   return {
     allPovs,
-    searchedAllPovs,
+    searchedPovs,
     loading: allLoading || searchLoading,
     closeNotification,
     notification,

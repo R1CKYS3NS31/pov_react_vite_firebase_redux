@@ -44,13 +44,13 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(0);
 
-  const { allPovs, searchedAllPovs, loading } = usePov({
+  const { allPovs, searchedPovs, loading } = usePov({
     search: searchQuery,
     page,
     size: 20,
   });
 
-  const displayPovs  = searchQuery ? searchedAllPovs : allPovs;
+  const displayPovs  = searchQuery ? searchedPovs : allPovs;
   const povItems     = displayPovs?.content  ?? [];
   const totalPages   = displayPovs?.totalPages ?? 1;
 

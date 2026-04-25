@@ -1,39 +1,21 @@
-import { useCallback, useMemo, useState, useEffect } from "react";
-import { theme } from "../ui/styles/themes";
-
-const THEME_CHANGE_EVENT = "theme-change";
+import { useCallback, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../services/redux/slices/theme/themeSlice";
+import { themeSelector } from "../services/redux/selectors/themeSelector";
+import { theme } from "../styles/themes/index";
 
 export const useUiSettings = () => {
-  const [themeType, setThemeType] = useState(
-    () => localStorage.getItem("themeType") || "light"
-  );
+  const dispatch = useDispatch();
+  
+  const themeType = useSelector(themeSelector);
 
-  useEffect(() => {
-    const handleThemeChange = (event) => {
-      setThemeType(event.detail);
-    };
-
-    window.addEventListener(THEME_CHANGE_EVENT, handleThemeChange);
-    return () => window.removeEventListener(THEME_CHANGE_EVENT, handleThemeChange);
-  }, []);
-
-  const activeTheme = useMemo(() => {
-    return theme({ themeType });
-  }, [themeType]);
-
-  const toggleTheme = useCallback(() => {
-    const nextTheme = themeType === "light" ? "dark" : "light";
-    localStorage.setItem("themeType", nextTheme);
-    
-    // Dispatch event to sync all hook instances
-    window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: nextTheme }));
-  }, [themeType]);
+   const activeTheme = useMemo(() => {
+      return theme({ themeType });
+    }, [themeType]);
 
   return {
     themeType,
     activeTheme,
-    toggleTheme,
+    toggleTheme: useCallback(() => dispatch(toggleTheme()), [dispatch]),
   };
 };
-
-

@@ -1,9 +1,13 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useFetchData } from "./useFetchData";
 import { getUserFirebase } from "../service/firebase/controller/user-firebase";
 import { getPoVsByAuthorFirebase } from "../service/firebase/controller/pov-firebase";
 import { useNotificationHandler } from "./useNotificationHandler";
+import { setPovs } from "../service/redux/slices/pov/povSlice";
 
 export const useProfile = (userId) => {
+  const dispatch = useDispatch();
   const notificationHandler = useNotificationHandler();
   const { notification, closeNotification } = notificationHandler;
 
@@ -18,6 +22,12 @@ export const useProfile = (userId) => {
     userId,
     { notificationHandler },
   );
+
+  useEffect(() => {
+    if (userPovsData) {
+      dispatch(setPovs(userPovsData));
+    }
+  }, [userPovsData, dispatch]);
 
   const userPovs = userPovsData?.empty ? {
     size: 12,
