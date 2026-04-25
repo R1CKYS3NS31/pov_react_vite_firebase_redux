@@ -152,6 +152,7 @@ export const useAccount = () => {
         ...povData,
         id,
         createdAt: new Date().toISOString(),
+        isLocal: true,
       };
       dispatch(addPoVLocal(localPov));
       return id;
@@ -180,6 +181,7 @@ export const useAccount = () => {
         ...povData,
         id: povId,
         updatedAt: new Date().toISOString(),
+        isLocal: true,
       };
       dispatch(editPoVLocal(updatedLocalPov));
     },

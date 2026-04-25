@@ -86,16 +86,16 @@ const Account = () => {
     setPovDialogOpen(true);
   };
 
-  const handleEditPov = (pov) => {
+  const handleEditPov = (pov, isLocal = false) => {
     setEditingPov(pov);
-    setIsLocalEdit(false);
+    setIsLocalEdit(isLocal);
     setPovDialogOpen(true);
   };
 
   const handleLocalDelete = (id) => deletePovLocal(id);
   const handleLocalEdit = (pov) => handleEditPov(pov, true);
   const handleMyDelete = (id) => deletePov(id);
-  const handleMyEdit = (pov) => handleEditPov(pov);
+  const handleMyEdit = (pov) => handleEditPov(pov, false);
   const handlePublish = (pov) => {
     updatePov(pov.id, { published: !pov.published });
   };

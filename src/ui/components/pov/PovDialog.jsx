@@ -18,28 +18,56 @@ export const PovDialog = ({ open, onClose, povToEdit = null, isLocal }) => {
     updatePov,
     createPovLocal,
     updatePovLocal,
+    deletePovLocal,
     loading,
   } = useAccount();
 
-  const handleSubmit = (formData, isServerPost = false) => {
-  const isUpdate = !!povToEdit?.id;
+  const handleSubmit = async (formData, isServerPost = false) => {
+    const isUpdate = !!povToEdit?.id;
+    const authorId = account?.id || account?.uid;
 
-  const userData = {
-    ...povToEdit,
-    ...formData,
-    author: (isLocal || !isUpdate) 
-      ? { id: account?.id, name: account?.name, displayPicture: account?.displayPicture } 
-      : account?.id
+    const userData = {
+      ...povToEdit,
+      ...formData,
+    };
+
+    if (isServerPost) {
+      // Sanitize for server: author MUST be a string ID
+      userData.author = authorId;
+      userData.isLocal = false;
+
+      const action =
+        isUpdate && !isLocal
+          ? () => updatePov(povToEdit.id, userData)
+          : () => createPov(userData);
+
+      return action()
+        .then(() => {
+          if (isUpdate && isLocal) {
+            deletePovLocal(povToEdit.id);
+          }
+          onClose();
+        })
+        .catch((err) => console.error("Server submission failed:", err));
+    } else {
+      // Local Draft: author can be an object for easy UI display
+      userData.author = {
+        id: authorId,
+        name: account?.name,
+        displayPicture: account?.displayPicture,
+      };
+      userData.isLocal = true;
+
+      const action =
+        isUpdate && isLocal
+          ? () => updatePovLocal(povToEdit.id, userData)
+          : () => createPovLocal(userData);
+
+      return Promise.resolve(action())
+        .then(onClose)
+        .catch((err) => console.error("Local submission failed:", err));
+    }
   };
-
-  const action = isServerPost
-    ? (isUpdate && !isLocal ? () => updatePov(povToEdit.id, userData) : () => createPov(userData))
-    : (isUpdate && isLocal ? () => updatePovLocal(povToEdit.id, userData) : () => createPovLocal(userData));
-
-  action()
-    .then(onClose)
-    .catch((err) => console.error("Submission failed:", err));
-};
 
   return (
     <Dialog
