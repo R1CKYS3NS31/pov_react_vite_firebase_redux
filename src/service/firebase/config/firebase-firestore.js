@@ -1,4 +1,5 @@
 import {
+  Timestamp,
   addDoc,
   collection,
   deleteDoc,
@@ -18,6 +19,40 @@ import { firebaseApp } from "./firebase-config";
 
 
 const firestore = getFirestore(firebaseApp);
+
+/**
+ * Recursively converts Firestore Timestamp instances to plain ISO strings.
+ * Uses instanceof (not duck-typing) for reliable, type-safe detection.
+ */
+const toPlain = (value) => {
+  if (value instanceof Timestamp) return value.toDate().toISOString();
+  if (Array.isArray(value)) return value.map(toPlain);
+  if (value !== null && typeof value === "object")
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, toPlain(v)]));
+  return value;
+};
+
+/**
+ * Firestore data converter applied to every collection reference.
+ *
+ * fromFirestore — called automatically by the SDK on every document read.
+ *   Attaches id/exists and converts all Timestamps to ISO strings so the
+ *   returned objects are always Redux-safe plain values.
+ *
+ * toFirestore — passes write data through unchanged; timestamps are written
+ *   via serverTimestamp() at the call site.
+ */
+const firestoreConverter = {
+  toFirestore: (data) => data,
+  fromFirestore: (snapshot) => ({
+    id: snapshot.id,
+    exists: snapshot.exists(),
+    ...toPlain(snapshot.data()),
+  }),
+};
+
+/** Returns a collection reference with the converter pre-attached. */
+const getCol = (name) => collection(firestore, name).withConverter(firestoreConverter);
 
 /**
  * Save data to a collection.
@@ -50,7 +85,7 @@ export const saveDocData = async (
  * Simulates offset pagination by fetching up to the requested page.
  */
 export const loadDocsData = async (collectionName, page = 0, size = 12) => {
-  const colRef = collection(firestore, collectionName);
+  const colRef = getCol(collectionName);
   
   // Get total count
   const snapshotCount = await getCountFromServer(colRef);
@@ -70,11 +105,8 @@ export const loadDocsData = async (collectionName, page = 0, size = 12) => {
       return {
         size: pageDocs.length,
         empty: pageDocs.length === 0,
-        content: pageDocs.map((doc) => ({
-          id: doc.id,
-          exists: doc.exists(),
-          ...doc.data(),
-        })),
+        // converter handles id, exists, and Timestamp serialization
+        content: pageDocs.map((d) => d.data()),
         totalPages,
         totalElements,
         number: page,
@@ -94,14 +126,17 @@ export const loadDocDataById = async (
   docId,
   ...pathSegments
 ) => {
-  const docRef = doc(firestore, collectionName, docId, ...pathSegments);
+  // Attach the converter directly to the document reference so the SDK
+  // serializes Timestamps and attaches id/exists automatically on read.
+  const docRef = doc(firestore, collectionName, docId, ...pathSegments)
+    .withConverter(firestoreConverter);
 
   return await getDoc(docRef)
-    .then((docSnap) => ({
-      id: docSnap.id,
-      exists: docSnap.exists(),
-      ...docSnap.data(),
-    }))
+    .then((snap) =>
+      snap.exists()
+        ? snap.data()                          // converter already applied
+        : { id: snap.id, exists: false }        // doc not found
+    )
     .catch((error) => {
       throw error;
     });
@@ -117,7 +152,7 @@ export const loadDocsDataWhere = async (
   size = 12,
   filters = [{ field: "", operator: "==", value: "" }],
 ) => {
-  const colRef = collection(firestore, collectionName);
+  const colRef = getCol(collectionName);
   const filterQuery = filters.map(({ field, operator, value }) => where(field, operator, value));
   const qBase = query(colRef, ...filterQuery);
 
@@ -139,11 +174,8 @@ export const loadDocsDataWhere = async (
       return {
         size: pageDocs.length,
         empty: pageDocs.length === 0,
-        content: pageDocs.map((docSnap) => ({
-          id: docSnap.id,
-          exists: docSnap.exists(),
-          ...docSnap.data(),
-        })),
+        // converter handles id, exists, and Timestamp serialization
+        content: pageDocs.map((d) => d.data()),
         totalPages,
         totalElements,
         number: page,

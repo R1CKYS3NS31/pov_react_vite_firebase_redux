@@ -150,8 +150,8 @@ const Profile = () => {
             <Stack
               direction="row"
               spacing={1}
-              justifyContent="center"
-              sx={{ mb: 1, flexWrap: "wrap" }}
+            
+              sx={{  justifyContent:"center", mb: 1, flexWrap: "wrap" }}
             >
               <Box
                 sx={{

@@ -89,7 +89,7 @@ const PovList = memo(({
       </Stack>
 
       {totalPages > 1 && (
-        <Box display="flex" justifyContent="center" sx={{ mt: 6, mb: 2 }}>
+        <Box display="flex"  sx={{ mt: 6, mb: 2, justifyContent:"center"}}>
           <Pagination
             count={totalPages}
             page={currentPage + 1}

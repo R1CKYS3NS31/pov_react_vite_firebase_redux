@@ -151,11 +151,11 @@ export const AccountSettingsDialog = ({
       PaperProps={{ sx: { borderRadius: 3, bgcolor: "background.paper" } }}
     >
       <DialogTitle
-        component="div"
+        component={Stack}
+        direction={"row"} 
         sx={{
           m: 0,
           p: 3,
-          display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
@@ -198,8 +198,7 @@ export const AccountSettingsDialog = ({
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={4}
-              alignItems="center"
-              sx={{ mb: 4 }}
+              sx={{ mb: 4, alignItems:"center" }}
             >
               <Box sx={{ position: "relative" }}>
                 <Avatar

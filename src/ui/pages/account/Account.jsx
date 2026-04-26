@@ -207,8 +207,12 @@ const Account = () => {
             <Stack
               direction="row"
               spacing={1}
-              justifyContent="center"
-              sx={{ mb: 3, flexWrap: "wrap" }}
+              sx={{
+                  alignItems: "center",
+                justifyContent: "center",
+                mb: 3,
+                flexWrap: "wrap",
+              }}
             >
               <Chip
                 label={`${localItems.length} Drafted`}
@@ -311,7 +315,7 @@ const Account = () => {
                 icon={<FolderRoundedIcon sx={{ fontSize: 17 }} />}
                 iconPosition="start"
                 label={
-                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                  <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.75}>
                     <span>Local Drafts</span>
                     {localItems.length > 0 && (
                       <Chip
@@ -344,7 +348,7 @@ const Account = () => {
                 icon={<CloudUploadRoundedIcon sx={{ fontSize: 17 }} />}
                 iconPosition="start"
                 label={
-                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                  <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.75}>
                     <span>My POVs</span>
                     {myItems.length > 0 && (
                       <Chip
