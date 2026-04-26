@@ -1,20 +1,16 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Stack,
-  alpha,
-  useTheme,
-  Fab,
-  Tooltip,
-  Zoom,
-  Chip,
-  keyframes,
-} from "@mui/material";
+import { alpha, useTheme, keyframes } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Fab from "@mui/material/Fab";
+import Tooltip from "@mui/material/Tooltip";
+import Zoom from "@mui/material/Zoom";
+import Chip from "@mui/material/Chip";
 import { useNavigate } from "react-router-dom";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import AddIcon from "@mui/icons-material/Add";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import Add from "@mui/icons-material/Add";
 import PovSearchBar from "../../components/pov/PovSearchBar";
 import PovList from "../../components/pov/PovList";
 import { usePov } from "../../../hooks/usePov";
@@ -73,7 +69,7 @@ const Home = () => {
           }}
         >
           <Chip
-            icon={<AutoAwesomeIcon sx={{ fontSize: "0.82rem !important" }} />}
+            icon={<AutoAwesome sx={{ fontSize: "0.82rem !important" }} />}
             label="Perspectives, unfiltered"
             size="small"
             sx={{
@@ -166,7 +162,7 @@ const Home = () => {
               id="hero-cta-share"
               variant="contained"
               size="large"
-              startIcon={<AddIcon />}
+              startIcon={<Add />}
               onClick={() => navigate("/account")}
               sx={{
                 borderRadius: "12px",
@@ -254,7 +250,7 @@ const Home = () => {
               },
             }}
           >
-            <AddIcon />
+            <Add />
           </Fab>
         </Tooltip>
       </Zoom>

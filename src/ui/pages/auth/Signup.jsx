@@ -13,9 +13,9 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-import PersonAddIcon from "@mui/icons-material/PersonAddRounded";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForwardRounded";
-import GoogleIcon from "@mui/icons-material/Google";
+import PersonAdd from "@mui/icons-material/PersonAddRounded";
+import ArrowForward from "@mui/icons-material/ArrowForwardRounded";
+import Google from "@mui/icons-material/Google";
 
 const Signup = () => {
   const theme = useTheme();
@@ -92,7 +92,7 @@ const Signup = () => {
                 boxShadow: `0 8px 24px -4px ${alpha(theme.palette.primary.main, 0.5)}`,
               }}
             >
-              <PersonAddIcon />
+              <PersonAdd />
             </Box>
             <Typography variant="h5" fontWeight={850} gutterBottom>
               Join POV
@@ -105,7 +105,7 @@ const Signup = () => {
           <Stack spacing={1.5} direction="row">
             <Button
               variant="outlined"
-              startIcon={<GoogleIcon />}
+              startIcon={<Google />}
               onClick={() =>
                 handleGoogleSignIn().then((user) => {
                   if (user) navigate("/");
@@ -128,7 +128,7 @@ const Signup = () => {
             </Button>
             {/* <Button
               variant="outlined"
-              startIcon={<GitHubIcon />}
+              startIcon={<GitHub />}
               onClick={() => handleSignIn("github")}
               fullWidth
               sx={{
@@ -223,7 +223,7 @@ const Signup = () => {
                 type="submit"
                 variant="contained"
                 disabled={loading}
-                endIcon={<ArrowForwardIcon />}
+                endIcon={<ArrowForward />}
                 sx={{
                   py: 1.2,
                   borderRadius: 2.5,

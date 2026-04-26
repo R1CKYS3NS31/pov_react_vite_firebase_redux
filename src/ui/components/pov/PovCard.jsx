@@ -153,7 +153,7 @@ const PovCard = ({
                       "&:hover": { color: "primary.main" },
                     }}
                   >
-                    {pov?.author?.name?.full || pov?.author?.displayName }
+                    {pov?.author?.name?.full || pov?.author?.displayName}
                   </Typography>
                   <Typography
                     variant="caption"
@@ -183,8 +183,10 @@ const PovCard = ({
                       <ShareIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
-                   {onPublish && (
-                    <Tooltip title={pov?.published ? "Unpublish POV" : "Publish POV"}>
+                  {onPublish && (
+                    <Tooltip
+                      title={pov?.published ? "Unpublish POV" : "Publish POV"}
+                    >
                       <IconButton
                         size="small"
                         color="primary"
@@ -198,7 +200,11 @@ const PovCard = ({
                           "&:hover": { opacity: 1, bgcolor: "action.hover" },
                         }}
                       >
-                        {pov?.published ? <PublicRoundedIcon fontSize="small" /> : <PublicOffRoundedIcon fontSize="small" />}
+                        {pov?.published ? (
+                          <PublicRoundedIcon fontSize="small" />
+                        ) : (
+                          <PublicOffRoundedIcon fontSize="small" />
+                        )}
                       </IconButton>
                     </Tooltip>
                   )}
@@ -271,11 +277,12 @@ const PovCard = ({
               </Typography>
 
               {/* POV Points (Unified String/Array Schema) */}
-              {((Array.isArray(pov?.points) && pov?.points?.length > 0) || (typeof pov?.points === "string" && pov?.points?.trim())) && (
+              {((Array.isArray(pov?.points) && pov?.points?.length > 0) ||
+                (typeof pov?.points === "string" && pov?.points?.trim())) && (
                 <Stack spacing={0.5} sx={{ mb: 1 }}>
-                  {(Array.isArray(pov?.points) 
-                    ? pov.points 
-                    : pov.points.split("\n").filter(p => p.trim())
+                  {(Array.isArray(pov?.points)
+                    ? pov.points
+                    : pov.points.split("\n").filter((p) => p.trim())
                   ).map((point, idx) => (
                     <Box
                       key={idx}
@@ -283,7 +290,8 @@ const PovCard = ({
                         px: 1.25,
                         py: 0.5,
                         borderRadius: 1.5,
-                        bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.06),
+                        bgcolor: (theme) =>
+                          alpha(theme.palette.secondary.main, 0.06),
                         borderLeft: "3px solid",
                         borderColor: "secondary.main",
                         display: "flex",

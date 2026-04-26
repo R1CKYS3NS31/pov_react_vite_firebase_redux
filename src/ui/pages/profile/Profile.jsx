@@ -1,16 +1,12 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Avatar,
-  Paper,
-  Stack,
-  alpha,
-  useTheme,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import { alpha, useTheme } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutlineRounded";
 import ArrowBackIcon from "@mui/icons-material/ArrowBackRounded";

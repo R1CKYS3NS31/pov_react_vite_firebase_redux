@@ -12,10 +12,9 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
-import LoginIcon from "@mui/icons-material/LoginRounded";
-import GoogleIcon from "@mui/icons-material/Google";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForwardRounded";
+import Login from "@mui/icons-material/LoginRounded";
+import Google from "@mui/icons-material/Google";
+import ArrowForward from "@mui/icons-material/ArrowForwardRounded";
 
 const SignIn = () => {
   const theme = useTheme();
@@ -77,7 +76,7 @@ const SignIn = () => {
                 boxShadow: `0 8px 24px -4px ${alpha(theme.palette.primary.main, 0.5)}`,
               }}
             >
-              <LoginIcon />
+              <Login />
             </Box>
             <Typography variant="h5" fontWeight={850} gutterBottom>
               Welcome Back
@@ -90,7 +89,7 @@ const SignIn = () => {
           <Stack spacing={1.5} direction="row">
             <Button
               variant="outlined"
-              startIcon={<GoogleIcon />}
+              startIcon={<Google />}
               onClick={() => handleGoogleSignIn().then((user) => { if(user) navigate("/"); })}
               fullWidth
               sx={{
@@ -112,7 +111,7 @@ const SignIn = () => {
 
             {/* <Button
               variant="outlined"
-              startIcon={<GitHubIcon />}
+              startIcon={<GitHub />}
               onClick={() => {}}
               fullWidth
               disabled
@@ -162,7 +161,7 @@ const SignIn = () => {
                 type="submit"
                 variant="contained"
                 disabled={loading}
-                endIcon={<ArrowForwardIcon />}
+                endIcon={<ArrowForward />}
                 sx={{
                   py: 1.2,
                   mt: 1,

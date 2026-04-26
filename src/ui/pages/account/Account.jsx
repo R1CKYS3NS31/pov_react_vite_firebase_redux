@@ -24,8 +24,9 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutlineRounded";
 import { PovDialog } from "../../components/pov/PovDialog";
 import PovList from "../../components/pov/PovList";
 import { useAccount } from "../../../hooks/useAccount";
-import { AccountSettingsDialog } from "./AccountSettingsDialog";
-import { CloudUploadRounded, FolderRounded } from "@mui/icons-material";
+import { AccountSettingsDialog } from "../../components/user/AccountSettingsDialog";
+import CloudUploadRounded from "@mui/icons-material/CloudUploadRounded";
+import FolderRounded from "@mui/icons-material/FolderRounded";
 
 const Account = () => {
   const theme = useTheme();
