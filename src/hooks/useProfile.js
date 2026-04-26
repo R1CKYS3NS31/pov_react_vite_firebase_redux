@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useFetchData } from "./useFetchData";
 import { getUserFirebase } from "../service/firebase/controller/user-firebase";
@@ -29,15 +29,18 @@ export const useProfile = (userId) => {
     }
   }, [userPovsData, dispatch]);
 
-  const userPovs = userPovsData?.empty ? {
-    size: 12,
-    empty: true,
-    content: [],
-    totalPages: 1,
-    totalElements: 0,
-    number: 0,
-  } : userPovsData;
-
+  const userPovs = useMemo(() => {
+    return userPovsData?.empty
+      ? {
+          size: 12,
+          empty: true,
+          content: [],
+          totalPages: 1,
+          totalElements: 0,
+          number: 0,
+        }
+      : userPovsData;
+  }, [userPovsData]);
 
   return {
     profile,

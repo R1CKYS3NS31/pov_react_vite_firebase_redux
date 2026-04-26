@@ -32,7 +32,6 @@ export const PovDialog = ({ open, onClose, povToEdit = null, isLocal }) => {
     };
 
     if (isServerPost) {
-      // Sanitize for server: author MUST be a string ID
       userData.author = authorId;
       userData.isLocal = false;
 
@@ -50,7 +49,6 @@ export const PovDialog = ({ open, onClose, povToEdit = null, isLocal }) => {
         })
         .catch((err) => console.error("Server submission failed:", err));
     } else {
-      // Local Draft: author can be an object for easy UI display
       userData.author = {
         id: authorId,
         name: account?.name,

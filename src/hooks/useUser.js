@@ -2,7 +2,7 @@ import { useFetchData } from "./useFetchData";
 import { getUserFirebase } from "../service/firebase/controller/user-firebase";
 import { useNotificationHandler } from "./useNotificationHandler";
 
-export const useUser = (userId) => {
+export const useUser = (userId) => { // this is for many users
   const notificationHandler = useNotificationHandler();
   const { notification, closeNotification } = notificationHandler;
 

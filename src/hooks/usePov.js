@@ -7,7 +7,7 @@ import {
 import { useNotificationHandler } from "./useNotificationHandler";
 import { selectPovsPage } from "../service/redux/selectors/povSelector";
 import { setPovs } from "../service/redux/slices/pov/povSlice";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 export const usePov = ({
   search = "",
@@ -49,13 +49,15 @@ export const usePov = ({
     }
   }, [searchedPovsData, search, dispatch]);
   
-  const allPovs = fetchedPovsData?.empty ? 
-    reduxPovsPage
-   : fetchedPovsData;
+  const allPovs = useMemo(() => {
+    if (fetchedPovsData?.empty) return reduxPovsPage;
+    return fetchedPovsData;
+  }, [fetchedPovsData, reduxPovsPage]);
 
-  const searchedPovs = searchedPovsData?.empty ? 
-    reduxPovsPage
-  : searchedPovsData;
+  const searchedPovs = useMemo(() => {
+    if (searchedPovsData?.empty) return reduxPovsPage;
+    return searchedPovsData;
+  }, [searchedPovsData, reduxPovsPage]);
 
   return {
     allPovs,

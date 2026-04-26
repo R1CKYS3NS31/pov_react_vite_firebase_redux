@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotificationHandler } from "./useNotificationHandler";
 import {
@@ -55,11 +55,10 @@ export const useAccount = () => {
   const reduxMyPovsPage = useSelector(selectMyPovsPage);
   const reduxPovsLocalPage = useSelector(selectPovsLocalPage);
 
-  const { data: userAccount, loading: userAccountLoading } = useFetchData(
-    authAccount?.uid ? getUserFirebase : null,
-    authAccount?.uid,
-    { notificationHandler },
-  );
+  const { data: fetchedUserAccount, loading: userAccountLoading } =
+    useFetchData(authAccount?.uid ? getUserFirebase : null, authAccount?.uid, {
+      notificationHandler,
+    });
 
   const { data: myPoVsData, loading: myPoVsLoading } = useFetchData(
     authAccount?.uid ? getMyPoVsFirebase : null,
@@ -68,26 +67,31 @@ export const useAccount = () => {
   );
 
   useEffect(() => {
-    if (userAccount?.exists) {
-      dispatch(setUserAccount(userAccount));
-    } else if (authAccount?.exists) {
-      dispatch(setUserAccount(authAccount));
-    }
-  }, [userAccount, authAccount, dispatch]);
+    dispatch(
+      setUserAccount(
+        fetchedUserAccount?.exists
+          ? fetchedUserAccount
+          : authAccount?.exists
+            ? authAccount
+            : reduxUserAccount,
+      ),
+    );
+  }, [fetchedUserAccount, authAccount, reduxUserAccount, dispatch]);
 
   useEffect(() => {
-    if (!myPoVsData?.empty) {
-      dispatch(setMyPovs(myPoVsData));
-    }
-  }, [myPoVsData, dispatch]);
+    dispatch(setMyPovs(myPoVsData?.empty ? reduxMyPovsPage : myPoVsData));
+  }, [myPoVsData, reduxMyPovsPage, dispatch]);
 
-  const account = userAccount?.exists
-    ? userAccount
-    : authAccount?.exists
-      ? authAccount
-      : reduxUserAccount;
+  const account = useMemo(() => {
+    if (fetchedUserAccount?.exists) return fetchedUserAccount;
+    if (authAccount?.exists) return authAccount;
+    return reduxUserAccount;
+  }, [fetchedUserAccount, authAccount, reduxUserAccount]);
 
-  const myPoVs = myPoVsData?.empty ? reduxMyPovsPage : myPoVsData;
+  const myPoVs = useMemo(() => {
+    if (myPoVsData?.empty) return reduxMyPovsPage;
+    return myPoVsData;
+  }, [myPoVsData, reduxMyPovsPage]);
 
   const handleUpdateUserAccount = useCallback(
     (userData) => {
