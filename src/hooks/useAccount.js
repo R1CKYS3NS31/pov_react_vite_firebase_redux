@@ -67,20 +67,18 @@ export const useAccount = () => {
   );
 
   useEffect(() => {
-    dispatch(
-      setUserAccount(
-        fetchedUserAccount?.exists
-          ? fetchedUserAccount
-          : authAccount?.exists
-            ? authAccount
-            : reduxUserAccount,
-      ),
-    );
-  }, [fetchedUserAccount, authAccount, reduxUserAccount, dispatch]);
+    if (fetchedUserAccount?.exists) {
+      dispatch(setUserAccount(fetchedUserAccount));
+    } else if (authAccount?.exists) {
+      dispatch(setUserAccount(authAccount));
+    }
+  }, [fetchedUserAccount, authAccount, dispatch]);
 
   useEffect(() => {
-    dispatch(setMyPovs(myPoVsData?.empty ? reduxMyPovsPage : myPoVsData));
-  }, [myPoVsData, reduxMyPovsPage, dispatch]);
+    if (myPoVsData && !myPoVsData?.empty) {
+      dispatch(setMyPovs(myPoVsData));
+    }
+  }, [myPoVsData, dispatch]);
 
   const account = useMemo(() => {
     if (fetchedUserAccount?.exists) return fetchedUserAccount;
@@ -88,10 +86,10 @@ export const useAccount = () => {
     return reduxUserAccount;
   }, [reduxUserAccount, authAccount, fetchedUserAccount]);
 
-  const myPoVs = useMemo(() => {
-    if (!myPoVsData?.empty) return myPoVsData;
-    return reduxMyPovsPage;
-  }, [reduxMyPovsPage, myPoVsData]);
+  // const myPoVs = useMemo(() => {
+  //   if (!myPoVsData?.empty) return myPoVsData;
+  //   return reduxMyPovsPage;
+  // }, [reduxMyPovsPage, myPoVsData]);
 
   const handleUpdateUserAccount = useCallback(
     (userData) => {
@@ -226,8 +224,8 @@ export const useAccount = () => {
     myPoVsLoading;
 
   return {
-    account,
-    myPoVs,
+    account: reduxUserAccount,
+    myPoVs: reduxMyPovsPage,
     localPoVs: reduxPovsLocalPage,
     createPov,
     updatePov,
