@@ -86,12 +86,12 @@ export const useAccount = () => {
     if (fetchedUserAccount?.exists) return fetchedUserAccount;
     if (authAccount?.exists) return authAccount;
     return reduxUserAccount;
-  }, [fetchedUserAccount, authAccount, reduxUserAccount]);
+  }, [reduxUserAccount, authAccount, fetchedUserAccount]);
 
   const myPoVs = useMemo(() => {
-    if (myPoVsData?.empty) return reduxMyPovsPage;
-    return myPoVsData;
-  }, [myPoVsData, reduxMyPovsPage]);
+    if (!myPoVsData?.empty) return myPoVsData;
+    return reduxMyPovsPage;
+  }, [reduxMyPovsPage, myPoVsData]);
 
   const handleUpdateUserAccount = useCallback(
     (userData) => {
