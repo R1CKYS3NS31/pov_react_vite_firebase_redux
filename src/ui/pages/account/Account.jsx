@@ -24,7 +24,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutlineRounded";
 import { PovDialog } from "../../components/pov/PovDialog";
 import PovList from "../../components/pov/PovList";
 import { useAccount } from "../../../hooks/useAccount";
-import { AccountSettingsDialog } from "../../components/user/AccountSettingsDialog";
+import { AccountSettingsDialog } from "../../components/account/AccountSettingsDialog";
 import CloudUploadRounded from "@mui/icons-material/CloudUploadRounded";
 import FolderRounded from "@mui/icons-material/FolderRounded";
 
@@ -209,7 +209,7 @@ const Account = () => {
               direction="row"
               spacing={1}
               sx={{
-                  alignItems: "center",
+                alignItems: "center",
                 justifyContent: "center",
                 mb: 3,
                 flexWrap: "wrap",
@@ -316,7 +316,11 @@ const Account = () => {
                 icon={<FolderRoundedIcon sx={{ fontSize: 17 }} />}
                 iconPosition="start"
                 label={
-                  <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    sx={{ alignItems: "center" }}
+                    spacing={0.75}
+                  >
                     <span>Local Drafts</span>
                     {localItems.length > 0 && (
                       <Chip
@@ -349,7 +353,11 @@ const Account = () => {
                 icon={<CloudUploadRoundedIcon sx={{ fontSize: 17 }} />}
                 iconPosition="start"
                 label={
-                  <Stack direction="row" sx={{ alignItems: "center" }} spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    sx={{ alignItems: "center" }}
+                    spacing={0.75}
+                  >
                     <span>My POVs</span>
                     {myItems.length > 0 && (
                       <Chip
@@ -378,83 +386,6 @@ const Account = () => {
               />
             </Tabs>
           </Stack>
-          {/* 
-          {myItems.length === 0 ? (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                minHeight: 280,
-                bgcolor: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-                borderRadius: 4,
-                border: "2px dashed",
-                borderColor: "divider",
-                textAlign: "center",
-                p: 4,
-              }}
-            >
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                color="text.secondary"
-                gutterBottom
-              >
-                {isAuthenticated
-                  ? "No posted perspectives yet"
-                  : "Not signed in"}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 3, opacity: 0.75 }}
-              >
-                {isAuthenticated
-                  ? "Post your first PoV and let the world see your perspective."
-                  : "Sign in to post and manage your perspectives."}
-              </Typography>
-              {isAuthenticated ? (
-                <Button
-                  id="btn-post-first"
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={handleCreateNew}
-                  sx={{
-                    borderRadius: 2.5,
-                    fontWeight: 700,
-                    background: `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`,
-                    boxShadow: `0 6px 20px -4px ${alpha(primary, 0.5)}`,
-                  }}
-                >
-                  Post Your First PoV
-                </Button>
-              ) : (
-                <Button
-                  id="btn-sign-in-posted"
-                  component={Link}
-                  to="/signin"
-                  variant="outlined"
-                  startIcon={<LoginIcon />}
-                  sx={{ borderRadius: 2.5, fontWeight: 700 }}
-                >
-                  Sign In
-                </Button>
-              )}
-            </Box>
-          ) : (
-            <PovList
-              povs={myItems}
-              loading={loading}
-              onPublish={handlePublish}
-              onEdit={handleMyEdit}
-              onDelete={handleMyDelete}
-              totalPages={myPages}
-              emptyMessage="No posted perspectives yet."
-            />
-          )}
-        </Grid>
-      </Grid> */}
 
           {activeTab === 0 && (
             <Box

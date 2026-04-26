@@ -1,11 +1,9 @@
-import {
-  Dialog,
-  DialogContent,
-  useTheme,
-  IconButton,
-  Box,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/CloseRounded";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import { useTheme } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 import PovForm from "./PovForm";
 import { useAccount } from "../../../hooks/useAccount";
 
@@ -91,7 +89,7 @@ export const PovDialog = ({ open, onClose, povToEdit = null, isLocal }) => {
           size="small"
           sx={{ color: "text.secondary" }}
         >
-          <CloseIcon />
+          <CloseRounded />
         </IconButton>
       </Box>
 

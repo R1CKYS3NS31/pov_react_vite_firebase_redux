@@ -1,4 +1,6 @@
-import { Box, Typography, keyframes } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { keyframes } from "@mui/material";
 
 const povPulse = keyframes`
   0%, 100% { transform: scale(1); box-shadow: 0 16px 40px rgba(246,193,67,0.35); }

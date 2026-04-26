@@ -1,6 +1,14 @@
-import React, { memo } from 'react';
-import { Box, Typography, Pagination, Stack, Skeleton, Card, CardContent, Divider, Grid, alpha } from '@mui/material';
-import PovCard from './PovCard';
+import { memo } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import Skeleton from "@mui/material/Skeleton";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import {alpha} from "@mui/material";
+import PovCard from "./PovCard";
 
 const PovList = memo(({
   povs = [],
@@ -8,7 +16,7 @@ const PovList = memo(({
   onDelete,
   onEdit,
   onPublish,
-  likedPovIds = [],
+  likedPovIds = [], 
   currentPage = 0,
   totalPages = 1,
   onPageChange,

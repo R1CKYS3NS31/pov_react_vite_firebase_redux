@@ -9,8 +9,8 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Grid from "@mui/material/Grid";
-import SaveIcon from "@mui/icons-material/Save";
-import SendIcon from "@mui/icons-material/Send";
+import Save from "@mui/icons-material/Save";
+import Send from "@mui/icons-material/Send";
 
 const PovForm = ({
   pov = null,
@@ -200,7 +200,7 @@ const PovForm = ({
                   variant="outlined"
                   color="secondary"
                   disabled={loading}
-                  startIcon={<SaveIcon sx={{ fontSize: 18 }} />}
+                  startIcon={<Save sx={{ fontSize: 18 }} />}
                   sx={{
                     px: 2.5,
                     borderRadius: 2,
@@ -212,7 +212,6 @@ const PovForm = ({
                 </Button>
               )}
 
-              {/* Main Action Button (Updates/Global Post) */}
               <Button
                 onClick={(e) => handleSubmit(e, true)}
                 variant="contained"
@@ -222,7 +221,7 @@ const PovForm = ({
                   loading ? (
                     <CircularProgress size={16} color="inherit" />
                   ) : (
-                    <SendIcon sx={{ fontSize: 18 }} />
+                    <Send sx={{ fontSize: 18 }} />
                   )
                 }
                 sx={{

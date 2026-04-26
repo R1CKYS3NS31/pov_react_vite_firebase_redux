@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Box,
-  Typography,
-  IconButton,
-  Tooltip,
-} from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Twitter from "@mui/icons-material/Twitter";
+import WhatsApp from "@mui/icons-material/WhatsApp";
+import LinkedIn from "@mui/icons-material/LinkedIn";
+import ContentCopy from "@mui/icons-material/ContentCopy";
+import CheckCircle from "@mui/icons-material/CheckCircle";
 
 const SharePovModal = ({ open, handleClose, pov }) => {
   const [copied, setCopied] = useState(false);
@@ -64,7 +62,7 @@ const SharePovModal = ({ open, handleClose, pov }) => {
               rel="noopener noreferrer"
               sx={{ bgcolor: '#1DA1F2', color: 'white', '&:hover': { bgcolor: '#1a91da' } }}
             >
-              <TwitterIcon />
+              <Twitter />
             </IconButton>
           </Tooltip>
           <Tooltip title="Share on WhatsApp">
@@ -75,7 +73,7 @@ const SharePovModal = ({ open, handleClose, pov }) => {
               rel="noopener noreferrer"
               sx={{ bgcolor: '#25D366', color: 'white', '&:hover': { bgcolor: '#20bd5a' } }}
             >
-              <WhatsAppIcon />
+              <WhatsApp />
             </IconButton>
           </Tooltip>
           <Tooltip title="Share on LinkedIn">
@@ -86,7 +84,7 @@ const SharePovModal = ({ open, handleClose, pov }) => {
               rel="noopener noreferrer"
               sx={{ bgcolor: '#0077B5', color: 'white', '&:hover': { bgcolor: '#006699' } }}
             >
-              <LinkedInIcon />
+              <LinkedIn />
             </IconButton>
           </Tooltip>
         </Box>
@@ -112,7 +110,7 @@ const SharePovModal = ({ open, handleClose, pov }) => {
             size="small"
             variant={copied ? "contained" : "outlined"}
             color={copied ? "success" : "primary"}
-            startIcon={copied ? <CheckCircleIcon /> : <ContentCopyIcon />}
+            startIcon={copied ? <CheckCircle /> : <ContentCopy />}
             onClick={handleCopy}
             sx={{ borderRadius: 2, fontWeight: 700, minWidth: 90 }}
           >

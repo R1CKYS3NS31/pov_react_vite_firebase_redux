@@ -1,9 +1,12 @@
-import { Snackbar, Alert, Slide, useTheme, alpha } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Slide from "@mui/material/Slide";
+import { useTheme, alpha } from "@mui/material";
 import { useNotificationHandler } from "../../../hooks/useNotificationHandler";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutlineRounded";
-import InfoIcon from "@mui/icons-material/InfoOutlined";
-import WarningAmberIcon from "@mui/icons-material/WarningAmberRounded";
+import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
+import ErrorOutlineRounded from "@mui/icons-material/ErrorOutlineRounded";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
 
 export const PoVNotification = () => {
   const theme = useTheme();
@@ -18,10 +21,10 @@ export const PoVNotification = () => {
 
   const getIcon = () => {
     switch (severity) {
-      case "success": return <CheckCircleOutlineIcon fontSize="small" />;
-      case "error": return <ErrorOutlineIcon fontSize="small" />;
-      case "warning": return <WarningAmberIcon fontSize="small" />;
-      default: return <InfoIcon fontSize="small" />;
+      case "success": return <CheckCircleOutlineRounded fontSize="small" />;
+      case "error": return <ErrorOutlineRounded fontSize="small" />;
+      case "warning": return <WarningAmberRounded fontSize="small" />;
+      default: return <InfoOutlined fontSize="small" />;
     }
   };
 

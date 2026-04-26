@@ -1,10 +1,9 @@
-import React from "react";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
-import { alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
+import { alpha } from "@mui/material";
+import Search from "@mui/icons-material/Search";
+import Clear from "@mui/icons-material/Clear";
 
 const PovSearchBar = ({ searchQuery, setSearchQuery }) => {
   return (
@@ -35,7 +34,7 @@ const PovSearchBar = ({ searchQuery, setSearchQuery }) => {
         aria-label="search"
         disabled
       >
-        <SearchIcon />
+        <Search fontSize="small" />
       </IconButton>
       <InputBase
         sx={{ ml: 1, flex: 1, fontWeight: 500 }}
@@ -54,7 +53,7 @@ const PovSearchBar = ({ searchQuery, setSearchQuery }) => {
           aria-label="clear"
           onClick={() => setSearchQuery("")}
         >
-          <ClearIcon fontSize="small" />
+          <Clear fontSize="small" />
         </IconButton>
       )}
     </Paper>

@@ -1,8 +1,8 @@
 import Fab from "@mui/material/Fab";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
+import Tooltip from "@mui/material/Tooltip";
+import DarkMode from "@mui/icons-material/DarkMode";
+import LightMode from "@mui/icons-material/LightMode";
 import { useUiSettings } from "../../../hooks/useUiSettings";
-import { Tooltip } from "@mui/material";
 
 const ThemeToggleFab = () => {
   const { themeType, toggleTheme } = useUiSettings();
@@ -19,7 +19,7 @@ const ThemeToggleFab = () => {
         onClick={() => toggleTheme()}
         style={{ position: "fixed", bottom: 16, right: 16, zIndex: 1000 }}
       >
-        {themeType === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
+        {themeType === "dark" ? <LightMode /> : <DarkMode />}
       </Fab>
     </Tooltip>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Card from "@mui/material/Card";
@@ -16,13 +16,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import ShareIcon from "@mui/icons-material/Share";
+import Delete from "@mui/icons-material/Delete";
+import Edit from "@mui/icons-material/Edit";
+import Share from "@mui/icons-material/Share";
 import { alpha } from "@mui/material";
 import SharePovModal from "./SharePovModal";
-import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
-import PublicOffRoundedIcon from "@mui/icons-material/PublicOffRounded";
+import PublicRounded from "@mui/icons-material/PublicRounded";
+import PublicOffRounded from "@mui/icons-material/PublicOffRounded";
 import { selectUserAccount } from "../../../service/redux/selectors/userAccountSelector";
 
 const PovCard = ({
@@ -180,7 +180,7 @@ const PovCard = ({
                         "&:hover": { opacity: 1, bgcolor: "primary.light" },
                       }}
                     >
-                      <ShareIcon fontSize="small" />
+                      <Share fontSize="small" />
                     </IconButton>
                   </Tooltip>
                   {onPublish && (
@@ -201,9 +201,9 @@ const PovCard = ({
                         }}
                       >
                         {pov?.published ? (
-                          <PublicRoundedIcon fontSize="small" />
+                          <PublicRounded fontSize="small" />
                         ) : (
-                          <PublicOffRoundedIcon fontSize="small" />
+                          <PublicOffRounded fontSize="small" />
                         )}
                       </IconButton>
                     </Tooltip>
@@ -223,7 +223,7 @@ const PovCard = ({
                           "&:hover": { opacity: 1, bgcolor: "action.hover" },
                         }}
                       >
-                        <EditIcon fontSize="small" />
+                        <Edit fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   )}
@@ -242,7 +242,7 @@ const PovCard = ({
                           "&:hover": { opacity: 1, bgcolor: "error.lighter" },
                         }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <Delete fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   )}

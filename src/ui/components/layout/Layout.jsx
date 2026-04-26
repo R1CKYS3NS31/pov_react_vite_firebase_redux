@@ -1,4 +1,4 @@
-import { alpha, Stack } from "@mui/material";
+import { alpha } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,9 +9,10 @@ import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogoutIcon from "@mui/icons-material/Logout";
-import LoginIcon from "@mui/icons-material/Login";
+import Stack from "@mui/material/Stack";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Logout from "@mui/icons-material/Logout";
+import Login from "@mui/icons-material/Login";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
@@ -105,7 +106,7 @@ const Layout = () => {
               src={userAccount?.displayPicture}
               sx={{ width: 32, height: 32, bgcolor: "primary.main", fontWeight: 700 }}
             >
-              {userAccount?.name?.first?.[0] || <AccountCircleIcon />}
+              {userAccount?.name?.first?.[0] || <AccountCircle />}
             </Avatar>
           </IconButton>
         </Toolbar>
@@ -163,7 +164,7 @@ const Layout = () => {
           to={isAuthenticated ? "/account?tab=1" : "/account?tab=0"}
           sx={{ px: 2, borderRadius: 2, fontWeight: 700 }}
         >
-          <AccountCircleIcon
+          <AccountCircle
             fontSize="small"
             sx={{ mr: 2, color: "primary.main" }}
           />
@@ -182,7 +183,7 @@ const Layout = () => {
               color: "error.main",
             }}
           >
-            <LogoutIcon sx={{ mr: 2, fontSize: 20 }} /> Sign Out
+            <Logout sx={{ mr: 2, fontSize: 20 }} /> Sign Out
           </MenuItem>
         ) : (
           <MenuItem
@@ -195,7 +196,7 @@ const Layout = () => {
               color: "primary.main",
             }}
           >
-            <LoginIcon sx={{ mr: 2, fontSize: 20 }} />Sign In / Support PoV
+            <Login sx={{ mr: 2, fontSize: 20 }} />Sign In / Support PoV
           </MenuItem>
         )}
       </Menu>
