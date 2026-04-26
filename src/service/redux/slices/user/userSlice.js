@@ -25,13 +25,6 @@ export const userSlice = createSlice({
       state.number = Math.floor(state.totalElements / state.size) - 1;
       return state;
     },
-    getUserById: (state, action) => {
-      const userId = action.payload;
-      if (state.content) {
-        return state.content.find((user) => user.id === userId);
-      }
-      return null;
-    },
     removeUser: (state, action) => {
       state.content = state.content.filter(
         (user) => user.id !== action.payload.id,

@@ -19,12 +19,9 @@ export const userAccountSlice = createSlice({
       return action.payload;
     },
     editUserAccount: (state, action) => {
-      const userAccount = {
-        user: action.payload.user || action.payload,
-      };
       return {
         ...state,
-        ...userAccount,
+        ...action.payload,
       };
     },
 

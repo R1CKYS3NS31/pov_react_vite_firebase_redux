@@ -103,13 +103,13 @@ export const useAuth = () => {
     setAuthLoading(true);
     return signInWithGoogleAuth()
       .then(async ({ user, isNewUser }) => {
-        // save user in firestore database when created
         if (isNewUser) {
-          await setUserFirebase({
+          // New Google user — create Firestore profile then seed Redux.
+          return await setUserFirebase({
             uid: user.uid,
             email: user.email,
             displayName: user.displayName,
-            displayPicture: user.displayPicture,
+            displayPicture: user.photoURL || "",
             name: {
               first: user.displayName?.split(" ")[0] || "",
               last: user.displayName?.split(" ").slice(1).join(" ") || "",
@@ -117,18 +117,26 @@ export const useAuth = () => {
             description: "",
           })
             .then((userFirestore) => {
+              dispatch(setUserAccount(userFirestore));
               notify("Account created and signed in successfully!", "success");
               return userFirestore;
             })
             .catch(handleApiError)
             .finally(() => setAuthLoading(false));
         }
-        notify("Signed in successfully!", "success");
-        return user;
+        // Existing Google user — fetch Firestore profile and seed Redux.
+        return await getUserFirebase(user.uid)
+          .then((userFirestore) => {
+            dispatch(setUserAccount(userFirestore));
+            notify("Signed in successfully!", "success");
+            return userFirestore;
+          })
+          .catch(handleApiError)
+          .finally(() => setAuthLoading(false));
       })
       .catch(handleApiError)
       .finally(() => setAuthLoading(false));
-  }, [notify, handleApiError]);
+  }, [notify, handleApiError, dispatch]);
 
   const handleSignOut = useCallback(() => {
     setAuthLoading(true);

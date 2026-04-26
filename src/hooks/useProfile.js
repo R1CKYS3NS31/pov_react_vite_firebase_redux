@@ -1,13 +1,10 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo } from "react";
 import { useFetchData } from "./useFetchData";
 import { getUserFirebase } from "../service/firebase/controller/user-firebase";
 import { getPoVsByAuthorFirebase } from "../service/firebase/controller/pov-firebase";
 import { useNotificationHandler } from "./useNotificationHandler";
-import { setPovs } from "../service/redux/slices/pov/povSlice";
 
 export const useProfile = (userId) => {
-  const dispatch = useDispatch();
   const notificationHandler = useNotificationHandler();
   const { notification, closeNotification } = notificationHandler;
 
@@ -23,22 +20,11 @@ export const useProfile = (userId) => {
     { notificationHandler },
   );
 
-  useEffect(() => {
-    if (userPovsData) {
-      dispatch(setPovs(userPovsData));
-    }
-  }, [userPovsData, dispatch]);
-
+  // Return data directly — do NOT dispatch into the global povs slice or it
+  // will overwrite the public feed whenever a profile page is viewed.
   const userPovs = useMemo(() => {
     return userPovsData?.empty
-      ? {
-          size: 12,
-          empty: true,
-          content: [],
-          totalPages: 1,
-          totalElements: 0,
-          number: 0,
-        }
+      ? { size: 0, empty: true, content: [], totalPages: 1, totalElements: 0, number: 0 }
       : userPovsData;
   }, [userPovsData]);
 
@@ -50,3 +36,4 @@ export const useProfile = (userId) => {
     closeNotification,
   };
 };
+

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
@@ -22,7 +23,7 @@ import { alpha } from "@mui/material";
 import SharePovModal from "./SharePovModal";
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import PublicOffRoundedIcon from "@mui/icons-material/PublicOffRounded";
-import { useAccount } from "../../../hooks/useAccount";
+import { selectUserAccount } from "../../../service/redux/selectors/userAccountSelector";
 
 const PovCard = ({
   pov,
@@ -33,7 +34,8 @@ const PovCard = ({
   isLoading = false,
 }) => {
   const navigate = useNavigate();
-  const { account } = useAccount();
+  // Read account from Redux — zero-cost synchronous selector, no Firestore fetch.
+  const account = useSelector(selectUserAccount);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
