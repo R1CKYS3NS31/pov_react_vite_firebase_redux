@@ -12,6 +12,7 @@ const ThemeToggleFab = () => {
       arrow
       title={`Switch to ${themeType === "dark" ? "light" : "dark"} mode`}
       placement="left"
+      color="primary"
     >
       <Fab
         color="primary"

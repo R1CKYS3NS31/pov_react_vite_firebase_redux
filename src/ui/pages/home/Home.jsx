@@ -45,7 +45,21 @@ const Home = () => {
         }
       />
 
-      {/* Floating action button — gradient + glow from MuiFab theme override */}
+      {/* Floating action buttons */}
+      <Stack spacing={2} sx={{ position: "fixed", bottom: 80, right: 16, zIndex: 1000 }}>
+        <Zoom in={showTopBtn} unmountOnExit>
+          <Tooltip title="Back to top" placement="left" arrow>
+            <Fab
+              color="secondary"
+              size="small"
+              onClick={scrollToTop}
+              aria-label="scroll back to top"
+            >
+              <KeyboardArrowUpRounded />
+            </Fab>
+          </Tooltip>
+        </Zoom>
+
       <Zoom in unmountOnExit>
         <Tooltip title="Share your perspective" placement="left" arrow>
           <Fab
@@ -54,12 +68,12 @@ const Home = () => {
             size="small"
             aria-label="share pov"
             onClick={() => navigate("/account")}
-            sx={{ position: "fixed", bottom: 80, right: 16, zIndex: 1000 }}
           >
             <AddRounded />
           </Fab>
         </Tooltip>
       </Zoom>
+      </Stack>
     </Stack>
   );
 };
