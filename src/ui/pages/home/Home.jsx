@@ -51,7 +51,7 @@ const Home = () => {
           <Fab
             id="fab-share-pov"
             color="primary"
-            size="large"
+            size="small"
             aria-label="share pov"
             onClick={() => navigate("/account")}
             sx={{ position: "fixed", bottom: 80, right: 16, zIndex: 1000 }}

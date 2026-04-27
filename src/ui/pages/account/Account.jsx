@@ -230,10 +230,10 @@ const Account = () => {
       <Fab
         id="account-fab-create"
         color="primary"
-        size="large"
+        size="small"
         aria-label="create pov"
         onClick={handleCreateNew}
-        sx={{ position: "fixed", bottom: 80, right: 16 }}
+        sx={{ position: "fixed", bottom: 80, right: 16, zIndex: 1000 }}
       >
         <AddRounded />
       </Fab>
