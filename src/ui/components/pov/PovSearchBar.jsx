@@ -11,12 +11,6 @@ const PovSearchBar = ({ searchQuery, setSearchQuery }) => {
       variant="glass"
       onSubmit={(e) => e.preventDefault()}
       sx={{
-        position: "sticky",
-        top: { xs: 56, sm: 64 },
-        zIndex: 100,
-        bgcolor: "background.default",
-        pt: 1,
-        pb: 2,
         p: "2px 4px",
         display: "flex",
         alignItems: "center",

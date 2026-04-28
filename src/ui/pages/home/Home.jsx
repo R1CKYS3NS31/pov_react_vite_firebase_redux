@@ -14,11 +14,16 @@ const Home = () => {
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState("createdAt");
 
-  const { allPovs, searchedPovs, loading } = usePov({ search: searchQuery, page, size: 20, sortBy });
+  const { allPovs, searchedPovs, loading } = usePov({
+    search: searchQuery,
+    page,
+    size: 20,
+    sortBy,
+  });
 
   const displayPovs = searchQuery ? searchedPovs : allPovs;
-  const povItems    = displayPovs?.content   ?? [];
-  const totalPages  = displayPovs?.totalPages ?? 1;
+  const povItems = displayPovs?.content ?? [];
+  const totalPages = displayPovs?.totalPages ?? 1;
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -33,11 +38,26 @@ const Home = () => {
   return (
     <Stack sx={{ maxWidth: 800, mx: "auto", pb: 12 }}>
       <HomeHero />
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" sx={{ mb: 2, px: { xs: 2, sm: 0 } }}>
-        <Box sx={{ flexGrow: 1, width: '100%' }}>
-          <PovSearchBar searchQuery={searchQuery} setSearchQuery={handleSearch} />
-        </Box>
-        <FormControl size="small" sx={{ minWidth: 140, width: { xs: '100%', sm: 'auto' } }}>
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{
+          position: "sticky",
+          top: { xs: 50, sm: 60 },
+          zIndex: 100,
+          // bgcolor: "background.default",
+          pt: 1,
+          pb: 2,
+          alignItems: "center",
+          mb: 2,
+          px: { xs: 2, sm: 0 },
+        }}
+      >
+        <PovSearchBar searchQuery={searchQuery} setSearchQuery={handleSearch} />
+        <FormControl
+          size="small"
+          sx={{ minWidth: 140, width: { xs: "100%", sm: "auto" } }}
+        >
           <Select
             value={sortBy}
             onChange={(e) => {
@@ -45,7 +65,7 @@ const Home = () => {
               setPage(0);
             }}
             displayEmpty
-            inputProps={{ 'aria-label': 'Sort By' }}
+            inputProps={{ "aria-label": "Sort By" }}
             sx={{ borderRadius: 2, fontWeight: 600 }}
           >
             <MenuItem value="createdAt">Newest First</MenuItem>
