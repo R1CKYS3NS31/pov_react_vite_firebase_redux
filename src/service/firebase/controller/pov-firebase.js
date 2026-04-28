@@ -5,6 +5,7 @@ import {
   loadDocsData,
   setDocData,
   loadDocsDataWhere,
+  updateDocData,
 } from "../config/firebase-firestore";
 import { getUserFirebase } from "./user-firebase";
 
@@ -21,6 +22,8 @@ export const savePoVFirebase = async (pov = {}) => {
     points: points || "", // points of view from the author - string
     author: author || "",
     published: false,
+    likes: [],
+    comments: [],
   };
 
   return await saveDocData(collectionName, "", povData)
@@ -34,7 +37,11 @@ export const savePoVFirebase = async (pov = {}) => {
 /**
  * Get all PoVs with populated authors.
  */
-export const getPoVsFirebase = async ({ page = 0, size = 12, sortBy = "createdAt" } = {}) => {
+export const getPoVsFirebase = async ({
+  page = 0,
+  size = 12,
+  sortBy = "createdAt",
+} = {}) => {
   return await loadDocsData(collectionName, page, size, sortBy)
     .then(async (snapshot) => {
       const populatePromises = snapshot.content.map((doc) => povPopulate(doc));
@@ -52,14 +59,24 @@ export const getPoVsFirebase = async ({ page = 0, size = 12, sortBy = "createdAt
 /**
  * Get published PoVs with populated authors.
  */
-export const getPoVsPublishedFirebase = async ({ page = 0, size = 12, sortBy = "createdAt" } = {}) => {
-  return await loadDocsDataWhere(collectionName, page, size, [
-    {
-      field: "published",
-      operator: "==",
-      value: true,
-    }
-  ], sortBy)
+export const getPoVsPublishedFirebase = async ({
+  page = 0,
+  size = 12,
+  sortBy = "createdAt",
+} = {}) => {
+  return await loadDocsDataWhere(
+    collectionName,
+    page,
+    size,
+    [
+      {
+        field: "published",
+        operator: "==",
+        value: true,
+      },
+    ],
+    sortBy,
+  )
     .then(async (snapshot) => {
       const populatePromises = snapshot.content.map((doc) => povPopulate(doc));
       return await Promise.all(populatePromises).then((populatedDocs) => ({
@@ -76,24 +93,33 @@ export const getPoVsPublishedFirebase = async ({ page = 0, size = 12, sortBy = "
 /**
  * Search published PoVs by title.
  */
-export const searchPoVsByTitleFirebase = async (title, { page = 0, size = 12, sortBy = "createdAt" } = {}) => {
-  return await loadDocsDataWhere(collectionName, page, size, [
-    {
-      field: "title",
-      operator: ">=", // prefix search
-      value: title,
-    },
-    {
-      field: "title",
-      operator: "<=",
-      value: title + "\uf8ff",
-    },
-    {
-      field: "published",
-      operator: "==",
-      value: true,
-    }
-  ], sortBy)
+export const searchPoVsByTitleFirebase = async (
+  title,
+  { page = 0, size = 12, sortBy = "createdAt" } = {},
+) => {
+  return await loadDocsDataWhere(
+    collectionName,
+    page,
+    size,
+    [
+      {
+        field: "title",
+        operator: ">=", // prefix search
+        value: title,
+      },
+      {
+        field: "title",
+        operator: "<=",
+        value: title + "\uf8ff",
+      },
+      {
+        field: "published",
+        operator: "==",
+        value: true,
+      },
+    ],
+    sortBy,
+  )
     .then(async (snapshot) => {
       const populatePromises = snapshot.content.map((doc) => povPopulate(doc));
       return await Promise.all(populatePromises).then((populatedDocs) => ({
@@ -110,14 +136,23 @@ export const searchPoVsByTitleFirebase = async (title, { page = 0, size = 12, so
 /**
  * Get my PoVs (published or not).
  */
-export const getMyPoVsFirebase = async (authorId, { page = 0, size = 12, sortBy = "createdAt" } = {}) => {
-  return await loadDocsDataWhere(collectionName, page, size, [
-    {
-      field: "author",
-      operator: "==",
-      value: authorId,
-    }
-  ], sortBy)
+export const getMyPoVsFirebase = async (
+  authorId,
+  { page = 0, size = 12, sortBy = "createdAt" } = {},
+) => {
+  return await loadDocsDataWhere(
+    collectionName,
+    page,
+    size,
+    [
+      {
+        field: "author",
+        operator: "==",
+        value: authorId,
+      },
+    ],
+    sortBy,
+  )
     .then(async (snapshot) => {
       const populatePromises = snapshot.content.map((doc) => povPopulate(doc));
       return await Promise.all(populatePromises).then((populatedDocs) => ({
@@ -134,19 +169,28 @@ export const getMyPoVsFirebase = async (authorId, { page = 0, size = 12, sortBy 
 /**
  * Get PoVs by author.
  */
-export const getPoVsByAuthorFirebase = async (authorId, { page = 0, size = 12, sortBy = "createdAt" } = {}) => {
-  return await loadDocsDataWhere(collectionName, page, size,  [
-    {
-      field: "author",
-      operator: "==",
-      value: authorId,
-    },
-    {
-      field: "published",
-      operator: "==",
-      value: true,
-    }
-  ], sortBy)
+export const getPoVsByAuthorFirebase = async (
+  authorId,
+  { page = 0, size = 12, sortBy = "createdAt" } = {},
+) => {
+  return await loadDocsDataWhere(
+    collectionName,
+    page,
+    size,
+    [
+      {
+        field: "author",
+        operator: "==",
+        value: authorId,
+      },
+      {
+        field: "published",
+        operator: "==",
+        value: true,
+      },
+    ],
+    sortBy,
+  )
     .then(async (snapshot) => {
       const populatePromises = snapshot.content.map((doc) => povPopulate(doc));
       return await Promise.all(populatePromises).then((populatedDocs) => ({
@@ -159,7 +203,6 @@ export const getPoVsByAuthorFirebase = async (authorId, { page = 0, size = 12, s
       throw error;
     });
 };
-
 
 /**
  * Get a single PoV with populated author.
@@ -193,6 +236,111 @@ export const deletePoVFirebase = async (povId) => {
     console.warn(`Failed to delete PoV: `, error);
     throw error;
   });
+};
+
+export const likePoVFirebase = async (povId, userId) => {
+  return await getPoVFirebase(povId)
+    .then(async (pov) => {
+      const updatedLikes = Array.from(new Set([...(pov.likes || []), userId]));
+      return await updateDocData(
+        collectionName,
+        povId,
+        {
+          likes: updatedLikes,
+        },
+        "",
+      )
+        .then(async () => await getPoVFirebase(povId))
+        .catch((error) => {
+          console.warn(`Failed to get the liked PoV: `, error);
+          throw error;
+        });
+    })
+    .catch((error) => {
+      console.warn(`Failed to get the PoV to like: `, error);
+      throw error;
+    });
+};
+
+export const unLikePoVFirebase = async (povId, userId) => {
+  return await getPoVFirebase(povId)
+    .then(async (pov) => {
+      const updatedLikes = (pov.likes || []).filter((id) => id !== userId);
+      return await updateDocData(
+        collectionName,
+        povId,
+        {
+          likes: updatedLikes,
+        },
+        "",
+      )
+        .then(async () => await getPoVFirebase(povId))
+        .catch((error) => {
+          console.warn(`Failed to update the unliked PoV: `, error);
+          throw error;
+        });
+    })
+    .catch((error) => {
+      console.warn(`Failed to get the PoV to unlike: `, error);
+      throw error;
+    });
+};
+
+export const commentOnPoVFirebase = async (povId, userId, commentText) => {
+  return await getPoVFirebase(povId)
+    .then(async (pov) => {
+      const newComment = {
+        // id: crypto.randomUUID(),
+        postedBy: userId,
+        text: commentText,
+        postedAt: Date.now(),
+      };
+
+      const updatedComments = [...(pov.comments || []), newComment];
+      return await updateDocData(
+        collectionName,
+        povId,
+        {
+          comments: updatedComments,
+        },
+        "",
+      )
+        .then(async () => await getPoVFirebase(povId))
+        .catch((error) => {
+          console.warn(`Failed to update the commenting on PoV: `, error);
+          throw error;
+        });
+    })
+    .catch((error) => {
+      console.warn(`Failed to get the PoV to comment on: `, error);
+      throw error;
+    });
+};
+
+export const uncommentPoVFirebase = async (povId, postedBy) => {
+  return await getPoVFirebase(povId)
+    .then(async (pov) => {
+      const updatedComments = (pov.comments || []).filter(
+        (comment) => comment.postedBy !== postedBy,
+      );
+      return await updateDocData(
+        collectionName,
+        povId,
+        {
+          comments: updatedComments,
+        },
+        "",
+      )
+        .then(async () => await getPoVFirebase(povId))
+        .catch((error) => {
+          console.warn(`Failed to update the uncommenting on PoV: `, error);
+          throw error;
+        });
+    })
+    .catch((error) => {
+      console.warn(`Failed to get the PoV to uncomment on: `, error);
+      throw error;
+    });
 };
 
 /**
